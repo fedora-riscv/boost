@@ -1,7 +1,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.33.1
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: Boost Software License (GPL-Compatible, Free Software License)
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -28,6 +28,7 @@ Patch6: boost-spirit-warnings.patch
 Patch7: boost-bind-gcc41.patch
 Patch8: boost-cxxflags-debug.patch
 Patch9: boost-python-vs-x86-64.patch
+Patch10: boost-opt.patch
 
 %description
 Boost provides free peer-reviewed portable C++ source libraries.  The
@@ -78,6 +79,7 @@ rm -rf %{buildroot}
 %patch7 -p0
 %patch8 -p0
 %patch9 -p0
+%patch10 -p0
 
 %build
 #build bjam
@@ -183,6 +185,10 @@ rm -rf %{buildroot}
 %doc %{_docdir}/boost-%{version}
 
 %changelog
+* Mon Nov 19 2007 Petr Machata <pmachata@redhat.com> - 1.33.1-14
+- Apply/testsuite ambiguous option patch from James Philbin
+- Resolves: #369581
+
 * Mon Apr 02 2007 Benjamin Kosnik <bkoz@redhat.com> 1.33.1-13
 - (#225622: Merge Review: boost)
   Change static to devel-static.

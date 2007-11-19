@@ -1,0 +1,141 @@
+--- libs/program_options/src/options_description.cpp
++++ libs/program_options/src/options_description.cpp
+@@ -53,10 +53,10 @@
+     {
+     }
+ 
+-    bool 
++    option_description::match_result
+     option_description::match(const std::string& option, bool approx) const
+     {
+-        bool result = false;
++        match_result result = no_match;
+         if (!m_long_name.empty()) {
+ 
+             if (*m_long_name.rbegin() == '*')
+@@ -65,23 +65,26 @@
+                 // prefix is OK.
+                 if (option.find(m_long_name.substr(0, m_long_name.length()-1))
+                     == 0)
+-                    result = true;
++                    result = approximate_match;
+             }
+ 
+             if (approx)
+             {
+                 if (m_long_name.find(option) == 0)
+-                    result = true;
++                    if (m_long_name == option)
++                        result = full_match;
++                    else
++                        result = approximate_match;
+             }
+             else
+             {
+                 if (m_long_name == option)
+-                    result = true;
++                    result = full_match;
+             }
+         }
+          
+         if (m_short_name == option)
+-            result = true;
++            result = full_match;
+ 
+         return result;        
+     }
+@@ -258,21 +261,38 @@
+         // case sensitivity and trailing '*' and so we can't use simple map.
+         for(unsigned i = 0; i < m_options.size(); ++i)
+         {
+-            if (m_options[i]->match(name, approx))
++            option_description::match_result r = 
++                m_options[i]->match(name, approx);
++
++            if (r == option_description::no_match)
++                continue;
++
++            // If we have a full patch, and an approximate match,
++            // ignore approximate match instead of reporting error.
++            // Say, if we have options "all" and "all-chroots", then
++            // "--all" on the command line should select the first one,
++            // without ambiguity.
++            //
++            // For now, we don't check the situation when there are 
++            // two full matches. 
++                            
++            if (r == option_description::full_match)
+             {
+-                if (found != -1)
+-                {
+-                    vector<string> alts;
+-                    // FIXME: the use of 'key' here might not
+-                    // be the best approach.
+-                    alts.push_back(m_options[found]->key(name));
+-                    alts.push_back(m_options[i]->key(name));
+-                    boost::throw_exception(ambiguous_option(name, alts));
+-                }
+-                else
+-                {
+-                    found = i;
+-                }
++                return m_options[i].get();                
++            }
++
++            if (found != -1)
++            {
++                vector<string> alts;
++                // FIXME: the use of 'key' here might not
++                // be the best approach.
++                alts.push_back(m_options[found]->key(name));
++                alts.push_back(m_options[i]->key(name));
++                boost::throw_exception(ambiguous_option(name, alts));
++            }
++            else
++            {
++                found = i;
+             }
+         }
+         if (found != -1) {
+--- libs/program_options/test/options_description_test.cpp
++++ libs/program_options/test/options_description_test.cpp
+@@ -20,11 +20,20 @@
+ {
+     options_description desc;
+     desc.add_options()
+-    ("foo", new untyped_value())
+-    ("fee", new untyped_value())
+-    ("baz", new untyped_value());
++        ("foo", new untyped_value())
++        ("fee", new untyped_value())
++        ("baz", new untyped_value())
++        ("all", new untyped_value())
++        ("all-chroots", new untyped_value())
++        ("all-sessions", new untyped_value())
++        ;
+ 
+     BOOST_CHECK_EQUAL(desc.find("fo", true).long_name(), "foo");
++
++    BOOST_CHECK_EQUAL(desc.find("all", true).long_name(), "all");
++    BOOST_CHECK_EQUAL(desc.find("all-ch", true).long_name(), "all-chroots");
++
++
+ //    BOOST_CHECK(desc.count_approx("foo") == 1);
+ //    set<string> a = desc.approximations("f");
+ //    BOOST_CHECK(a.size() == 2);
+--- boost/program_options/options_description.hpp
++++ boost/program_options/options_description.hpp
+@@ -78,10 +78,12 @@
+ 
+         virtual ~option_description();
+ 
++        enum match_result { no_match, full_match, approximate_match };
++
+         /** Given 'option', specified in the input source,
+             return 'true' is 'option' specifies *this.
+         */
+-        bool match(const std::string& option, bool approx) const;
++        match_result match(const std::string& option, bool approx) const;
+ 
+         /** Return the key that should identify the option, in
+             particular in the variables_map class.
