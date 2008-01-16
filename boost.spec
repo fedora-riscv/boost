@@ -1,7 +1,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.33.1
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: Boost Software License (GPL-Compatible, Free Software License)
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -29,6 +29,7 @@ Patch7: boost-bind-gcc41.patch
 Patch8: boost-cxxflags-debug.patch
 Patch9: boost-python-vs-x86-64.patch
 Patch10: boost-opt.patch
+Patch11: boost-regex.patch
 
 %description
 Boost provides free peer-reviewed portable C++ source libraries.  The
@@ -80,6 +81,7 @@ rm -rf %{buildroot}
 %patch8 -p0
 %patch9 -p0
 %patch10 -p0
+%patch11 -p0
 
 %build
 #build bjam
@@ -185,6 +187,9 @@ rm -rf %{buildroot}
 %doc %{_docdir}/boost-%{version}
 
 %changelog
+* Wed Jan 16 2008 Petr Machata <pmachata@redhat.com> - 1.33.1-15
+- Fixes for boost.regex.
+
 * Mon Nov 19 2007 Petr Machata <pmachata@redhat.com> - 1.33.1-14
 - Apply/testsuite ambiguous option patch from James Philbin
 - Resolves: #369581
