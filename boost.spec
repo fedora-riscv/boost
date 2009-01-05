@@ -3,7 +3,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.34.1
-Release: 17%{?dist}
+Release: 18%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -198,6 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
+* Mon Jan  5 2009 Petr Machata <pmachata@redhat.com> - 1.34.1-18
+- Fix missing <limits.h> include in relaxed_heap.hpp
+- Related: #475587
+
 * Mon Oct  6 2008 Petr Machata <pmachata@redhat.com> - 1.34.1-17
 - Fix gcc43 patch to apply cleanly under --fuzz=0
 - Resolves: #465003
