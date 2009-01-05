@@ -213,3 +213,14 @@ diff -urp new-boost/date_time/tz_db_base.hpp old-boost/date_time/tz_db_base.hpp
  
            rules = 
              boost::shared_ptr<rule_type>(parse_rules(result[START_DATE_RULE],
+diff -urp boost/pending/relaxed_heap.hpp /usr/include/boost/pending/relaxed_heap.hpp
+--- boost_1_34_1/boost/pending/relaxed_heap.hpp	2005-12-08 03:56:25.000000000 +0100
++++ boost_1_34_1-pm/boost/pending/relaxed_heap.hpp	2009-01-05 13:49:23.000000000 +0100
+@@ -13,6 +13,7 @@
+ #include <boost/property_map.hpp>
+ #include <boost/optional.hpp>
+ #include <vector>
++#include <limits.h>
+ 
+ #ifdef BOOST_RELAXED_HEAP_DEBUG
+ #  include <iostream>

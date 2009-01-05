@@ -3,7 +3,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.34.1
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: Boost Software License (GPL-Compatible, Free Software License)
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -198,6 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
+* Mon Jan  5 2009 Petr Machata <pmachata@redhat.com> - 1.34.1-16
+- Fix missing <limits.h> include in relaxed_heap.hpp
+- Resolves: #475587
+
 * Thu Jun 12 2008 Petr Machata <pmachata@redhat.com> - 1.34.1-15
 - Fix "changes meaning of keywords" in boost date_time
 - Resolves: #450718
