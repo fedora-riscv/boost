@@ -4,7 +4,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.37.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -30,6 +30,7 @@ Patch5: boost-function_template.patch
 Patch6: boost-unneccessary_iostreams.patch
 Patch7: boost-1_37_0-smp.patch
 Patch8: boost-bitset.patch
+Patch9: boost-fs_gcc44.patch
 
 %description
 Boost provides free peer-reviewed portable C++ source libraries.  The
@@ -78,6 +79,7 @@ sed 's/!!!SONAME!!!/%{sonamever}/' %{PATCH4} | %{__patch} -p1 --fuzz=0
 %patch6 -p0
 sed 's/!!!SMP_FLAGS!!!/%{?_smp_mflags}/' %{PATCH7} | %{__patch} -p1 --fuzz=0
 %patch8 -p1
+%patch9 -p0
 
 %build
 BOOST_ROOT=`pwd`
@@ -210,6 +212,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
+* Fri Jul  3 2009 Petr Machata <pmachata@redhat.com> - 1.37.0-7
+- Add upstream patch to make boost_filesystem compatible with C++0x.
+- Resolves: #509250
+
 * Mon Mar 23 2009 Petr Machata <pmachata@redhat.com> - 1.37.0-6
 - Apply a SMP patch from Stefan Ring
 - Apply a workaround for "cannot appear in a constant-expression" in
