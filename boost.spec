@@ -1,7 +1,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.39.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -43,6 +43,10 @@ Patch5: boost-bitset.patch
 Patch6: boost-function_template.patch
 Patch7: boost-fs_gcc44.patch
 Patch8: boost-openssl-1.0.patch
+Patch9: boost-gil_gcc44.patch
+Patch10: boost-python_call_operator.patch
+Patch11: boost-python_enums.patch
+Patch12: boost-python_uint.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -227,6 +231,10 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH3} | %{__patch} -p0 --fuzz=0
 %patch6 -p0
 %patch7 -p0
 %patch8 -p1
+%patch9 -p0
+%patch10 -p2
+%patch11 -p2
+%patch12 -p2
 
 %build
 BOOST_ROOT=`pwd`
@@ -438,6 +446,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 
 %changelog
+* Wed Oct 14 2009 Petr Machata <pmachata@redhat.com> - 1.39.0-7
+- Several fixes to support PySide
+- Resolves: #520087
+- GCC 4.4 name resolution fixes for GIL
+- Resolves: #526834
+
 * Tue Sep 08 2009 Karsten Hopp <karsten@redhat.com> 1.39.0-6
 - bump release and rebuild as the package was linked with an old libicu 
   during the mass rebuild on s390x
