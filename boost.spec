@@ -1,7 +1,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.39.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -344,7 +344,7 @@ cat tmp-doc-directories | while read a; do
     | xargs install -m 644 -p -t $DOCPATH$a
 done
 rm tmp-doc-directories
-install -p -m 644 -t $DOCPATH LICENSE_1_0.txt index.htm
+install -p -m 644 -t $DOCPATH LICENSE_1_0.txt index.htm index.html
 
 # remove scripts used to generate include files
 find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec rm {} \;
@@ -446,6 +446,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 
 %changelog
+* Thu Oct 15 2009 Petr Machata <pmachata@redhat.com> - 1.39.0-8
+- Package index.html in the -doc subpackage
+- Resolves: #529030
+
 * Wed Oct 14 2009 Petr Machata <pmachata@redhat.com> - 1.39.0-7
 - Several fixes to support PySide
 - Resolves: #520087
