@@ -1,7 +1,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.39.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -47,6 +47,7 @@ Patch9: boost-gil_gcc44.patch
 Patch10: boost-python_call_operator.patch
 Patch11: boost-python_enums.patch
 Patch12: boost-python_uint.patch
+Patch13: boost-python_translate_exception.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -235,6 +236,7 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH3} | %{__patch} -p0 --fuzz=0
 %patch10 -p2
 %patch11 -p2
 %patch12 -p2
+%patch13 -p1
 
 %build
 BOOST_ROOT=`pwd`
@@ -446,6 +448,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 
 %changelog
+* Mon Nov 16 2009 Petr Machata <pmachata@redhat.com> - 1.39.0-9
+- translate_exception.hpp misses a include
+- Resolves: #537612
+
 * Thu Oct 15 2009 Petr Machata <pmachata@redhat.com> - 1.39.0-8
 - Package index.html in the -doc subpackage
 - Resolves: #529030
