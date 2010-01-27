@@ -1,0 +1,159 @@
+Index: /trunk/boost/gil/color_base.hpp
+===================================================================
+--- /trunk/boost/gil/color_base.hpp (revision 54725)
++++ /trunk/boost/gil/color_base.hpp (revision 58777)
+@@ -86,5 +86,5 @@
+     operator Element () const { return _v0; }
+ 
+-    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,1>& c) : _v0(at_c<0>(c)) {}
++    template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,1>& c) : _v0(gil::at_c<0>(c)) {}
+ };
+ 
+@@ -108,11 +108,11 @@
+ 
+     template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,2>& c) : 
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
+ 
+     // Support for l-value reference proxy copy construction
+     template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,2>& c) : 
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)) {}
+ 
+     // Support for planar_pixel_iterator construction and dereferencing
+@@ -213,15 +213,15 @@
+ 
+     template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,4>& c) :
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+-        _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
+-        _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
++        _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)),
++        _v3(gil::at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
+ 
+     // Support for l-value reference proxy copy construction
+     template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,4>& c) : 
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+-        _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
+-        _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
++        _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)),
++        _v3(gil::at_c<mapping_transform<Layout,L2,3>::value>(c)) {}
+ 
+     // Support for planar_pixel_iterator construction and dereferencing
+@@ -279,17 +279,17 @@
+ 
+     template <typename E2, typename L2> homogeneous_color_base(const homogeneous_color_base<E2,L2,5>& c) :
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+-        _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
+-        _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)),
+-        _v4(at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
++        _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)),
++        _v3(gil::at_c<mapping_transform<Layout,L2,3>::value>(c)),
++        _v4(gil::at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
+ 
+     // Support for l-value reference proxy copy construction
+     template <typename E2, typename L2> homogeneous_color_base(      homogeneous_color_base<E2,L2,5>& c) : 
+-        _v0(at_c<mapping_transform<Layout,L2,0>::value>(c)), 
+-        _v1(at_c<mapping_transform<Layout,L2,1>::value>(c)), 
+-        _v2(at_c<mapping_transform<Layout,L2,2>::value>(c)),
+-        _v3(at_c<mapping_transform<Layout,L2,3>::value>(c)),
+-        _v4(at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
++        _v0(gil::at_c<mapping_transform<Layout,L2,0>::value>(c)), 
++        _v1(gil::at_c<mapping_transform<Layout,L2,1>::value>(c)), 
++        _v2(gil::at_c<mapping_transform<Layout,L2,2>::value>(c)),
++        _v3(gil::at_c<mapping_transform<Layout,L2,3>::value>(c)),
++        _v4(gil::at_c<mapping_transform<Layout,L2,4>::value>(c)) {}
+ 
+     // Support for planar_pixel_iterator construction and dereferencing
+Index: /trunk/boost/gil/bit_aligned_pixel_reference.hpp
+===================================================================
+--- /trunk/boost/gil/bit_aligned_pixel_reference.hpp (revision 54725)
++++ /trunk/boost/gil/bit_aligned_pixel_reference.hpp (revision 58777)
+@@ -170,6 +170,6 @@
+ private:
+     static void check_gray() {  BOOST_STATIC_ASSERT((is_same<typename Layout::color_space_t, gray_t>::value)); }
+-    template <typename Channel> void assign(const Channel& chan, mpl::false_) const { check_gray(); at_c<0>(*this)=chan; }
+-    template <typename Channel> bool equal (const Channel& chan, mpl::false_) const { check_gray(); return at_c<0>(*this)==chan; }
++    template <typename Channel> void assign(const Channel& chan, mpl::false_) const { check_gray(); gil::at_c<0>(*this)=chan; }
++    template <typename Channel> bool equal (const Channel& chan, mpl::false_) const { check_gray(); return gil::at_c<0>(*this)==chan; }
+ };
+ 
+Index: /trunk/boost/gil/extension/dynamic_image/reduce.hpp
+===================================================================
+--- /trunk/boost/gil/extension/dynamic_image/reduce.hpp (revision 37609)
++++ /trunk/boost/gil/extension/dynamic_image/reduce.hpp (revision 58777)
+@@ -60,5 +60,5 @@
+ template <typename SrcTypes, typename DstTypes, long K>
+ struct at_c<mapping_vector<SrcTypes,DstTypes>, K> {
+-    static const std::size_t value=size<DstTypes>::value - order<DstTypes, typename at_c<SrcTypes,K>::type>::type::value +1;
++    static const std::size_t value=size<DstTypes>::value - order<DstTypes, typename gil::at_c<SrcTypes,K>::type>::type::value +1;
+     typedef size_t<value> type;
+ };
+Index: /trunk/boost/gil/gil_concept.hpp
+===================================================================
+--- /trunk/boost/gil/gil_concept.hpp (revision 57980)
++++ /trunk/boost/gil/gil_concept.hpp (revision 58777)
+@@ -619,5 +619,5 @@
+ 
+ #if !defined(_MSC_VER) || _MSC_VER > 1310
+-        CR cr=at_c<num_elements-1>(cb);  ignore_unused_variable_warning(cr);
++        CR cr=gil::at_c<num_elements-1>(cb);  ignore_unused_variable_warning(cr);
+ #endif
+ 
+@@ -656,6 +656,6 @@
+ 
+ #if !defined(_MSC_VER) || _MSC_VER > 1310
+-        CR r=at_c<0>(cb);
+-        at_c<0>(cb)=r;
++        CR r=gil::at_c<0>(cb);
++        gil::at_c<0>(cb)=r;
+ #endif
+     }
+Index: /trunk/boost/gil/planar_pixel_iterator.hpp
+===================================================================
+--- /trunk/boost/gil/planar_pixel_iterator.hpp (revision 54725)
++++ /trunk/boost/gil/planar_pixel_iterator.hpp (revision 58777)
+@@ -185,5 +185,5 @@
+ template <typename IC, typename C>
+ inline std::ptrdiff_t memunit_distance(const planar_pixel_iterator<IC,C>& p1, const planar_pixel_iterator<IC,C>& p2) { 
+-    return memunit_distance(at_c<0>(p1),at_c<0>(p2)); 
++    return memunit_distance(gil::at_c<0>(p1),gil::at_c<0>(p2)); 
+ }
+ 
+Index: /trunk/boost/gil/packed_pixel.hpp
+===================================================================
+--- /trunk/boost/gil/packed_pixel.hpp (revision 58302)
++++ /trunk/boost/gil/packed_pixel.hpp (revision 58777)
+@@ -78,5 +78,5 @@
+     packed_pixel(int chan0, int chan1) : _bitfield(0) { 
+         BOOST_STATIC_ASSERT((num_channels<packed_pixel>::value==2)); 
+-        at_c<0>(*this)=chan0; at_c<1>(*this)=chan1; 
++        gil::at_c<0>(*this)=chan0; gil::at_c<1>(*this)=chan1; 
+     } 
+     packed_pixel(int chan0, int chan1, int chan2) : _bitfield(0) { 
+@@ -107,9 +107,9 @@
+ // Support for assignment/equality comparison of a channel with a grayscale pixel
+     static void check_gray() {  BOOST_STATIC_ASSERT((is_same<typename Layout::color_space_t, gray_t>::value)); }
+-    template <typename Channel> void assign(const Channel& chan, mpl::false_)       { check_gray(); at_c<0>(*this)=chan; }
+-    template <typename Channel> bool equal (const Channel& chan, mpl::false_) const { check_gray(); return at_c<0>(*this)==chan; }
++    template <typename Channel> void assign(const Channel& chan, mpl::false_)       { check_gray(); gil::at_c<0>(*this)=chan; }
++    template <typename Channel> bool equal (const Channel& chan, mpl::false_) const { check_gray(); return gil::at_c<0>(*this)==chan; }
+ public:
+-    packed_pixel&  operator= (int chan)       { check_gray(); at_c<0>(*this)=chan; return *this; }
+-    bool           operator==(int chan) const { check_gray(); return at_c<0>(*this)==chan; }
++    packed_pixel&  operator= (int chan)       { check_gray(); gil::at_c<0>(*this)=chan; return *this; }
++    bool           operator==(int chan) const { check_gray(); return gil::at_c<0>(*this)==chan; }
+ };
+ 

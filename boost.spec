@@ -4,7 +4,7 @@
 Name: boost
 Summary: The Boost C++ Libraries
 Version: 1.37.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost
 URL: http://www.boost.org/
 Group: System Environment/Libraries
@@ -32,6 +32,7 @@ Patch7: boost-1_37_0-smp.patch
 Patch8: boost-bitset.patch
 Patch9: boost-fs_gcc44.patch
 Patch10: boost-gil_gcc44.patch
+Patch11: boost-gil_gcc44-2.patch
 
 %description
 Boost provides free peer-reviewed portable C++ source libraries.  The
@@ -82,6 +83,7 @@ sed 's/!!!SMP_FLAGS!!!/%{?_smp_mflags}/' %{PATCH7} | %{__patch} -p1 --fuzz=0
 %patch8 -p1
 %patch9 -p0
 %patch10 -p0
+%patch11 -p2
 
 %build
 BOOST_ROOT=`pwd`
@@ -214,6 +216,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-%{version}
 
 %changelog
+* Wed Jan 27 2010 Petr Machata <pmachata@redhat.com> - 1.37.0-9
+- More GCC 4.4 name resolution fixes for GIL
+- Resolves: #526834
+
 * Wed Oct 14 2009 Petr Machata <pmachata@redhat.com> - 1.37.0-8
 - GCC 4.4 name resolution fixes for GIL
 - Resolves: #526834
