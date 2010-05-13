@@ -17,7 +17,7 @@
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.41.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost
 URL: http://sodium.resophonic.com/boost-cmake/%{version}.cmake0/
 Group: System Environment/Libraries
@@ -68,6 +68,7 @@ Patch0: boost-cmake-soname.patch
 Patch1: boost-graph-compile.patch
 Patch2: boost-1.41.0-mapnik.patch
 Patch3: boost-1.41.0-shared_ptr_serialization.patch
+Patch4: boost-1.41.0-iostreams-zlib.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -358,6 +359,7 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH0} | %{__patch} -p0 --fuzz=0
 %patch1 -p0
 %patch2 -p0
 %patch3 -p1
+%patch4 -p2
 
 %build
 # Support for building tests.
@@ -723,6 +725,10 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %endif
 
 %changelog
+* Tue May 11 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-8
+- Add an upstream patch that fixes computation of CRC in zlib streams.
+- Resolves: #590205
+
 * Mon Feb 22 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-7
 - Add a patch for serialization of shared pointers to non polymorphic
   types
