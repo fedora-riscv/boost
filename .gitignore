@@ -1,1 +1,6 @@
-boost-1.41.0.cmake0.tar.bz2
+boost-*.tar.*
+boost-*.src.rpm
+boost-cmake-soname.patch
+clog
+.build*
+
