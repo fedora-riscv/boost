@@ -12,7 +12,7 @@
 
 # Configuration of MPI backends
 %bcond_without mpich2
-%ifarch s390 s390x arm
+%ifarch s390 s390x %{arm}
   # No OpenMPI support on these arches
   %bcond_with openmpi
 %else
@@ -789,6 +789,10 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Wed Dec 15 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-12
+- The family of ARM machines is "%%{arm}", not "arm"
+- Resolves: #663251
+
 * Fri Dec  3 2010 Tom "spot" Callaway <spot@fedoraproject.org> - 1.41.0-11
 - also package build-system.jam in boost-build
 
