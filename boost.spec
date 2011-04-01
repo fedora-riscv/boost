@@ -84,7 +84,6 @@ BuildRequires: chrpath
 
 Patch0: cmakeify_boost_1440_3.patch
 #Patch1: boost-cmake-soname.patch
-#Patch2: boost-random-dso.patch
 
 %bcond_with tests
 %bcond_with docs_generated
