@@ -23,15 +23,18 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.44.0
 %define pristine_version 1_44_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
 # added on top of the official Boost release (http://www.boost.org), thanks to
 # a dedicated patch. That CMake framework (and patch) is hosted and maintained
-# on Gitorious, for now in the following Git repository:
-#   http://gitorious.org/boost/denisarnauds-zeuners-boost-cmake
-#   http://git.gitorious.org/~denisarnaud/boost/denisarnauds-zeuners-boost-cmake.git
+# on GitHub, for now in the following Git repository:
+#   https://github.com/denisarnaud/boost-cmake
+# A clone also exists on Gitorious, where CMake-related work was formely done:
+#   http://gitorious.org/~denisarnaud/boost/denisarnauds-cmake
+# Upstream work is synchronised thanks to the Ryppl's hosted Git clone:
+#   https://github.com/ryppl/boost-svn/tree/trunk
 %define full_pristine_version %{name}_%{pristine_version}
 %define full_cmake_version %{name}-%{version}.cmake
 URL: http://www.boost.org
@@ -79,9 +82,9 @@ BuildRequires: python-devel
 BuildRequires: libicu-devel
 BuildRequires: chrpath
 
-Patch0: cmakeify_boost_1440.patch
+Patch0: cmakeify_boost_1440_3.patch
 #Patch1: boost-cmake-soname.patch
-Patch2: boost-random-dso.patch
+#Patch2: boost-random-dso.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -404,7 +407,6 @@ a number of significant features and is now developed independently
 
 # CMake framework (CMakeLists.txt, *.cmake and documentation files)
 %patch0 -p1
-%patch2 -p1
 
 %build
 # Support for building tests.
@@ -817,11 +819,15 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
-* Fri Apr  1 2011 Petr Machata <pmachata@redhat.com> - 1.44.0-7
+* Fri Apr  1 2011 Petr Machata <pmachata@redhat.com> - 1.44.0-8
 - Yet another way to pass -DBOOST_LIB_INSTALL_DIR to cmake.  Passing
   via CMAKE_CXX_FLAGS for some reason breaks when rpm re-quotes the
   expression as a result of %%{optflags} expansion.
 - Resolves: #667294
+
+* Mon Jan 10 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.44.0-7
+- Integrated Petr's work to fix missing Boost.Filesystem V3 issue
+- Resolves: #667740
 
 * Thu Jan  6 2011 Petr Machata <pmachata@redhat.com> - 1.44.0-6
 - Don't override CXXFLAGS with -DBOOST_IOSTREAMS_USE_DEPRECATED
