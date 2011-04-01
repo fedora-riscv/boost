@@ -5,4 +5,3 @@ clog
 boost_*/
 */*.rpm
 /boost_1_44_0.tar.bz2
-/cmakeify_boost_1440_3.patch
