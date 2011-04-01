@@ -23,7 +23,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.44.0
 %define pristine_version 1_44_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -416,10 +416,10 @@ a number of significant features and is now developed independently
 ( echo ============================= build serial ==================
   mkdir serial
   cd serial
+  export CXXFLAGS="-DBOOST_IOSTREAMS_USE_DEPRECATED %{optflags}"
   %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo %{boost_testflags} \
          -DENABLE_SINGLE_THREADED=YES -DINSTALL_VERSIONED=OFF \
          -DWITH_MPI=OFF \
-         -DCMAKE_CXX_FLAGS="%{optflags} -DBOOST_IOSTREAMS_USE_DEPRECATED" \
          ..
   make VERBOSE=1 %{?_smp_mflags}
 )
@@ -817,6 +817,12 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Fri Apr  1 2011 Petr Machata <pmachata@redhat.com> - 1.44.0-7
+- Yet another way to pass -DBOOST_LIB_INSTALL_DIR to cmake.  Passing
+  via CMAKE_CXX_FLAGS for some reason breaks when rpm re-quotes the
+  expression as a result of %%{optflags} expansion.
+- Resolves: #667294
+
 * Thu Jan  6 2011 Petr Machata <pmachata@redhat.com> - 1.44.0-6
 - Don't override CXXFLAGS with -DBOOST_IOSTREAMS_USE_DEPRECATED
 - Resolves: #667294
