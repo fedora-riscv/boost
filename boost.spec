@@ -23,7 +23,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.46.0
 %define version_enc 1_46_0
-Release: 0.5%{?dist}
+Release: 1%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -440,10 +440,10 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH2} | %{__patch} -p0 --fuzz=0
 ( echo ============================= build serial ==================
   mkdir serial
   cd serial
+  export CXXFLAGS="-DBOOST_IOSTREAMS_USE_DEPRECATED %{optflags}"
   %cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo %{boost_testflags} \
          -DENABLE_SINGLE_THREADED=YES -DINSTALL_VERSIONED=OFF \
          -DWITH_MPI=OFF \
-         -DCMAKE_CXX_FLAGS="%{optflags} -DBOOST_IOSTREAMS_USE_DEPRECATED" \
          ..
   make VERBOSE=1 %{?_smp_mflags}
 )
@@ -841,6 +841,12 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Mon Apr  4 2011 Petr Machata <pmachata@redhat.com> - 1.46.0-1
+- Yet another way to pass -DBOOST_LIB_INSTALL_DIR to cmake.  Passing
+  via CMAKE_CXX_FLAGS for some reason breaks when rpm re-quotes the
+  expression as a result of %%{optflags} expansion.
+- Related: #667294
+
 * Wed Mar 30 2011 Deji Akingunola <dakingun@gmail.com> - 1.46.0-0.5
 - Rebuild for mpich2 soname bump
 
