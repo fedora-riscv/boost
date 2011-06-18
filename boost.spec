@@ -11,7 +11,12 @@
 %endif
 
 # Configuration of MPI backends
-%bcond_without mpich2
+%ifarch %{arm}
+  %bcond_with mpich2
+%else
+  %bcond_without mpich2
+%endif
+
 %ifarch s390 s390x %{arm}
   # No OpenMPI support on these arches
   %bcond_with openmpi
@@ -23,7 +28,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.46.0
 %define version_enc 1_46_0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -841,6 +846,9 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Sat Jun 18 2011 Peter Robinson <pbrobinson@gmail.com> - 1.46.0-2
+- Fix compile on ARM platforms
+
 * Mon Apr  4 2011 Petr Machata <pmachata@redhat.com> - 1.46.0-1
 - Yet another way to pass -DBOOST_LIB_INSTALL_DIR to cmake.  Passing
   via CMAKE_CXX_FLAGS for some reason breaks when rpm re-quotes the
