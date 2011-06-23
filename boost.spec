@@ -1,6 +1,6 @@
 # Support for documentation installation
 # As the %%doc macro erases the target directory, namely
-# $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}, manually installed
+# $RPM_BUILD_ROOT%%{_docdir}/%%{name}-%%{version}, manually installed
 # documentation must be saved into a temporary dedicated directory.
 %define boost_docdir __tmp_docdir
 
@@ -28,7 +28,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.46.0
 %define version_enc 1_46_0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -105,6 +105,10 @@ Patch4: boost-1.46.0-unordered-cctor.patch
 # Has been fixed on Boost trunk (will be fixed in Boost-1.47:
 #  https://svn.boost.org/trac/boost/changeset/68725)
 Patch5: boost-1.46.0-spirit.patch
+
+# Has been fixed in Boost-1.46.1 (https://svn.boost.org/trac/boost/ticket/5424):
+#   https://svn.boost.org/trac/boost/changeset/69684)
+Patch6: boost-1.46.0-ptree-assertion.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -433,7 +437,10 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH2} | %{__patch} -p0 --fuzz=0
 %patch3 -p1
 %patch4 -p2
 %patch5 -p0
+%patch6 -p1
 
+# Fix some permissions
+find ./boost/range -type f -name '*.hpp' -exec chmod 644 {} \;
 
 %build
 # Support for building tests.
@@ -846,6 +853,10 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Thu Jun 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.46.0-3
+- Fixed compilation errors when compiling JSON-related Boost::Property_Tree
+- Related: #715611
+
 * Sat Jun 18 2011 Peter Robinson <pbrobinson@gmail.com> - 1.46.0-2
 - Fix compile on ARM platforms
 
