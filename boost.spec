@@ -28,7 +28,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.46.0
 %define version_enc 1_46_0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -109,6 +109,10 @@ Patch5: boost-1.46.0-spirit.patch
 # Has been fixed in Boost-1.46.1 (https://svn.boost.org/trac/boost/ticket/5424):
 #   https://svn.boost.org/trac/boost/changeset/69684)
 Patch6: boost-1.46.0-ptree-assertion.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=828856
+# https://bugzilla.redhat.com/show_bug.cgi?id=828857
+Patch7: boost-1.47.0-pool.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -438,6 +442,7 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH2} | %{__patch} -p0 --fuzz=0
 %patch4 -p2
 %patch5 -p0
 %patch6 -p1
+%patch7 -p1
 
 # Fix some permissions
 find ./boost/range -type f -name '*.hpp' -exec chmod 644 {} \;
@@ -853,6 +858,10 @@ find $RPM_BUILD_ROOT%{_includedir}/ \( -name '*.pl' -o -name '*.sh' \) -exec %{_
 %{_bindir}/bjam
 
 %changelog
+* Wed Jun  6 2012 Petr Machata <pmachata@redhat.com> - 1.46.0-4
+- In Boost.Pool, be careful not to overflow allocated chunk size.
+- Resolves: #828857
+
 * Thu Jun 23 2011 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.46.0-3
 - Fixed compilation errors when compiling JSON-related Boost::Property_Tree
 - Related: #715611
