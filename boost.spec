@@ -25,7 +25,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.50.0
 %define version_enc 1_50_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -107,6 +107,9 @@ Patch12: boost-1.50.0-polygon.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
 Patch15: boost-1.50.0-pool.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=907481
+Patch17: boost-1.50.0-invalid-utf8.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -485,6 +488,7 @@ a number of significant features and is now developed independently
 %patch10 -p1
 %patch12 -p3
 %patch15 -p0
+%patch17 -p0
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -969,9 +973,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
-* Thu Aug 16 2012 Petr Machata <pmachata@redhat.com> - 1.50.0-5
+* Wed Feb 13 2013 Petr Machata <pmachata@redhat.com> - 1.50.0-5
 - Update %%description to reflect current state of C++
   standardization.  Courtesy of Jonathan Wakely.  (#837813)
+- Fix classifying incomplete UTF-8 sequences in Boost.Locale (#907481)
 
 * Wed Aug 15 2012 Petr Machata <pmachata@redhat.com> - 1.50.0-4
 - Override boost_thread-mt.so with a linker script that brings in
