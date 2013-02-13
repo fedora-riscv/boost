@@ -28,7 +28,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.48.0
 %define version_enc 1_48_0
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: Boost and MIT and Python
 
 # The CMake build framework (set of CMakeLists.txt and module.cmake files) is
@@ -142,6 +142,9 @@ Patch15: boost-1.48.0-pool.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=832265
 Patch16: boost-1.48.0-locale.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=907481
+Patch17: boost-1.48.0-invalid-utf8.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -516,6 +519,7 @@ sed 's/_FEDORA_SONAME/%{sonamever}/' %{PATCH1} | %{__patch} -p0 --fuzz=0
 %patch12 -p3
 %patch15 -p0
 %patch16 -p1
+%patch17 -p0
 
 %build
 # Support for building tests.
@@ -1019,6 +1023,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Feb 13 2013 Petr Machata <pmachata@redhat.com> - 1.48.0-14
+- Fix classifying incomplete UTF-8 sequences in Boost.Locale (#907481)
+
 * Thu Jun 21 2012 Petr Machata <pmachata@redhat.com> - 1.48.0-13
 - Build Boost.Locale backends
 - Resolves: #832265
