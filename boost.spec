@@ -34,7 +34,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.53.0
 %define version_enc 1_53_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -42,7 +42,7 @@ URL: http://www.boost.org
 Group: System Environment/Libraries
 Source0: http://downloads.sourceforge.net/%{name}/%{toplev_dirname}.tar.bz2
 Source1: ver.py
-Source2: libboost_thread-mt.so
+Source2: libboost_thread.so
 
 # From the version 13 of Fedora, the Boost libraries are delivered
 # with sonames equal to the Boost version (e.g., 1.41.0).
@@ -573,12 +573,12 @@ sed 's/%%{version}/%{version}/g' %{SOURCE2} > $(basename %{SOURCE2})
 # eventually done.
 
 echo ============================= build serial ==================
-./b2 -d+2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -d+2 -q %{?_smp_mflags} \
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
     	--without-context \
 %endif
-	variant=release threading=single,multi debug-symbols=on pch=off \
+	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
 
 # Build MPI parts of Boost with OpenMPI support
@@ -595,8 +595,7 @@ module purge ||:
 %if %{with openmpi}
 %{_openmpi_load}
 echo ============================= build $MPI_COMPILER ==================
-# This doesn't seem to allow single-threaded builds anymore.
-./b2 -d+2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -d+2 -q %{?_smp_mflags} \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
@@ -608,7 +607,7 @@ export PATH=/bin${PATH:+:}$PATH
 %if %{with mpich2}
 %{_mpich2_load}
 echo ============================= build $MPI_COMPILER ==================
-./b2 -d+2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -d+2 -q %{?_smp_mflags} \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
@@ -638,7 +637,7 @@ module purge ||:
 %if %{with openmpi}
 %{_openmpi_load}
 echo ============================= install $MPI_COMPILER ==================
-./b2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -q %{?_smp_mflags} \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
 	variant=release threading=multi debug-symbols=on pch=off \
@@ -654,7 +653,7 @@ export PATH=/bin${PATH:+:}$PATH
 %if %{with mpich2}
 %{_mpich2_load}
 echo ============================= install $MPI_COMPILER ==================
-./b2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -q %{?_smp_mflags} \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
 	variant=release threading=multi debug-symbols=on pch=off \
@@ -668,20 +667,20 @@ export PATH=/bin${PATH:+:}$PATH
 %endif
 
 echo ============================= install serial ==================
-./b2 -d+2 -q %{?_smp_mflags} --layout=tagged \
+./b2 -d+2 -q %{?_smp_mflags} \
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
     	--without-context \
 %endif
 	--prefix=$RPM_BUILD_ROOT%{_prefix} \
 	--libdir=$RPM_BUILD_ROOT%{_libdir} \
-	variant=release threading=single,multi debug-symbols=on pch=off \
+	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} install
 
 # Override DSO symlink with a linker script.  See the linker script
 # itself for details of why we need to do this.
-[ -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread-mt.so ] # Must be present
-rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread-mt.so
+[ -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so ] # Must be present
+rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
 install -p -m 644 $(basename %{SOURCE2}) $RPM_BUILD_ROOT%{_libdir}/
 
 echo ============================= install Boost.Build ==================
@@ -858,120 +857,123 @@ rm -rf $RPM_BUILD_ROOT
 %files atomic
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_atomic-mt.so.%{sonamever}
+%{_libdir}/libboost_atomic.so.%{sonamever}
 
 %files chrono
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_chrono*.so.%{sonamever}
+%{_libdir}/libboost_chrono.so.%{sonamever}
 
 %if %{with context}
 %files context
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_context*.so.%{sonamever}
+%{_libdir}/libboost_context.so.%{sonamever}
 %endif
 
 %files date-time
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_date_time*.so.%{sonamever}
+%{_libdir}/libboost_date_time.so.%{sonamever}
 
 %files filesystem
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_filesystem*.so.%{sonamever}
+%{_libdir}/libboost_filesystem.so.%{sonamever}
 
 %files graph
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
 %{_libdir}/libboost_graph.so.%{sonamever}
-%{_libdir}/libboost_graph-mt.so.%{sonamever}
 
 %files iostreams
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_iostreams*.so.%{sonamever}
+%{_libdir}/libboost_iostreams.so.%{sonamever}
 
 %files locale
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_locale*.so.%{sonamever}
+%{_libdir}/libboost_locale.so.%{sonamever}
 
 %files math
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_math*.so.%{sonamever}
+%{_libdir}/libboost_math_c99.so.%{sonamever}
+%{_libdir}/libboost_math_c99f.so.%{sonamever}
+%{_libdir}/libboost_math_c99l.so.%{sonamever}
+%{_libdir}/libboost_math_tr1.so.%{sonamever}
+%{_libdir}/libboost_math_tr1f.so.%{sonamever}
+%{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
 %files test
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_prg_exec_monitor*.so.%{sonamever}
-%{_libdir}/libboost_unit_test_framework*.so.%{sonamever}
+%{_libdir}/libboost_prg_exec_monitor.so.%{sonamever}
+%{_libdir}/libboost_unit_test_framework.so.%{sonamever}
 
 %files program-options
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_program_options*.so.%{sonamever}
+%{_libdir}/libboost_program_options.so.%{sonamever}
 
 %files python
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
 %{_libdir}/libboost_python.so.%{sonamever}
-%{_libdir}/libboost_python-mt.so.%{sonamever}
 
 %if %{with python3}
 %files python3
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_python3*.so.%{sonamever}
+%{_libdir}/libboost_python3.so.%{sonamever}
 
 %files python3-devel
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_python3*.so
+%{_libdir}/libboost_python3.so
 %endif
 
 %files random
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_random*.so.%{sonamever}
+%{_libdir}/libboost_random.so.%{sonamever}
 
 %files regex
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_regex*.so.%{sonamever}
+%{_libdir}/libboost_regex.so.%{sonamever}
 
 %files serialization
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_serialization*.so.%{sonamever}
-%{_libdir}/libboost_wserialization*.so.%{sonamever}
+%{_libdir}/libboost_serialization.so.%{sonamever}
+%{_libdir}/libboost_wserialization.so.%{sonamever}
 
 %files signals
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_signals*.so.%{sonamever}
+%{_libdir}/libboost_signals.so.%{sonamever}
 
 %files system
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_system*.so.%{sonamever}
+%{_libdir}/libboost_system.so.%{sonamever}
 
 %files thread
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_thread*.so.%{sonamever}
+%{_libdir}/libboost_thread.so.%{sonamever}
 
 %files timer
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_timer*.so.%{sonamever}
+%{_libdir}/libboost_timer.so.%{sonamever}
 
 %files wave
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/libboost_wave*.so.%{sonamever}
+%{_libdir}/libboost_wave.so.%{sonamever}
 
 %files doc
 %defattr(-, root, root, -)
@@ -985,32 +987,35 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
 %{_includedir}/%{name}
-%{_libdir}/libboost_atomic-mt.so
-%{_libdir}/libboost_chrono*.so
+%{_libdir}/libboost_atomic.so
+%{_libdir}/libboost_chrono.so
 %if %{with context}
-%{_libdir}/libboost_context*.so
+%{_libdir}/libboost_context.so
 %endif
-%{_libdir}/libboost_date_time*.so
-%{_libdir}/libboost_filesystem*.so
+%{_libdir}/libboost_date_time.so
+%{_libdir}/libboost_filesystem.so
 %{_libdir}/libboost_graph.so
-%{_libdir}/libboost_graph-mt.so
-%{_libdir}/libboost_iostreams*.so
-%{_libdir}/libboost_locale*.so
-%{_libdir}/libboost_math*.so
-%{_libdir}/libboost_prg_exec_monitor*.so
-%{_libdir}/libboost_unit_test_framework*.so
-%{_libdir}/libboost_program_options*.so
-%{_libdir}/libboost_python-mt.so
+%{_libdir}/libboost_iostreams.so
+%{_libdir}/libboost_locale.so
+%{_libdir}/libboost_math_tr1.so
+%{_libdir}/libboost_math_tr1f.so
+%{_libdir}/libboost_math_tr1l.so
+%{_libdir}/libboost_math_c99.so
+%{_libdir}/libboost_math_c99f.so
+%{_libdir}/libboost_math_c99l.so
+%{_libdir}/libboost_prg_exec_monitor.so
+%{_libdir}/libboost_unit_test_framework.so
+%{_libdir}/libboost_program_options.so
 %{_libdir}/libboost_python.so
-%{_libdir}/libboost_random*.so
-%{_libdir}/libboost_regex*.so
-%{_libdir}/libboost_serialization*.so
-%{_libdir}/libboost_wserialization*.so
-%{_libdir}/libboost_signals*.so
-%{_libdir}/libboost_system*.so
-%{_libdir}/libboost_thread-mt.so
-%{_libdir}/libboost_timer*.so
-%{_libdir}/libboost_wave*.so
+%{_libdir}/libboost_random.so
+%{_libdir}/libboost_regex.so
+%{_libdir}/libboost_serialization.so
+%{_libdir}/libboost_wserialization.so
+%{_libdir}/libboost_signals.so
+%{_libdir}/libboost_system.so
+%{_libdir}/libboost_thread.so
+%{_libdir}/libboost_timer.so
+%{_libdir}/libboost_wave.so
 
 %files static
 %defattr(-, root, root, -)
@@ -1029,7 +1034,7 @@ rm -rf $RPM_BUILD_ROOT
 %files openmpi
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi-mt.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi.so.%{sonamever}
 
 %files openmpi-devel
 %defattr(-, root, root, -)
@@ -1039,13 +1044,13 @@ rm -rf $RPM_BUILD_ROOT
 %files openmpi-python
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python*.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
 %{_libdir}/openmpi/lib/mpi.so
 
 %files graph-openmpi
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_graph_parallel-mt.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_graph_parallel.so.%{sonamever}
 
 %endif
 
@@ -1055,7 +1060,7 @@ rm -rf $RPM_BUILD_ROOT
 %files mpich2
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_mpi-mt.so.%{sonamever}
+%{_libdir}/mpich2/lib/libboost_mpi.so.%{sonamever}
 
 %files mpich2-devel
 %defattr(-, root, root, -)
@@ -1065,13 +1070,13 @@ rm -rf $RPM_BUILD_ROOT
 %files mpich2-python
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_mpi_python*.so.%{sonamever}
+%{_libdir}/mpich2/lib/libboost_mpi_python.so.%{sonamever}
 %{_libdir}/mpich2/lib/mpi.so
 
 %files graph-mpich2
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_graph_parallel-mt.so.%{sonamever}
+%{_libdir}/mpich2/lib/libboost_graph_parallel.so.%{sonamever}
 
 %endif
 
@@ -1087,6 +1092,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jun 26 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-8
+- There's no physical difference between single-threaded and
+  multi-threaded builds, except some libraries are only built in
+  multi-threaded mode.  So build everything in multi-threaded mode,
+  and ditch tagged layout, which we don't need anymore.
+  https://bugzilla.redhat.com/show_bug.cgi?id=971956
+
 * Wed Jun 26 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-7
 - Fix detection of availability of {,u}int64_t in glibc headers.
   (boost-1.53.0-__GLIBC_HAVE_LONG_LONG.patch)
