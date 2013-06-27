@@ -25,7 +25,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.50.0
 %define version_enc 1_50_0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -622,6 +622,14 @@ echo ============================= install serial ==================
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread-mt.so
 install -p -m 644 %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/
 
+# Add symlinks libboost_{thread,locale}.so -> *-mt.so
+#  https://bugzilla.redhat.com/show_bug.cgi?id=971956
+ln -s libboost_thread-mt.so $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
+ln -s libboost_locale-mt.so $RPM_BUILD_ROOT%{_libdir}/libboost_locale.so
+# Check that we didn't forget about anything.
+find $RPM_BUILD_ROOT%{_libdir} -maxdepth 1 -name libboost_\*-mt.so \
+	| while read a; do test -e ${a/-mt/} || exit 1; done
+
 echo ============================= install Boost.Build ==================
 (cd tools/build/v2
  ./b2 --prefix=$RPM_BUILD_ROOT%{_prefix} install
@@ -973,6 +981,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Jun 27 2013 Petr Machata <pmachata@redhat.com> - 1.50.0-6
+- Add symlinks for /usr/lib/libboost_{thread,locale}.so -> *-mt.so
+
 * Wed Feb 13 2013 Petr Machata <pmachata@redhat.com> - 1.50.0-5
 - Update %%description to reflect current state of C++
   standardization.  Courtesy of Jonathan Wakely.  (#837813)
