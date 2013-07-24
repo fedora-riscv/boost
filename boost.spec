@@ -34,7 +34,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.53.0
 %define version_enc 1_53_0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -216,6 +216,7 @@ variables.
 %package chrono
 Summary: Run-Time component of boost chrono library
 Group: System Environment/Libraries
+Requires: boost-system = %{version}-%{release}
 
 %description chrono
 
@@ -244,6 +245,7 @@ on generic programming concepts.
 %package filesystem
 Summary: Run-Time component of boost filesystem library
 Group: System Environment/Libraries
+Requires: boost-system = %{version}-%{release}
 
 %description filesystem
 
@@ -254,6 +256,7 @@ directories.
 %package graph
 Summary: Run-Time component of boost graph library
 Group: System Environment/Libraries
+Requires: boost-regex = %{version}-%{release}
 
 %description graph
 
@@ -273,6 +276,9 @@ stream buffers and i/o filters.
 %package locale
 Summary: Run-Time component of boost locale library
 Group: System Environment/Libraries
+Requires: boost-chrono = %{version}-%{release}
+Requires: boost-system = %{version}-%{release}
+Requires: boost-thread = %{version}-%{release}
 
 %description locale
 
@@ -390,6 +396,7 @@ program execution monitoring.
 %package thread
 Summary: Run-Time component of boost thread library
 Group: System Environment/Libraries
+Requires: boost-system = %{version}-%{release}
 
 %description thread
 
@@ -401,6 +408,8 @@ data specific to individual threads.
 %package timer
 Summary: Run-Time component of boost timer library
 Group: System Environment/Libraries
+Requires: boost-chrono = %{version}-%{release}
+Requires: boost-system = %{version}-%{release}
 
 %description timer
 
@@ -411,6 +420,11 @@ with as little as one #include and one additional line of code.
 %package wave
 Summary: Run-Time component of boost C99/C++ pre-processing library
 Group: System Environment/Libraries
+Requires: boost-chrono = %{version}-%{release}
+Requires: boost-date-time = %{version}-%{release}
+Requires: boost-filesystem = %{version}-%{release}
+Requires: boost-system = %{version}-%{release}
+Requires: boost-thread = %{version}-%{release}
 
 %description wave
 
@@ -469,6 +483,7 @@ Summary: Run-Time component of Boost.MPI library
 Group: System Environment/Libraries
 Requires: openmpi
 BuildRequires: openmpi-devel
+Requires: boost-serialization = %{version}-%{release}
 
 %description openmpi
 
@@ -492,6 +507,8 @@ API over the OpenMPI implementation of MPI.
 Summary: Python run-time component of Boost.MPI library
 Group: System Environment/Libraries
 Requires: boost-openmpi = %{version}-%{release}
+Requires: boost-python = %{version}-%{release}
+Requires: boost-serialization = %{version}-%{release}
 
 %description openmpi-python
 
@@ -502,6 +519,7 @@ API over the OpenMPI implementation of MPI.
 Summary: Run-Time component of parallel boost graph library
 Group: System Environment/Libraries
 Requires: boost-openmpi = %{version}-%{release}
+Requires: boost-serialization = %{version}-%{release}
 
 %description graph-openmpi
 
@@ -520,6 +538,7 @@ Summary: Run-Time component of Boost.MPI library
 Group: System Environment/Libraries
 Requires: mpich2
 BuildRequires: mpich2-devel
+Requires: boost-serialization = %{version}-%{release}
 
 %description mpich2
 
@@ -543,6 +562,8 @@ API over the MPICH2 implementation of MPI.
 Summary: Python run-time component of Boost.MPI library
 Group: System Environment/Libraries
 Requires: boost-mpich2 = %{version}-%{release}
+Requires: boost-python = %{version}-%{release}
+Requires: boost-serialization = %{version}-%{release}
 
 %description mpich2-python
 
@@ -553,6 +574,7 @@ API over the MPICH2 implementation of MPI.
 Summary: Run-Time component of parallel boost graph library
 Group: System Environment/Libraries
 Requires: boost-mpich2 = %{version}-%{release}
+Requires: boost-serialization = %{version}-%{release}
 
 %description graph-mpich2
 
@@ -1197,6 +1219,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 24 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-9
+- Add explicit dependencies between some of the boost sub-packages
+
 * Fri Jul 19 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-8
 - Install supporting files (images etc.) for documentation
   (courtesy Marcel Metz, bug 985593)
