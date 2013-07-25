@@ -7,9 +7,9 @@
 
 # Configuration of MPI back-ends
 %ifarch %{arm}
-  %bcond_with mpich2
+  %bcond_with mpich
 %else
-  %bcond_without mpich2
+  %bcond_without mpich
 %endif
 %ifarch s390 s390x %{arm}
   # No OpenMPI support on these arches
@@ -25,7 +25,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.50.0
 %define version_enc 1_50_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -403,52 +403,60 @@ back-end to do the parallel work.
 %endif
 
 
-%if %{with mpich2}
+%if %{with mpich}
 
-%package mpich2
+%package mpich
 Summary: Run-Time component of Boost.MPI library
 Group: System Environment/Libraries
-Requires: mpich2
-BuildRequires: mpich2-devel
+Requires: mpich
+BuildRequires: mpich-devel
+Provides: %{name}-mpich2 = %{version}-%{release}
+Obsoletes: %{name}-mpich2 < 1.50.0-7
 
-%description mpich2
+%description mpich
 
-Run-Time support for Boost.MPI-MPICH2, a library providing a clean C++
-API over the MPICH2 implementation of MPI.
+Run-Time support for Boost.MPI-MPICH, a library providing a clean C++
+API over the MPICH implementation of MPI.
 
-%package mpich2-devel
+%package mpich-devel
 Summary: Shared library symbolic links for Boost.MPI
 Group: System Environment/Libraries
 Requires: boost-devel = %{version}-%{release}
-Requires: boost-mpich2 = %{version}-%{release}
-Requires: boost-mpich2-python = %{version}-%{release}
-Requires: boost-graph-mpich2 = %{version}-%{release}
+Requires: boost-mpich = %{version}-%{release}
+Requires: boost-mpich-python = %{version}-%{release}
+Requires: boost-graph-mpich = %{version}-%{release}
+Provides: %{name}-mpich2-devel = %{version}-%{release}
+Obsoletes: %{name}-mpich2-devel < 1.50.0-7
 
-%description mpich2-devel
+%description mpich-devel
 
-Devel package for Boost.MPI-MPICH2, a library providing a clean C++
-API over the MPICH2 implementation of MPI.
+Devel package for Boost.MPI-MPICH, a library providing a clean C++
+API over the MPICH implementation of MPI.
 
-%package mpich2-python
+%package mpich-python
 Summary: Python run-time component of Boost.MPI library
 Group: System Environment/Libraries
-Requires: boost-mpich2 = %{version}-%{release}
+Requires: boost-mpich = %{version}-%{release}
+Provides: %{name}-mpich2-python = %{version}-%{release}
+Obsoletes: %{name}-mpich2-python < 1.50.0-7
 
-%description mpich2-python
+%description mpich-python
 
-Python support for Boost.MPI-MPICH2, a library providing a clean C++
-API over the MPICH2 implementation of MPI.
+Python support for Boost.MPI-MPICH, a library providing a clean C++
+API over the MPICH implementation of MPI.
 
-%package graph-mpich2
+%package graph-mpich
 Summary: Run-Time component of parallel boost graph library
 Group: System Environment/Libraries
-Requires: boost-mpich2 = %{version}-%{release}
+Requires: boost-mpich = %{version}-%{release}
+Provides: %{name}-graph-mpich2 = %{version}-%{release}
+Obsoletes: %{name}-graph-mpich2 < 1.50.0-7
 
-%description graph-mpich2
+%description graph-mpich
 
 Run-Time support for the Parallel BGL graph library.  The interface and
 graph components are generic, in the same sense as the the Standard
-Template Library (STL).  This libraries in this package use MPICH2
+Template Library (STL).  This libraries in this package use MPICH
 back-end to do the parallel work.
 
 %endif
@@ -551,15 +559,15 @@ echo ============================= build $MPI_COMPILER ==================
 export PATH=/bin${PATH:+:}$PATH
 %endif
 
-# Build MPI parts of Boost with MPICH2 support
-%if %{with mpich2}
-%{_mpich2_load}
+# Build MPI parts of Boost with MPICH support
+%if %{with mpich}
+%{_mpich_load}
 echo ============================= build $MPI_COMPILER ==================
 ./b2 -d+2 -q %{?_smp_mflags} --layout=tagged \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
-%{_mpich2_unload}
+%{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
 
@@ -592,8 +600,8 @@ rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 export PATH=/bin${PATH:+:}$PATH
 %endif
 
-%if %{with mpich2}
-%{_mpich2_load}
+%if %{with mpich}
+%{_mpich_load}
 echo ============================= install $MPI_COMPILER ==================
 ./b2 -q %{?_smp_mflags} --layout=tagged \
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
@@ -604,7 +612,7 @@ echo ============================= install $MPI_COMPILER ==================
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 
-%{_mpich2_unload}
+%{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
 
@@ -910,8 +918,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
 %{_libdir}/*.a
-%if %{with mpich2}
-%{_libdir}/mpich2/lib/*.a
+%if %{with mpich}
+%{_libdir}/mpich/lib/*.a
 %endif
 %if %{with openmpi}
 %{_libdir}/openmpi/lib/*.a
@@ -943,29 +951,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %endif
 
-# MPICH2 packages
-%if %{with mpich2}
+# MPICH packages
+%if %{with mpich}
 
-%files mpich2
+%files mpich
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_mpi-mt.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi-mt.so.%{sonamever}
 
-%files mpich2-devel
+%files mpich-devel
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_*.so
+%{_libdir}/mpich/lib/libboost_*.so
 
-%files mpich2-python
+%files mpich-python
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_mpi_python*.so.%{sonamever}
-%{_libdir}/mpich2/lib/mpi.so
+%{_libdir}/mpich/lib/libboost_mpi_python*.so.%{sonamever}
+%{_libdir}/mpich/lib/mpi.so
 
-%files graph-mpich2
+%files graph-mpich
 %defattr(-, root, root, -)
 %doc LICENSE_1_0.txt
-%{_libdir}/mpich2/lib/libboost_graph_parallel-mt.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_graph_parallel-mt.so.%{sonamever}
 
 %endif
 
@@ -981,6 +989,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Jul 25 2013 Deji Akingunola <dakingun@gmail.com> - 1.50.0-7
+- Rename mpich2 sub-packages to mpich and rebuild for mpich-3.0
+
 * Thu Jun 27 2013 Petr Machata <pmachata@redhat.com> - 1.50.0-6
 - Add symlinks for /usr/lib/libboost_{thread,locale}.so -> *-mt.so
 
