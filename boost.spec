@@ -34,7 +34,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.53.0
 %define version_enc 1_53_0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -438,6 +438,14 @@ Group: Development/Libraries
 Requires: boost = %{version}-%{release}
 Provides: boost-python-devel = %{version}-%{release}
 
+# Odeint was shipped in Fedora 18, but later became part of Boost.
+# Note we also obsolete odeint-doc down there.
+# https://bugzilla.redhat.com/show_bug.cgi?id=892850
+Provides: odeint = 2.2-4
+Obsoletes: odeint < 2.2-4
+Provides: odeint-devel = 2.2-4
+Obsoletes: odeint-devel < 2.2-4
+
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
 
@@ -458,6 +466,10 @@ Group: Documentation
 BuildArch: noarch
 %endif
 Provides: boost-python-docs = %{version}-%{release}
+
+# See the description above.
+Provides: odeint-doc = 2.2-4
+Obsoletes: odeint-doc < 2.2-4
 
 %description doc
 This package contains the documentation in the HTML format of the Boost C++
@@ -1227,6 +1239,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Jul 26 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-11
+- Add Obsoletes for odeint (bug 892850)
+
 * Thu Jul 25 2013 Deji Akingunola <dakingun@gmail.com> - 1.53.0-10
 - Add Provides and Obsoletes for the mpich2->mpich renames
 
