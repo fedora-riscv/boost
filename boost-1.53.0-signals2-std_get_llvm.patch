@@ -1,0 +1,59 @@
+Index: /trunk/boost/signals2/detail/variadic_slot_invoker.hpp
+===================================================================
+--- /trunk/boost/signals2/detail/variadic_slot_invoker.hpp	(revision 78502)
++++ /trunk/boost/signals2/detail/variadic_slot_invoker.hpp	(revision 83041)
+@@ -16,4 +16,5 @@
+ #define BOOST_SIGNALS2_DETAIL_VARIADIC_SLOT_INVOKER_HPP
+ 
++#include <boost/mpl/size_t.hpp>
+ #include <boost/signals2/detail/variadic_arg_type.hpp>
+ 
+@@ -23,7 +24,9 @@
+ #include <boost/tuple/tuple.hpp>
+ #define BOOST_SIGNALS2_TUPLE boost::tuple
++#define BOOST_SIGNALS2_GET boost::get
+ #else
+ #include <tuple>
+ #define BOOST_SIGNALS2_TUPLE std::tuple
++#define BOOST_SIGNALS2_GET std::get
+ #endif
+ 
+@@ -71,8 +74,8 @@
+         typedef R result_type;
+ 
+-        template<typename Func, typename ... Args>
+-          R operator()(Func &func, BOOST_SIGNALS2_TUPLE<Args...> args) const
++        template<typename Func, typename ... Args, std::size_t N>
++        R operator()(Func &func, BOOST_SIGNALS2_TUPLE<Args...> args, mpl::size_t<N>) const
+         {
+-          typedef typename make_unsigned_meta_array<sizeof...(Args)>::type indices_type;
++          typedef typename make_unsigned_meta_array<N>::type indices_type;
+           typename Func::result_type *resolver = 0;
+           return m_invoke(resolver, func, indices_type(), args);
+@@ -82,10 +85,10 @@
+           R m_invoke(T *, Func &func, unsigned_meta_array<indices...>, BOOST_SIGNALS2_TUPLE<Args...> args) const
+         {
+-          return func(std::get<indices>(args)...);
++          return func(BOOST_SIGNALS2_GET<indices>(args)...);
+         }
+         template<typename Func, unsigned ... indices, typename ... Args>
+           R m_invoke(void *, Func &func, unsigned_meta_array<indices...>, BOOST_SIGNALS2_TUPLE<Args...> args) const
+         {
+-          func(std::get<indices>(args)...);
++          func(BOOST_SIGNALS2_GET<indices>(args)...);
+           return R();
+         }
+@@ -112,5 +115,5 @@
+           const void_type *) const
+         {
+-          return call_with_tuple_args<result_type>()(connectionBody->slot.slot_function(), _args);
++          return call_with_tuple_args<result_type>()(connectionBody->slot.slot_function(), _args, mpl::size_t<sizeof...(Args)>());
+           return void_type();
+         }
+@@ -118,5 +121,5 @@
+           result_type m_invoke(const ConnectionBodyType &connectionBody, ...) const
+         {
+-          return call_with_tuple_args<result_type>()(connectionBody->slot.slot_function(), _args);
++          return call_with_tuple_args<result_type>()(connectionBody->slot.slot_function(), _args, mpl::size_t<sizeof...(Args)>());
+         }
+         BOOST_SIGNALS2_TUPLE<Args& ...> _args;

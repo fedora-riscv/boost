@@ -34,7 +34,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.53.0
 %define version_enc 1_53_0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -188,6 +188,10 @@ Patch48: boost-1.54.0-mpi-unused_typedef.patch
 
 # https://svn.boost.org/trac/boost/ticket/8888
 Patch49: boost-1.54.0-python-unused_typedef.patch
+
+# https://svn.boost.org/trac/boost/ticket/8102
+# https://bugzilla.redhat.com/show_bug.cgi?id=999320
+Patch50: boost-1.53.0-signals2-std_get_llvm.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -668,6 +672,7 @@ a number of significant features and is now developed independently
 %patch47 -p1
 %patch48 -p1
 %patch49 -p1
+%patch50 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1239,6 +1244,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Aug 21 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-12
+- Fix boost::signals2::signal on LLVM
+  (boost-1.53.0-signals2-std_get_llvm.patch)
+
 * Fri Jul 26 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-11
 - Add Obsoletes for odeint (bug 892850)
 
