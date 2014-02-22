@@ -34,7 +34,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.53.0
 %define version_enc 1_53_0
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -1261,6 +1261,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Feb 22 2014 Deji Akingunola <dakingun@gmail.com> - 1.53.0-15
+- Rebuild for mpich-3.1
+
 * Thu Aug 29 2013 Petr Machata <pmachata@redhat.com> - 1.53.0-14
 - Fix atomic_cas32 (thanks Jaroslav Škarvada for figuring out where
   the problem is) (boost-1.54.0-interprocess-atomic_cas32-ppc.patch)
