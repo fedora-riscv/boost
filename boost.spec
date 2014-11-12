@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.55.0
 %define version_enc 1_55_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -156,6 +156,9 @@ Patch56: boost-1.55.0-xpressive-unused_typedefs.patch
 
 # Fixed upstream on Aug 20 05:11:14 2013.
 Patch57: boost-1.55.0-spirit-unused_typedefs.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1159960
+Patch58: boost-1.54.0-smart_ptr-shared_ptr_at.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -643,6 +646,7 @@ a number of significant features and is now developed independently
 %patch55 -p1
 %patch56 -p1
 %patch57 -p1
+%patch58 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1245,6 +1249,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Nov 12 2014 Petr Machata <pmachata@redhat.com> - 1.55.0-5
+- Fix boost::shared_ptr<T>::operator[], which was ill-formed for
+  non-array T's.  (boost-1.54.0-smart_ptr-shared_ptr_at.patch)
+
 * Tue Aug 26 2014 David Tardon <dtardon@redhat.com> - 1.55.0-4
 - rebuild for ICU 53.1
 
