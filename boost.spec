@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.54.0
 %define version_enc 1_54_0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -200,6 +200,10 @@ Patch55: boost-1.54.0-interprocess-atomic_cas32-ppc.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1159960
 Patch56: boost-1.54.0-smart_ptr-shared_ptr_at.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1115124
+Patch57: boost-1.55.0-graph-dijkstra_shortest_paths.patch
+Patch58: boost-1.55.0-graph-dijkstra_shortest_paths-2.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -692,6 +696,8 @@ a number of significant features and is now developed independently
 %patch54 -p1
 %patch55 -p1
 %patch56 -p1
+%patch57 -p2
+%patch58 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1283,6 +1289,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jan 13 2015 Petr Machata <pmachata@redhat.com> - 1.54.0-11
+- Apply upstream fix for dijkstra_bfs_visitor from Boost.Graph to not
+  misinterpret edge weights.
+  (boost-1.55.0-graph-dijkstra_shortest_paths.patch,
+  boost-1.55.0-graph-dijkstra_shortest_paths-2.patch)
+
 * Wed Nov 12 2014 Petr Machata <pmachata@redhat.com> - 1.54.0-10
 - Fix boost::shared_ptr<T>::operator[], which was ill-formed for
   non-array T's.  (boost-1.54.0-smart_ptr-shared_ptr_at.patch)
