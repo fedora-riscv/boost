@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.54.0
 %define version_enc 1_54_0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -204,6 +204,11 @@ Patch56: boost-1.54.0-smart_ptr-shared_ptr_at.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1115124
 Patch57: boost-1.55.0-graph-dijkstra_shortest_paths.patch
 Patch58: boost-1.55.0-graph-dijkstra_shortest_paths-2.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1102667
+Patch61: boost-1.55.0-python-libpython_dep.patch
+Patch62: boost-1.55.0-python-abi_letters.patch
+Patch63: boost-1.55.0-python-test-PyImport_AppendInittab.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -698,6 +703,9 @@ a number of significant features and is now developed independently
 %patch56 -p1
 %patch57 -p2
 %patch58 -p2
+%patch61 -p1
+%patch62 -p1
+%patch63 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -718,11 +726,13 @@ cat >> ./tools/build/v2/user-config.jam << EOF
 # There are many strict aliasing warnings, and it's not feasible to go
 # through them all at this time.
 using gcc : : : <compileflags>-fno-strict-aliasing ;
+%if %{with openmpi} || %{with mpich}
 using mpi ;
+%endif
 %if %{with python3}
 # This _adds_ extra python version.  It doesn't replace whatever
 # python 2.X is default on the system.
-using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}%{python3_abiflags} ;
+using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}%{python3_abiflags} : : : : %{python3_abiflags} ;
 %endif
 EOF
 
@@ -1289,6 +1299,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jan 14 2015 Petr Machata <pmachata@redhat.com> - 1.54.0-12
+- Build libboost_python and libboost_python3 such that they depend on
+  their respective libpython's.
+  (boost-1.55.0-python-libpython_dep.patch,
+  boost-1.55.0-python-abi_letters.patch)
+- Fix Boost.Python test suite so that PyImport_AppendInittab is called
+  before PyInitialize, which broke the test suite with Python 3.
+  (boost-1.55.0-python-test-PyImport_AppendInittab.patch)
+
 * Tue Jan 13 2015 Petr Machata <pmachata@redhat.com> - 1.54.0-11
 - Apply upstream fix for dijkstra_bfs_visitor from Boost.Graph to not
   misinterpret edge weights.
