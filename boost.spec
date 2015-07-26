@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -471,7 +471,6 @@ This package contains example source files distributed with boost.
 %package openmpi
 Summary: Run-Time component of Boost.MPI library
 Group: System Environment/Libraries
-Requires: openmpi%{?_isa}
 BuildRequires: openmpi-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 
@@ -526,7 +525,6 @@ back-end to do the parallel work.
 %package mpich
 Summary: Run-Time component of Boost.MPI library
 Group: System Environment/Libraries
-Requires: mpich%{?_isa}
 BuildRequires: mpich-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Provides: boost-mpich2 = %{version}-%{release}
@@ -1244,6 +1242,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Aug 10 2015 Sandro Mani <manisandro@gmail.com> - 1.58.0-5
+- Rebuild for RPM MPI Requires Provides Change
+
 * Sat Aug 08 2015 Jonathan Wakely <jwakely@redhat.com> 1.58.0-4
 - Patch incorrect placement of BOOST_UBLAS_INLINE macros.
 
