@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -129,6 +129,9 @@ Patch67: boost-1.58.0-variant-includes.patch
 
 # Prevent gcc.jam from setting -m32 or -m64.
 Patch68: boost-1.58.0-address-model.patch
+
+# https://github.com/boostorg/ublas/pull/25
+Patch69: boost-1.58-ublas-inlines.patch
 
 Patch78: boost-context-use-sysv-not-aapcs.patch
 
@@ -621,6 +624,7 @@ a number of significant features and is now developed independently
 %patch66 -p2
 %patch67 -p2
 %patch68 -p1
+%patch69 -p2
 %patch78 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
@@ -1240,6 +1244,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Aug 08 2015 Jonathan Wakely <jwakely@redhat.com> 1.58.0-4
+- Patch incorrect placement of BOOST_UBLAS_INLINE macros.
+
 * Tue Aug 04 2015 Jonathan Wakely <jwakely@redhat.com> 1.58.0-3
 - Patch to prevent address model being set by Boost.Build.
 
