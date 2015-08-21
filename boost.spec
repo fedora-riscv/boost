@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -133,7 +133,7 @@ Patch68: boost-1.58.0-address-model.patch
 # https://github.com/boostorg/ublas/pull/25
 Patch69: boost-1.58-ublas-inlines.patch
 
-Patch78: boost-context-use-sysv-not-aapcs.patch
+Patch70: 0001-Changes-required-for-aarch64-support-in-boost-config.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -623,7 +623,7 @@ a number of significant features and is now developed independently
 %patch67 -p2
 %patch68 -p1
 %patch69 -p2
-%patch78 -p1
+%patch70 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1242,6 +1242,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Aug 21 2015 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 1.58.0-7
+- Re-enable boost::context on AArch64.
+
 * Sat Aug 15 2015 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.58.0-6
 - Rebuild for MPI provides
 
