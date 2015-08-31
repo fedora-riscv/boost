@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -134,6 +134,9 @@ Patch68: boost-1.58.0-address-model.patch
 Patch69: boost-1.58-ublas-inlines.patch
 
 Patch70: 0001-Changes-required-for-aarch64-support-in-boost-config.patch
+
+#http://www.boost.org/patches/1_58_0/0002-Fix-a-regression-with-non-constexpr-types.patch
+Patch80: 0002-Fix-a-regression-with-non-constexpr-types.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -624,6 +627,7 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch69 -p2
 %patch70 -p1
+%patch80 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1242,6 +1246,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Aug 31 2015 Jonathan Wakely <jwakely@redhat.com> 1.58.0-8
+- Add patch for Boost.Fusion bug.
+
 * Fri Aug 21 2015 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 1.58.0-7
 - Re-enable boost::context on AArch64.
 
