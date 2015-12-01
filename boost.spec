@@ -1288,7 +1288,7 @@ fi
 
 %changelog
 * Tue Nov 24 2015 Jonathan Wakely <jwakely@redhat.com> 1.59.0-9
-- do not use arch-specific BuildRequires (#225622)
+- do not use arch-specific BuildRequires (#1268267)
 
 * Fri Nov 13 2015 Dan Horák <dan[at]danny.cz> - 1.59.0-8
 - disable also the coroutine2 module when context is not available
