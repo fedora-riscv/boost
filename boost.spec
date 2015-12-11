@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.59.0
 %define version_enc 1_59_0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -1287,6 +1287,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Dec 11 2015 Dan Horák <dan[at]danny.cz> - 1.59.0-10
+- rebuilt for s390
+
 * Tue Nov 24 2015 Jonathan Wakely <jwakely@redhat.com> 1.59.0-9
 - do not use arch-specific BuildRequires (#1268267)
 
