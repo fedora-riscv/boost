@@ -4,8 +4,8 @@
 # directory.
 # XXX note that as of rpm 4.9.1, this shouldn't be necessary anymore.
 # We should be able to install directly.
-%define boost_docdir __tmp_docdir
-%define boost_examplesdir __tmp_examplesdir
+%global boost_docdir __tmp_docdir
+%global boost_examplesdir __tmp_examplesdir
 
 %ifarch ppc64le
   %bcond_with mpich
@@ -28,14 +28,20 @@
 
 %bcond_without python3
 
+%ifnarch %{ix86} x86_64
+  %bcond_with quadmath
+%else
+  %bcond_without quadmath
+%endif
+
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.59.0
-%define version_enc 1_59_0
-Release: 10%{?dist}
+Version: 1.60.0
+%global version_enc 1_60_0
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
-%define toplev_dirname %{name}_%{version_enc}
+%global toplev_dirname %{name}_%{version_enc}
 URL: http://www.boost.org
 Group: System Environment/Libraries
 
@@ -45,7 +51,7 @@ Source2: libboost_thread.so
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
 # equal to the Boost version (e.g., 1.41.0).
-%define sonamever %{version}
+%global sonamever %{version}
 
 # boost is an "umbrella" package that pulls in all other boost
 # components, except for MPI and Python 3 sub-packages.  Those are
@@ -74,6 +80,7 @@ Requires: boost-system%{?_isa} = %{version}-%{release}
 Requires: boost-test%{?_isa} = %{version}-%{release}
 Requires: boost-thread%{?_isa} = %{version}-%{release}
 Requires: boost-timer%{?_isa} = %{version}-%{release}
+Requires: boost-type_erasure%{?_isa} = %{version}-%{release}
 Requires: boost-wave%{?_isa} = %{version}-%{release}
 
 BuildRequires: m4
@@ -85,6 +92,9 @@ BuildRequires: python-devel
 BuildRequires: python3-devel
 %endif
 BuildRequires: libicu-devel
+%if %{with quadmath}
+BuildRequires: libquadmath-devel
+%endif
 
 # https://svn.boost.org/trac/boost/ticket/6150
 Patch4: boost-1.50.0-fix-non-utf8-files.patch
@@ -104,9 +114,6 @@ Patch25: boost-1.57.0-mpl-print.patch
 # https://svn.boost.org/trac/boost/ticket/8870
 Patch36: boost-1.57.0-spirit-unused_typedef.patch
 
-# https://svn.boost.org/trac/boost/ticket/8878
-Patch45: boost-1.54.0-locale-unused_typedef.patch
-
 # https://svn.boost.org/trac/boost/ticket/9038
 Patch51: boost-1.58.0-pool-test_linking.patch
 
@@ -120,12 +127,6 @@ Patch65: boost-1.57.0-build-optflags.patch
 
 # Prevent gcc.jam from setting -m32 or -m64.
 Patch68: boost-1.58.0-address-model.patch
-
-# https://svn.boost.org/trac/boost/ticket/11549
-Patch70: boost-1.59.0-log.patch
-
-# https://github.com/boostorg/python/pull/40
-Patch80: boost-1.59-python-make_setter.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1262444
 Patch81: boost-1.59-test-fenv.patch
@@ -260,6 +261,9 @@ tools along with public interfaces for extending the library.
 %package math
 Summary: Math functions for boost TR1 library
 Group: System Environment/Libraries
+%if %{with quadmath}
+Requires: libquadmath%{?_isa}
+%endif
 
 %description math
 
@@ -388,6 +392,17 @@ Requires: boost-system%{?_isa} = %{version}-%{release}
 The Boost Timer library answers that question and does so portably,
 with as little as one #include and one additional line of code.
 
+%package type_erasure
+Summary: Run-Time component of boost type erasure library
+Group: System Environment/Libraries
+Requires: boost-chrono%{?_isa} = %{version}-%{release}
+Requires: boost-system%{?_isa} = %{version}-%{release}
+
+%description type_erasure
+
+The Boost.TypeErasure library provides runtime polymorphism in C++
+that is more flexible than that provided by the core language.
+
 %package wave
 Summary: Run-Time component of boost C99/C++ pre-processing library
 Group: System Environment/Libraries
@@ -409,6 +424,7 @@ Group: Development/Libraries
 Requires: boost%{?_isa} = %{version}-%{release}
 Provides: boost-python-devel
 Requires: libicu-devel%{?_isa}
+Requires: libquadmath-devel%{?_isa}
 
 # Odeint was shipped in Fedora 18, but later became part of Boost.
 # Note we also obsolete odeint-doc down there.
@@ -616,15 +632,12 @@ a number of significant features and is now developed independently
 %patch15 -p0
 %patch25 -p1
 %patch36 -p1
-%patch45 -p1
 %patch51 -p1
 %patch61 -p1
 %patch62 -p1
 %patch63 -p1
 %patch65 -p1
 %patch68 -p1
-%patch70 -p2
-%patch80 -p2
 %patch81 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
@@ -853,8 +866,7 @@ echo ============================= install examples ==================
 sed -i -e 's/\r//g' libs/geometry/example/ml02_distance_strategy.cpp
 for tmp_doc_file in flyweight/example/Jamfile.v2 \
  format/example/sample_new_features.cpp multi_index/example/Jamfile.v2 \
- multi_index/example/hashed.cpp serialization/example/demo_output.txt \
- test/example/cla/wide_string.cpp
+ multi_index/example/hashed.cpp serialization/example/demo_output.txt
 do
   mv libs/${tmp_doc_file} libs/${tmp_doc_file}.iso8859
   iconv -f ISO8859-1 -t UTF8 < libs/${tmp_doc_file}.iso8859 > libs/${tmp_doc_file}
@@ -986,6 +998,10 @@ rm -rf $RPM_BUILD_ROOT
 %post timer -p /sbin/ldconfig
 
 %postun timer -p /sbin/ldconfig
+
+%post type_erasure -p /sbin/ldconfig
+
+%postun type_erasure -p /sbin/ldconfig
 
 %post wave -p /sbin/ldconfig
 
@@ -1155,6 +1171,11 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_timer.so.%{sonamever}
 
+%files type_erasure
+%defattr(-, root, root, -)
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_type_erasure.so.%{sonamever}
+
 %files wave
 %defattr(-, root, root, -)
 %license LICENSE_1_0.txt
@@ -1204,6 +1225,7 @@ fi
 %{_libdir}/libboost_system.so
 %{_libdir}/libboost_thread.so
 %{_libdir}/libboost_timer.so
+%{_libdir}/libboost_type_erasure.so
 %{_libdir}/libboost_wave.so
 
 %files static
@@ -1287,6 +1309,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jan 13 2016 Jonathan Wakely <jwakely@redhat.com> 1.60.0-1
+- Rebase to 1.60.0
+
 * Fri Dec 11 2015 Dan Horák <dan[at]danny.cz> - 1.59.0-10
 - rebuilt for s390
 
