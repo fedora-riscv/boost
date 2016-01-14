@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -424,7 +424,9 @@ Group: Development/Libraries
 Requires: boost%{?_isa} = %{version}-%{release}
 Provides: boost-python-devel
 Requires: libicu-devel%{?_isa}
+%if %{with quadmath}
 Requires: libquadmath-devel%{?_isa}
+%endif
 
 # Odeint was shipped in Fedora 18, but later became part of Boost.
 # Note we also obsolete odeint-doc down there.
@@ -1309,6 +1311,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Jan 14 2016 Jonathan Wakely <jwakely@redhat.com> 1.60.0-2
+- Make Requires: libquadmath-devel conditional
+
 * Wed Jan 13 2016 Jonathan Wakely <jwakely@redhat.com> 1.60.0-1
 - Rebase to 1.60.0
 
