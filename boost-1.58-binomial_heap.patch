@@ -1,0 +1,27 @@
+From 8091fbf00ae6953d34b717ab077a041420e5ba43 Mon Sep 17 00:00:00 2001
+From: Tim Blechmann <tim@klingt.org>
+Date: Sat, 5 Sep 2015 09:04:32 +0200
+Subject: [PATCH] heap: binomial heap - fix size handling in pop()
+
+---
+ include/boost/heap/binomial_heap.hpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/include/boost/heap/binomial_heap.hpp b/include/boost/heap/binomial_heap.hpp
+index 7e0760f..01ccf3f 100644
+--- a/include/boost/heap/binomial_heap.hpp
++++ b/include/boost/heap/binomial_heap.hpp
+@@ -404,8 +404,13 @@ class binomial_heap:
+             binomial_heap children(value_comp(), element->children, sz);
+             if (trees.empty()) {
+                 stability_counter_type stability_count = super_t::get_stability_count();
++                size_t size = constant_time_size ? size_holder::get_size()
++                                                 : 0;
+                 swap(children);
+                 super_t::set_stability_count(stability_count);
++
++                if (constant_time_size)
++                    size_holder::set_size( size );
+             } else
+                 merge_and_clear_nodes(children);
+ 

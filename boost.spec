@@ -32,7 +32,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.58.0
 %define version_enc 1_58_0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %define toplev_dirname %{name}_%{version_enc}
@@ -137,6 +137,8 @@ Patch70: 0001-Changes-required-for-aarch64-support-in-boost-config.patch
 
 #http://www.boost.org/patches/1_58_0/0002-Fix-a-regression-with-non-constexpr-types.patch
 Patch80: 0002-Fix-a-regression-with-non-constexpr-types.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1294515
+Patch81: boost-1.58-binomial_heap.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -638,6 +640,7 @@ a number of significant features and is now developed independently
 %patch69 -p2
 %patch70 -p1
 %patch80 -p2
+%patch81 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1299,6 +1302,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Jan 15 2016 Jonathan Wakely <jwakely@redhat.com> 1.58.0-11
+- Add patch for binomial_heap::pop (#1294515)
+
 * Tue Dec 22 2015 Jonathan Wakely <jwakely@redhat.com> 1.58.0-10
 - Add boost-doctools subpackage (#1244268).
 
