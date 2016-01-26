@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1036,71 +1036,58 @@ fi
 
 
 %files
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 
 %files atomic
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_atomic.so.%{sonamever}
 
 %files chrono
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_chrono.so.%{sonamever}
 
 %files container
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_container.so.%{sonamever}
 
 %if %{with context}
 
 %files context
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_context.so.%{sonamever}
 
 %files coroutine
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_coroutine.so.%{sonamever}
 
 %endif
 
 %files date-time
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_date_time.so.%{sonamever}
 
 %files filesystem
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_filesystem.so.%{sonamever}
 
 %files graph
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_graph.so.%{sonamever}
 
 %files iostreams
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_iostreams.so.%{sonamever}
 
 %files locale
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_locale.so.%{sonamever}
 
 %files log
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_log.so.%{sonamever}
 %{_libdir}/libboost_log_setup.so.%{sonamever}
 
 %files math
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_math_c99.so.%{sonamever}
 %{_libdir}/libboost_math_c99f.so.%{sonamever}
@@ -1110,89 +1097,72 @@ fi
 %{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
 %files test
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_prg_exec_monitor.so.%{sonamever}
 %{_libdir}/libboost_unit_test_framework.so.%{sonamever}
 
 %files program-options
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_program_options.so.%{sonamever}
 
 %files python
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python.so.%{sonamever}
 
 %if %{with python3}
 %files python3
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python3.so.%{sonamever}
 
 %files python3-devel
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python3.so
 %endif
 
 %files random
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_random.so.%{sonamever}
 
 %files regex
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_regex.so.%{sonamever}
 
 %files serialization
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_serialization.so.%{sonamever}
 %{_libdir}/libboost_wserialization.so.%{sonamever}
 
 %files signals
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_signals.so.%{sonamever}
 
 %files system
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_system.so.%{sonamever}
 
 %files thread
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_thread.so.%{sonamever}
 
 %files timer
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_timer.so.%{sonamever}
 
 %files type_erasure
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_type_erasure.so.%{sonamever}
 
 %files wave
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_wave.so.%{sonamever}
 
 %files doc
-%defattr(-, root, root, -)
 %doc %{boost_docdir}/*
 
 %files examples
-%defattr(-, root, root, -)
 %doc %{boost_examplesdir}/*
 
 %files devel
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_includedir}/%{name}
 %{_libdir}/libboost_atomic.so
@@ -1231,7 +1201,6 @@ fi
 %{_libdir}/libboost_wave.so
 
 %files static
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/*.a
 %if %{with mpich}
@@ -1245,23 +1214,19 @@ fi
 %if %{with openmpi}
 
 %files openmpi
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/openmpi/lib/libboost_mpi.so.%{sonamever}
 
 %files openmpi-devel
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/openmpi/lib/libboost_*.so
 
 %files openmpi-python
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
 %{_libdir}/openmpi/lib/mpi.so
 
 %files graph-openmpi
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/openmpi/lib/libboost_graph_parallel.so.%{sonamever}
 
@@ -1271,46 +1236,42 @@ fi
 %if %{with mpich}
 
 %files mpich
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_mpi.so.%{sonamever}
 
 %files mpich-devel
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_*.so
 
 %files mpich-python
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_mpi_python.so.%{sonamever}
 %{_libdir}/mpich/lib/mpi.so
 
 %files graph-mpich
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_graph_parallel.so.%{sonamever}
 
 %endif
 
 %files build
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_datadir}/boost-build/
 
 %files doctools
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_bindir}/quickbook
 %{_datadir}/boostbook/
 
 %files jam
-%defattr(-, root, root, -)
 %license LICENSE_1_0.txt
 %{_bindir}/bjam
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jan 26 2016 Jonathan Wakely <jwakely@redhat.com> 1.60.0-3
+- Remove redundant %%defattr statements
+
 * Thu Jan 14 2016 Jonathan Wakely <jwakely@redhat.com> 1.60.0-2
 - Make Requires: libquadmath-devel conditional
 
