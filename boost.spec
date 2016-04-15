@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1269,6 +1269,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Apr 15 2016 David Tardon <dtardon@redhat.com> - 1.60.0-5
+- rebuild for ICU 57.1
+
 * Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.60.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
