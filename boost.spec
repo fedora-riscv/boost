@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1269,6 +1269,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue May 03 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-6
+- Rebuilt for GCC 6.1 (#1331983)
+
 * Fri Apr 15 2016 David Tardon <dtardon@redhat.com> - 1.60.0-5
 - rebuild for ICU 57.1
 
