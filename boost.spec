@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -133,6 +133,9 @@ Patch81: boost-1.59-test-fenv.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.60.0-no-rpath.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1349638
+Patch83: boost-1.60-multiprecision.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -645,6 +648,7 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch81 -p2
 %patch82 -p0
+%patch83 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1273,6 +1277,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jun 28 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-8
+- Add patch for Boost.Multiprecision (#1349638)
+
 * Mon Jun 06 2016 Yaakov Selkowitz <yselkowi@redhat.com> - 1.60.0-7
 - Drop rpath (#1318383)
 
