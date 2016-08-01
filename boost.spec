@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -133,6 +133,10 @@ Patch81: boost-1.59-test-fenv.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1349638
 Patch83: boost-1.60-multiprecision.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1358725
+# https://github.com/boostorg/python/pull/59/files
+Patch84: boost-1.60-python-regptr.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -645,6 +649,7 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch81 -p2
 %patch83 -p2
+%patch84 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1273,6 +1278,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Aug 01 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-7
+- Add patch for Boost.Python to fix pointer registration (#1358725)
+
 * Tue Jun 28 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-8
 - Add patch for Boost.Multiprecision (#1349638)
 
