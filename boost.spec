@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1282,6 +1282,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Oct 21 2016 Orion Poplawski <orion@cora.nwra.com> - 1.60.0-10
+- Rebuild for openmpi 2.0
+
 * Mon Aug 01 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-9
 - Add patch for Boost.Python to fix pointer registration (#1358725)
 
