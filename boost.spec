@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -140,6 +140,9 @@ Patch83: boost-1.60-multiprecision.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1358725
 # https://github.com/boostorg/python/pull/59/files
 Patch84: boost-1.60-python-regptr.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1403165
+Patch85: boost-1.60-asio-use-future.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -654,6 +657,7 @@ a number of significant features and is now developed independently
 %patch82 -p0
 %patch83 -p2
 %patch84 -p2
+%patch85 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1282,6 +1286,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Dec 09 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-10
+- Add patch for Boost.Asio to fix allocator usage (#1403165)
+
 * Mon Aug 01 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-9
 - Add patch for Boost.Python to fix pointer registration (#1358725)
 
