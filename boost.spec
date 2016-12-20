@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.60.0
 %global version_enc 1_60_0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1286,6 +1286,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Dec 20 2016 Miro Hrončok <mhroncok@redhat.com> - 1.60.0-12
+- Rebuild for Python 3.6
+
 * Fri Dec 09 2016 Jonathan Wakely <jwakely@redhat.com> - 1.60.0-11
 - Add patch for Boost.Asio to fix allocator usage (#1403165)
 
