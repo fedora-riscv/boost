@@ -36,9 +36,9 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.60.0
-%global version_enc 1_60_0
-Release: 12%{?dist}
+Version: 1.63.0
+%global version_enc 1_63_0
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -64,6 +64,9 @@ Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
 %endif
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
+%if %{with context}
+Requires: boost-fiber%{?_isa} = %{version}-%{release}
+%endif
 Requires: boost-filesystem%{?_isa} = %{version}-%{release}
 Requires: boost-graph%{?_isa} = %{version}-%{release}
 Requires: boost-iostreams%{?_isa} = %{version}-%{release}
@@ -111,16 +114,12 @@ Patch15: boost-1.58.0-pool.patch
 # https://svn.boost.org/trac/boost/ticket/5637
 Patch25: boost-1.57.0-mpl-print.patch
 
-# https://svn.boost.org/trac/boost/ticket/8870
-Patch36: boost-1.57.0-spirit-unused_typedef.patch
-
 # https://svn.boost.org/trac/boost/ticket/9038
 Patch51: boost-1.58.0-pool-test_linking.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1102667
 Patch61: boost-1.57.0-python-libpython_dep.patch
 Patch62: boost-1.57.0-python-abi_letters.patch
-Patch63: boost-1.55.0-python-test-PyImport_AppendInittab.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1190039
 Patch65: boost-1.57.0-build-optflags.patch
@@ -128,21 +127,13 @@ Patch65: boost-1.57.0-build-optflags.patch
 # Prevent gcc.jam from setting -m32 or -m64.
 Patch68: boost-1.58.0-address-model.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1262444
-Patch81: boost-1.59-test-fenv.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.60.0-no-rpath.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1349638
-Patch83: boost-1.60-multiprecision.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1358725
-# https://github.com/boostorg/python/pull/59/files
-Patch84: boost-1.60-python-regptr.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1403165
-Patch85: boost-1.60-asio-use-future.patch
+# https://github.com/boostorg/mpi/pull/39
+Patch83: boost-1.63.0-mpi-getdata.patch
+# https://github.com/boostorg/mpi/pull/40
+Patch84: boost-1.63.0-mpi-serialize.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -158,27 +149,27 @@ others have been proposed to the C++ Standards Committee for inclusion
 in future standards.)
 
 %package atomic
-Summary: Run-Time component of boost atomic library
+Summary: Run-time component of boost atomic library
 Group: System Environment/Libraries
 
 %description atomic
 
-Run-Time support for Boost.Atomic, a library that provides atomic data
+Run-time support for Boost.Atomic, a library that provides atomic data
 types and operations on these data types, as well as memory ordering
 constraints required for coordinating multiple threads through atomic
 variables.
 
 %package chrono
-Summary: Run-Time component of boost chrono library
+Summary: Run-time component of boost chrono library
 Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description chrono
 
-Run-Time support for Boost.Chrono, a set of useful time utilities.
+Run-time support for Boost.Chrono, a set of useful time utilities.
 
 %package container
-Summary: Run-Time component of boost container library
+Summary: Run-time component of boost container library
 Group: System Environment/Libraries
 
 %description container
@@ -190,67 +181,78 @@ standard draft features for compilers that comply with C++03.
 
 %if %{with context}
 %package context
-Summary: Run-Time component of boost context switching library
+Summary: Run-time component of boost context switching library
 Group: System Environment/Libraries
 
 %description context
 
-Run-Time support for Boost.Context, a foundational library that
+Run-time support for Boost.Context, a foundational library that
 provides a sort of cooperative multitasking on a single thread.
 
 %package coroutine
-Summary: Run-Time component of boost coroutine library
+Summary: Run-time component of boost coroutine library
 Group: System Environment/Libraries
 
 %description coroutine
-Run-Time support for Boost.Coroutine, a library that provides
+Run-time support for Boost.Coroutine, a library that provides
 generalized subroutines which allow multiple entry points for
 suspending and resuming execution.
 
 %endif
 
 %package date-time
-Summary: Run-Time component of boost date-time library
+Summary: Run-time component of boost date-time library
 Group: System Environment/Libraries
 
 %description date-time
 
-Run-Time support for Boost Date Time, a set of date-time libraries based
+Run-time support for Boost Date Time, a set of date-time libraries based
 on generic programming concepts.
 
+%if %{with context}
+%package fiber
+Summary: Run-time component of boost fiber library
+Group: System Environment/Libraries
+
+%description fiber
+
+Run-time support for the Boost Fiber library, a framework for
+micro-/userland-threads (fibers) scheduled cooperatively.
+%endif
+
 %package filesystem
-Summary: Run-Time component of boost filesystem library
+Summary: Run-time component of boost filesystem library
 Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description filesystem
 
-Run-Time support for the Boost Filesystem Library, which provides
+Run-time support for the Boost Filesystem Library, which provides
 portable facilities to query and manipulate paths, files, and
 directories.
 
 %package graph
-Summary: Run-Time component of boost graph library
+Summary: Run-time component of boost graph library
 Group: System Environment/Libraries
 Requires: boost-regex%{?_isa} = %{version}-%{release}
 
 %description graph
 
-Run-Time support for the BGL graph library.  BGL interface and graph
+Run-time support for the BGL graph library.  BGL interface and graph
 components are generic, in the same sense as the the Standard Template
 Library (STL).
 
 %package iostreams
-Summary: Run-Time component of boost iostreams library
+Summary: Run-time component of boost iostreams library
 Group: System Environment/Libraries
 
 %description iostreams
 
-Run-Time support for Boost.IOStreams, a framework for defining streams,
+Run-time support for Boost.IOStreams, a framework for defining streams,
 stream buffers and i/o filters.
 
 %package locale
-Summary: Run-Time component of boost locale library
+Summary: Run-time component of boost locale library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
@@ -258,11 +260,11 @@ Requires: boost-thread%{?_isa} = %{version}-%{release}
 
 %description locale
 
-Run-Time support for Boost.Locale, a set of localization and Unicode
+Run-time support for Boost.Locale, a set of localization and Unicode
 handling tools.
 
 %package log
-Summary: Run-Time component of boost logging library
+Summary: Run-time component of boost logging library
 Group: System Environment/Libraries
 
 %description log
@@ -280,21 +282,21 @@ Requires: libquadmath%{?_isa}
 
 %description math
 
-Run-Time support for C99 and C++ TR1 C-style Functions from the math
+Run-time support for C99 and C++ TR1 C-style Functions from the math
 portion of Boost.TR1.
 
 %package program-options
-Summary:  Run-Time component of boost program_options library
+Summary:  Run-time component of boost program_options library
 Group: System Environment/Libraries
 
 %description program-options
 
-Run-Time support of boost program options library, which allows program
+Run-time support of boost program options library, which allows program
 developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
 
 %package python
-Summary: Run-Time component of boost python library
+Summary: Run-time component of boost python library
 Group: System Environment/Libraries
 
 %description python
@@ -308,7 +310,7 @@ support for Boost Python Library.
 %if %{with python3}
 
 %package python3
-Summary: Run-Time component of boost python library for Python 3
+Summary: Run-time component of boost python library for Python 3
 Group: System Environment/Libraries
 
 %description python3
@@ -332,69 +334,69 @@ Shared object symbolic links for Python 3 variant of Boost.Python.
 %endif
 
 %package random
-Summary: Run-Time component of boost random library
+Summary: Run-time component of boost random library
 Group: System Environment/Libraries
 
 %description random
 
-Run-Time support for boost random library.
+Run-time support for boost random library.
 
 %package regex
-Summary: Run-Time component of boost regular expression library
+Summary: Run-time component of boost regular expression library
 Group: System Environment/Libraries
 
 %description regex
 
-Run-Time support for boost regular expression library.
+Run-time support for boost regular expression library.
 
 %package serialization
-Summary: Run-Time component of boost serialization library
+Summary: Run-time component of boost serialization library
 Group: System Environment/Libraries
 
 %description serialization
 
-Run-Time support for serialization for persistence and marshaling.
+Run-time support for serialization for persistence and marshaling.
 
 %package signals
-Summary: Run-Time component of boost signals and slots library
+Summary: Run-time component of boost signals and slots library
 Group: System Environment/Libraries
 
 %description signals
 
-Run-Time support for managed signals & slots callback implementation.
+Run-time support for managed signals & slots callback implementation.
 
 %package system
-Summary: Run-Time component of boost system support library
+Summary: Run-time component of boost system support library
 Group: System Environment/Libraries
 
 %description system
 
-Run-Time component of Boost operating system support library, including
+Run-time component of Boost operating system support library, including
 the diagnostics support that is part of the C++11 standard library.
 
 %package test
-Summary: Run-Time component of boost test library
+Summary: Run-time component of boost test library
 Group: System Environment/Libraries
 
 %description test
 
-Run-Time support for simple program testing, full unit testing, and for
+Run-time support for simple program testing, full unit testing, and for
 program execution monitoring.
 
 %package thread
-Summary: Run-Time component of boost thread library
+Summary: Run-time component of boost thread library
 Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description thread
 
-Run-Time component Boost.Thread library, which provides classes and
+Run-time component Boost.Thread library, which provides classes and
 functions for managing multiple threads of execution, and for
 synchronizing data between the threads or providing separate copies of
 data specific to individual threads.
 
 %package timer
-Summary: Run-Time component of boost timer library
+Summary: Run-time component of boost timer library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
@@ -406,7 +408,7 @@ The Boost Timer library answers that question and does so portably,
 with as little as one #include and one additional line of code.
 
 %package type_erasure
-Summary: Run-Time component of boost type erasure library
+Summary: Run-time component of boost type erasure library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
@@ -417,7 +419,7 @@ The Boost.TypeErasure library provides runtime polymorphism in C++
 that is more flexible than that provided by the core language.
 
 %package wave
-Summary: Run-Time component of boost C99/C++ pre-processing library
+Summary: Run-time component of boost C99/C++ pre-processing library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
@@ -427,7 +429,7 @@ Requires: boost-thread%{?_isa} = %{version}-%{release}
 
 %description wave
 
-Run-Time support for the Boost.Wave library, a Standards conforming,
+Run-time support for the Boost.Wave library, a Standards conforming,
 and highly configurable implementation of the mandated C99/C++
 pre-processor functionality.
 
@@ -494,14 +496,14 @@ This package contains example source files distributed with boost.
 %if %{with openmpi}
 
 %package openmpi
-Summary: Run-Time component of Boost.MPI library
+Summary: Run-time component of Boost.MPI library
 Group: System Environment/Libraries
 BuildRequires: openmpi-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 
 %description openmpi
 
-Run-Time support for Boost.MPI-OpenMPI, a library providing a clean C++
+Run-time support for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
 
 %package openmpi-devel
@@ -530,14 +532,14 @@ Python support for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
 
 %package graph-openmpi
-Summary: Run-Time component of parallel boost graph library
+Summary: Run-time component of parallel boost graph library
 Group: System Environment/Libraries
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 
 %description graph-openmpi
 
-Run-Time support for the Parallel BGL graph library.  The interface and
+Run-time support for the Parallel BGL graph library.  The interface and
 graph components are generic, in the same sense as the the Standard
 Template Library (STL).  This libraries in this package use OpenMPI
 back-end to do the parallel work.
@@ -548,7 +550,7 @@ back-end to do the parallel work.
 %if %{with mpich}
 
 %package mpich
-Summary: Run-Time component of Boost.MPI library
+Summary: Run-time component of Boost.MPI library
 Group: System Environment/Libraries
 BuildRequires: mpich-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -557,7 +559,7 @@ Obsoletes: boost-mpich2 < 1.53.0-9
 
 %description mpich
 
-Run-Time support for Boost.MPI-MPICH, a library providing a clean C++
+Run-time support for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
 
 %package mpich-devel
@@ -590,7 +592,7 @@ Python support for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
 
 %package graph-mpich
-Summary: Run-Time component of parallel boost graph library
+Summary: Run-time component of parallel boost graph library
 Group: System Environment/Libraries
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -599,7 +601,7 @@ Obsoletes: boost-graph-mpich2 < 1.53.0-9
 
 %description graph-mpich
 
-Run-Time support for the Parallel BGL graph library.  The interface and
+Run-time support for the Parallel BGL graph library.  The interface and
 graph components are generic, in the same sense as the the Standard
 Template Library (STL).  This libraries in this package use MPICH
 back-end to do the parallel work.
@@ -646,18 +648,14 @@ a number of significant features and is now developed independently
 %patch5 -p1
 %patch15 -p0
 %patch25 -p1
-%patch36 -p1
 %patch51 -p1
 %patch61 -p1
 %patch62 -p1
-%patch63 -p1
 %patch65 -p1
 %patch68 -p1
-%patch81 -p2
 %patch82 -p0
 %patch83 -p2
 %patch84 -p2
-%patch85 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -954,6 +952,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun date-time -p /sbin/ldconfig
 
+%post fiber -p /sbin/ldconfig
+
+%postun fiber -p /sbin/ldconfig
+
 %post filesystem -p /sbin/ldconfig
 
 %postun filesystem -p /sbin/ldconfig
@@ -1083,6 +1085,12 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_date_time.so.%{sonamever}
 
+%if %{with context}
+%files fiber
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_fiber.so.%{sonamever}
+%endif
+
 %files filesystem
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_filesystem.so.%{sonamever}
@@ -1190,6 +1198,9 @@ fi
 %{_libdir}/libboost_coroutine.so
 %endif
 %{_libdir}/libboost_date_time.so
+%if %{with context}
+%{_libdir}/libboost_fiber.so
+%endif
 %{_libdir}/libboost_filesystem.so
 %{_libdir}/libboost_graph.so
 %{_libdir}/libboost_iostreams.so
@@ -1286,6 +1297,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Jan 26 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-1
+- Rebase to 1.63.0 (#1401431)
+
 * Tue Dec 20 2016 Miro Hrončok <mhroncok@redhat.com> - 1.60.0-12
 - Rebuild for Python 3.6
 
