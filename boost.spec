@@ -38,14 +38,14 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
 URL: http://www.boost.org
 Group: System Environment/Libraries
 
-Source0: http://downloads.sourceforge.net/%{name}/%{toplev_dirname}.tar.bz2
+Source0: https://sourceforge.net/projects/boost/files/boost/%{version}/%{toplev_dirname}.tar.bz2
 Source1: ver.py
 Source2: libboost_thread.so
 
@@ -129,11 +129,6 @@ Patch68: boost-1.58.0-address-model.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.60.0-no-rpath.patch
-
-# https://github.com/boostorg/mpi/pull/39
-Patch83: boost-1.63.0-mpi-getdata.patch
-# https://github.com/boostorg/mpi/pull/40
-Patch84: boost-1.63.0-mpi-serialize.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -654,8 +649,6 @@ a number of significant features and is now developed independently
 %patch65 -p1
 %patch68 -p1
 %patch82 -p0
-%patch83 -p2
-%patch84 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -675,7 +668,7 @@ a number of significant features and is now developed independently
 # There are many strict aliasing warnings, and it's not feasible to go
 # through them all at this time.
 # There are also lots of noisy but harmless unused local typedef warnings.
-export RPM_OPT_FLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-unused-local-typedefs"
+export RPM_OPT_FLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-unused-local-typedefs -Wno-deprecated-declarations"
 
 cat > ./tools/build/src/user-config.jam << "EOF"
 import os ;
@@ -1299,6 +1292,10 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Jan 27 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-2
+- Use correct sources for release, not a snapshot.
+- Add -Wno-deprecated-declarations to build flags.
+
 * Thu Jan 26 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-1
 - Rebase to 1.63.0 (#1401431)
 
