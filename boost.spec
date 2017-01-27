@@ -952,9 +952,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun date-time -p /sbin/ldconfig
 
+%if %{with context}
 %post fiber -p /sbin/ldconfig
 
 %postun fiber -p /sbin/ldconfig
+%endif
 
 %post filesystem -p /sbin/ldconfig
 
