@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -703,6 +703,7 @@ echo ============================= build serial ==================
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
 	--without-context --without-coroutine --without-coroutine2 \
+	--without-fiber \
 %endif
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
@@ -809,6 +810,7 @@ echo ============================= install serial ==================
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
 	--without-context --without-coroutine --without-coroutine2 \
+	--without-fiber \
 %endif
 	--prefix=$RPM_BUILD_ROOT%{_prefix} \
 	--libdir=$RPM_BUILD_ROOT%{_libdir} \
@@ -1292,6 +1294,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Feb 09 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-3
+- Add --without-fiber when Boost.Context is not supported.
+
 * Fri Jan 27 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-2
 - Use correct sources for release, not a snapshot.
 - Add -Wno-deprecated-declarations to build flags.
