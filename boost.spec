@@ -13,7 +13,7 @@
   %bcond_without mpich
 %endif
 
-%ifarch s390 s390x ppc64le
+%ifarch s390
   # No OpenMPI support on these arches
   %bcond_with openmpi
 %else
@@ -38,7 +38,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1299,6 +1299,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sun Mar 12 2017 Peter Robinson <pbrobinson@fedoraproject.org> 1.63.0-5
+- Enable OpenMPI on ppc64le and s390x now they have support
+
 * Thu Feb 16 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-4
 - Revert Boost.Build change that breaks building for two Python versions.
 
