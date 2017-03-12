@@ -7,11 +7,8 @@
 %global boost_docdir __tmp_docdir
 %global boost_examplesdir __tmp_examplesdir
 
-%ifarch ppc64le
-  %bcond_with mpich
-%else
-  %bcond_without mpich
-%endif
+# All arches have mpich
+%bcond_without mpich
 
 %ifarch s390
   # No OpenMPI support on these arches
@@ -1300,7 +1297,7 @@ fi
 
 %changelog
 * Sun Mar 12 2017 Peter Robinson <pbrobinson@fedoraproject.org> 1.63.0-5
-- Enable OpenMPI on ppc64le and s390x now they have support
+- Enable OpenMPI/mpich on ppc64le and s390x now they have support
 
 * Thu Feb 16 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-4
 - Revert Boost.Build change that breaks building for two Python versions.
