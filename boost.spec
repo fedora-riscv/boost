@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1295,6 +1295,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Apr 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-7
+- Rebuild for rpm-mpi-hooks fix (#1435690)
+
 * Wed Apr 05 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-6
 - Patch boost::function to fix strict aliasing problem (#1422456)
 - Per packaging guidelines don't clean buildroot in %%install and %%clean.
