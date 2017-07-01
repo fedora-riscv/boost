@@ -1,0 +1,21 @@
+From ab924bb5abfa4c00ad11c21632adf97c002ac481 Mon Sep 17 00:00:00 2001
+From: Jonathan Wakely <jwakely@redhat.com>
+Date: Thu, 26 Jan 2017 21:52:37 +0000
+Subject: [PATCH] Add header for serialization::make_array
+
+---
+ include/boost/mpi/python/serialize.hpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/boost/mpi/python/serialize.hpp b/include/boost/mpi/python/serialize.hpp
+index 5f9136b..8933b34 100644
+--- a/include/boost/mpi/python/serialize.hpp
++++ b/include/boost/mpi/python/serialize.hpp
+@@ -36,6 +36,7 @@
+ 
+ #include <boost/serialization/split_free.hpp>
+ #include <boost/serialization/array.hpp>
++#include <boost/serialization/array_wrapper.hpp>
+ 
+ #include <boost/assert.hpp>
+ 

@@ -33,9 +33,9 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.63.0
-%global version_enc 1_63_0
-Release: 9%{?dist}
+Version: 1.64.0
+%global version_enc 1_64_0
+Release: 0.1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -132,6 +132,11 @@ Patch82: boost-1.60.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1451982
 Patch83: boost-1.63.0-dual-python-build-v2.patch
+
+# https://github.com/boostorg/mpi/pull/39
+Patch84: boost-1.64.0-mpi-get_data.patch
+# https://github.com/boostorg/mpi/pull/40
+Patch85: boost-1.64.0-mpi-make_array.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -748,6 +753,8 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch82 -p0
 %patch83 -p1
+%patch84 -p2
+%patch85 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1537,6 +1544,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Jul 01 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-0.1
+- Rebase to 1.64.0
+
 * Sat Jul 01 2017 Yaakov Selkowitz <yselkowi@redhat.com> - 1.63.0-9
 - Add numpy and numpy3 packages (#1451982)
 - Fix location of openmpi-python and mpich-python modules
