@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -129,9 +129,6 @@ Patch82: boost-1.60.0-no-rpath.patch
 
 # https://github.com/boostorg/build/issues/163
 Patch83: boost-1.63.0-dual-python-build.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1422456
-Patch84: boost-1.63.0-function-may-alias.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -653,7 +650,6 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch82 -p0
 %patch83 -p1
-%patch84 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1295,6 +1291,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Jul 01 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-8
+- Remove patch for boost::function strict aliasing problem (#1422456)
+
 * Tue Apr 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-7
 - Rebuild for rpm-mpi-hooks fix (#1435690)
 
