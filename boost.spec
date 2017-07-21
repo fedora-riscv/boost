@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1544,6 +1544,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Jul 21 2017 Kalev Lember <klember@redhat.com> - 1.64.0-0.2
+- Rebuild for std::__once_functor linking issue on ppc64le (#1470692)
+
 * Sat Jul 01 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-0.1
 - Rebase to 1.64.0
 
