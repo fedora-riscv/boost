@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -137,6 +137,10 @@ Patch83: boost-1.63.0-dual-python-build-v2.patch
 Patch84: boost-1.64.0-mpi-get_data.patch
 # https://github.com/boostorg/mpi/pull/40
 Patch85: boost-1.64.0-mpi-make_array.patch
+
+# https://svn.boost.org/trac10/ticket/12516
+# https://github.com/boostorg/serialization/commit/1d86261581230e2dc5d617a9b16287d326f3e229
+Patch86: boost-1.64.0-serialization-make_array.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -755,6 +759,7 @@ a number of significant features and is now developed independently
 %patch83 -p1
 %patch84 -p2
 %patch85 -p2
+%patch86 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1544,6 +1549,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Jul 24 2017 Björn Esser <besser82@fedoraproject.org> - 1.64.0-0.3
+- Add patch to fix make_array in serialization
+
 * Fri Jul 21 2017 Kalev Lember <klember@redhat.com> - 1.64.0-0.2
 - Rebuild for std::__once_functor linking issue on ppc64le (#1470692)
 
