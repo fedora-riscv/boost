@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.4%{?dist}
+Release: 0.5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1546,6 +1546,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.64.0-0.5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Mon Jul 24 2017 Björn Esser <besser82@fedoraproject.org> - 1.64.0-0.4
 - Drop obsolete patch for mpi serialization make_array
 - Purge unused patches from repo
