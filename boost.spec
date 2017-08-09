@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -130,6 +130,8 @@ Patch82: boost-1.60.0-no-rpath.patch
 # https://github.com/boostorg/build/issues/163
 Patch83: boost-1.63.0-dual-python-build.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1478329
+Patch84: boost-1.63.0-VERSION-parameter.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -651,6 +653,7 @@ a number of significant features and is now developed independently
 %patch68 -p1
 %patch82 -p0
 %patch83 -p1
+%patch84 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1296,6 +1299,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Aug 09 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-6
+- Rename VERSION variable to avoid clashing with autotools macro (#1478329)
+
 * Sun Mar 12 2017 Peter Robinson <pbrobinson@fedoraproject.org> 1.63.0-5
 - Enable OpenMPI/mpich on ppc64le and s390x now they have support
 
