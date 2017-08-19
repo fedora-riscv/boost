@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.6%{?dist}
+Release: 0.7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -332,11 +332,15 @@ Run-time support of boost program options library, which allows program
 developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
 
-%package python
+%package -n python2-boost
+%{?python_provide:%python_provide python2-boost}
+# Remove before F30
+Provides: %{name}-python%{?_isa} = %{version}-%{release}
+Obsoletes: %{name}-python < %{version}-%{release}
 Summary: Run-time component of boost python library
 Group: System Environment/Libraries
 
-%description python
+%description -n python2-boost
 
 The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
@@ -1185,9 +1189,9 @@ rm -f tmp-doc-directories
 
 %postun program-options -p /sbin/ldconfig
 
-%post python -p /sbin/ldconfig
+%post -n python2-boost -p /sbin/ldconfig
 
-%postun python -p /sbin/ldconfig
+%postun -n python2-boost -p /sbin/ldconfig
 
 %if %{with python3}
 %post python3 -p /sbin/ldconfig
@@ -1347,7 +1351,7 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_program_options.so.%{sonamever}
 
-%files python
+%files -n python2-boost
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python.so.%{sonamever}
 
@@ -1546,6 +1550,10 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.7
+- Python 2 binary package renamed to python2-boost
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.64.0-0.6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 
