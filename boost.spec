@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.7%{?dist}
+Release: 0.8%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -335,6 +335,7 @@ conventional methods such as command-line and configuration file.
 %package -n python2-boost
 %{?python_provide:%python_provide python2-boost}
 # Remove before F30
+Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
 Summary: Run-time component of boost python library
@@ -1550,6 +1551,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sun Aug 20 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.8
+- Add Provides for the old name without %%_isa
+
 * Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.7
 - Python 2 binary package renamed to python2-boost
   See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
