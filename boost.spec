@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 0.8%{?dist}
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -180,7 +180,7 @@ Group: System Environment/Libraries
 %description container
 
 Boost.Container library implements several well-known containers,
-including STL containers. The aim of the library is to offers advanced
+including STL containers. The aim of the library is to offer advanced
 features not present in standard containers or to offer the latest
 standard draft features for compilers that comply with C++03.
 
@@ -244,7 +244,7 @@ Requires: boost-regex%{?_isa} = %{version}-%{release}
 %description graph
 
 Run-time support for the BGL graph library.  BGL interface and graph
-components are generic, in the same sense as the the Standard Template
+components are generic, in the same sense as the Standard Template
 Library (STL).
 
 %package iostreams
@@ -253,7 +253,7 @@ Group: System Environment/Libraries
 
 %description iostreams
 
-Run-time support for Boost.IOStreams, a framework for defining streams,
+Run-time support for Boost.Iostreams, a framework for defining streams,
 stream buffers and i/o filters.
 
 %package locale
@@ -302,7 +302,7 @@ The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for the NumPy extension of the Boost Python Library.
+support for the NumPy extension of the Boost Python Library for Python 2.
 
 %if %{with python3}
 
@@ -347,7 +347,7 @@ The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for Boost Python Library.
+support for the Boost Python Library compiled for Python 2.
 
 %if %{with python3}
 
@@ -361,7 +361,7 @@ The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
-support for Boost Python Library compiled for Python 3.
+support for the Boost Python Library compiled for Python 3.
 
 %package python3-devel
 Summary: Shared object symbolic links for Boost.Python 3
@@ -522,7 +522,7 @@ Obsoletes: odeint-doc < 2.2-5
 %description doc
 This package contains the documentation in the HTML format of the Boost C++
 libraries. The documentation provides the same content as that on the Boost
-web page (http://www.boost.org/doc/libs/1_40_0).
+web page (http://www.boost.org/doc/libs/%{version_enc}).
 
 %package examples
 Summary: Source examples for the Boost C++ libraries
@@ -572,7 +572,7 @@ Requires: python2-openmpi%{?_isa}
 
 %description openmpi-python
 
-Python support for Boost.MPI-OpenMPI, a library providing a clean C++
+Python 2 support for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
 
 %if %{with python3}
@@ -614,7 +614,7 @@ Requires: boost-serialization%{?_isa} = %{version}-%{release}
 %description graph-openmpi
 
 Run-time support for the Parallel BGL graph library.  The interface and
-graph components are generic, in the same sense as the the Standard
+graph components are generic, in the same sense as the Standard
 Template Library (STL).  This libraries in this package use OpenMPI
 back-end to do the parallel work.
 
@@ -663,7 +663,7 @@ Requires: python2-mpich%{?_isa}
 
 %description mpich-python
 
-Python support for Boost.MPI-MPICH, a library providing a clean C++
+Python 2 support for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
 
 %if %{with python3}
@@ -707,7 +707,7 @@ Obsoletes: boost-graph-mpich2 < 1.53.0-9
 %description graph-mpich
 
 Run-time support for the Parallel BGL graph library.  The interface and
-graph components are generic, in the same sense as the the Standard
+graph components are generic, in the same sense as the Standard
 Template Library (STL).  This libraries in this package use MPICH
 back-end to do the parallel work.
 
@@ -1551,6 +1551,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Sep 06 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-1
+- Fix descriptions
+
 * Sun Aug 20 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.64.0-0.8
 - Add Provides for the old name without %%_isa
 
