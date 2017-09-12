@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -139,6 +139,10 @@ Patch84: boost-1.64.0-mpi-get_data.patch
 # https://svn.boost.org/trac10/ticket/12516
 # https://github.com/boostorg/serialization/commit/1d86261581230e2dc5d617a9b16287d326f3e229
 Patch85: boost-1.64.0-serialization-make_array.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1485641
+# https://github.com/boostorg/icl/pull/9
+Patch86: boost-1.64.0-icl-ttp-matching.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -757,6 +761,7 @@ a number of significant features and is now developed independently
 %patch83 -p1
 %patch84 -p2
 %patch85 -p2
+%patch86 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1546,6 +1551,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Sep 12 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-2
+- Patch to fix #1485641
+
 * Wed Sep 06 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-1
 - Fix descriptions
 
