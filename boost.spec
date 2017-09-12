@@ -133,6 +133,10 @@ Patch83: boost-1.63.0-dual-python-build.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1478329
 Patch84: boost-1.63.0-VERSION-parameter.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1485641
+# https://github.com/boostorg/icl/pull/9
+Patch86: boost-1.63.0-icl-ttp-matching.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -654,6 +658,7 @@ a number of significant features and is now developed independently
 %patch82 -p0
 %patch83 -p1
 %patch84 -p1
+%patch86 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1301,6 +1306,7 @@ fi
 %changelog
 * Tue Sep 12 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-7
 - Fix descriptions
+- Patch to fix #1485641
 
 * Wed Aug 09 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-6
 - Rename VERSION variable to avoid clashing with autotools macro (#1478329)
