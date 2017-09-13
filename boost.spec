@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -336,16 +336,15 @@ Run-time support of boost program options library, which allows program
 developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
 
-%package -n python2-boost
-%{?python_provide:%python_provide python2-boost}
+%package python2
 # Remove before F30
-Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
+Obsoletes: python2-%{name} < %{version}-%{release}
 Summary: Run-time component of boost python library
 Group: System Environment/Libraries
 
-%description -n python2-boost
+%description python2
 
 The Boost Python Library is a framework for interfacing Python and
 C++. It allows you to quickly and seamlessly expose C++ classes,
@@ -1195,9 +1194,9 @@ rm -f tmp-doc-directories
 
 %postun program-options -p /sbin/ldconfig
 
-%post -n python2-boost -p /sbin/ldconfig
+%post python2 -p /sbin/ldconfig
 
-%postun -n python2-boost -p /sbin/ldconfig
+%postun python2 -p /sbin/ldconfig
 
 %if %{with python3}
 %post python3 -p /sbin/ldconfig
@@ -1357,7 +1356,7 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_program_options.so.%{sonamever}
 
-%files -n python2-boost
+%files python2
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python.so.%{sonamever}
 
@@ -1556,6 +1555,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Sep 13 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-3
+- Rename python2-boost to boost-python2
+
 * Tue Sep 12 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-2
 - Patch to fix #1485641
 
