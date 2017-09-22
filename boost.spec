@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -70,6 +70,7 @@ Requires: boost-iostreams%{?_isa} = %{version}-%{release}
 Requires: boost-locale%{?_isa} = %{version}-%{release}
 Requires: boost-log%{?_isa} = %{version}-%{release}
 Requires: boost-math%{?_isa} = %{version}-%{release}
+Requires: boost-numpy%{?_isa} = %{version}-%{release}
 Requires: boost-program-options%{?_isa} = %{version}-%{release}
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-random%{?_isa} = %{version}-%{release}
@@ -88,8 +89,10 @@ BuildRequires: libstdc++-devel
 BuildRequires: bzip2-devel
 BuildRequires: zlib-devel
 BuildRequires: python-devel
+BuildRequires: python2-numpy
 %if %{with python3}
 BuildRequires: python3-devel
+BuildRequires: python3-numpy
 %endif
 BuildRequires: libicu-devel
 %if %{with quadmath}
@@ -127,8 +130,8 @@ Patch68: boost-1.58.0-address-model.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.60.0-no-rpath.patch
 
-# https://github.com/boostorg/build/issues/163
-Patch83: boost-1.63.0-dual-python-build.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1451982
+Patch83: boost-1.63.0-dual-python-build-v2.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1478329
 Patch84: boost-1.63.0-VERSION-parameter.patch
@@ -287,6 +290,38 @@ Requires: libquadmath%{?_isa}
 Run-time support for C99 and C++ TR1 C-style Functions from the math
 portion of Boost.TR1.
 
+%package numpy
+Summary: Run-time component of boost python numpy extension
+Group: System Environment/Libraries
+Requires: boost-python%{?_isa} = %{version}-%{release}
+Requires: python2-numpy
+
+%description numpy
+
+The Boost Python Library is a framework for interfacing Python and
+C++. It allows you to quickly and seamlessly expose C++ classes,
+functions and objects to Python, and vice versa, using no special
+tools -- just your C++ compiler.  This package contains run-time
+support for the NumPy extension of the Boost Python Library.
+
+%if %{with python3}
+
+%package numpy3
+Summary: Run-time component of boost numpy library for Python 3
+Group: System Environment/Libraries
+Requires: boost-python3%{?_isa} = %{version}-%{release}
+Requires: python3-numpy
+
+%description numpy3
+
+The Boost Python Library is a framework for interfacing Python and
+C++. It allows you to quickly and seamlessly expose C++ classes,
+functions and objects to Python, and vice versa, using no special
+tools -- just your C++ compiler.  This package contains run-time
+support for the NumPy extension of the Boost Python Library for Python 3.
+
+%endif
+
 %package program-options
 Summary:  Run-time component of boost program_options library
 Group: System Environment/Libraries
@@ -326,6 +361,7 @@ support for the Boost Python Library compiled for Python 3.
 %package python3-devel
 Summary: Shared object symbolic links for Boost.Python 3
 Group: System Environment/Libraries
+Requires: boost-numpy3%{?_isa} = %{version}-%{release}
 Requires: boost-python3%{?_isa} = %{version}-%{release}
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 
@@ -527,11 +563,42 @@ Group: System Environment/Libraries
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
+Requires: python2-openmpi%{?_isa}
 
 %description openmpi-python
 
 Python 2 support for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
+
+%if %{with python3}
+
+%package openmpi-python3
+Summary: Python 3 run-time component of Boost.MPI library
+Group: System Environment/Libraries
+Requires: boost-openmpi%{?_isa} = %{version}-%{release}
+Requires: boost-python3%{?_isa} = %{version}-%{release}
+Requires: boost-serialization%{?_isa} = %{version}-%{release}
+Requires: python3-openmpi%{?_isa}
+
+%description openmpi-python3
+
+Python 3 support for Boost.MPI-OpenMPI, a library providing a clean C++
+API over the OpenMPI implementation of MPI.
+
+%package openmpi-python3-devel
+Summary: Shared library symbolic links for Boost.MPI Python 3 component
+Group: System Environment/Libraries
+Requires: boost-devel%{?_isa} = %{version}-%{release}
+Requires: boost-python3-devel%{?_isa} = %{version}-%{release}
+Requires: boost-openmpi-devel%{?_isa} = %{version}-%{release}
+Requires: boost-openmpi-python3%{?_isa} = %{version}-%{release}
+
+%description openmpi-python3-devel
+
+Devel package for the Python 3 interface of Boost.MPI-OpenMPI, a library
+providing a clean C++ API over the OpenMPI implementation of MPI.
+
+%endif
 
 %package graph-openmpi
 Summary: Run-time component of parallel boost graph library
@@ -587,11 +654,42 @@ Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Provides: boost-mpich2-python = %{version}-%{release}
 Obsoletes: boost-mpich2-python < 1.53.0-9
+Requires: python2-mpich%{?_isa}
 
 %description mpich-python
 
 Python 2 support for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
+
+%if %{with python3}
+
+%package mpich-python3
+Summary: Python 3 run-time component of Boost.MPI library
+Group: System Environment/Libraries
+Requires: boost-mpich%{?_isa} = %{version}-%{release}
+Requires: boost-python3%{?_isa} = %{version}-%{release}
+Requires: boost-serialization%{?_isa} = %{version}-%{release}
+Requires: python3-mpich%{?_isa}
+
+%description mpich-python3
+
+Python 3 support for Boost.MPI-MPICH, a library providing a clean C++
+API over the MPICH implementation of MPI.
+
+%package mpich-python3-devel
+Summary: Shared library symbolic links for Boost.MPI Python 3 component
+Group: System Environment/Libraries
+Requires: boost-devel%{?_isa} = %{version}-%{release}
+Requires: boost-python3-devel%{?_isa} = %{version}-%{release}
+Requires: boost-mpich-devel%{?_isa} = %{version}-%{release}
+Requires: boost-mpich-python3%{?_isa} = %{version}-%{release}
+
+%description mpich-python3-devel
+
+Devel package for the Python 3 interface of Boost.MPI-MPICH, a library
+providing a clean C++ API over the MPICH implementation of MPI.
+
+%endif
 
 %package graph-mpich
 Summary: Run-time component of parallel boost graph library
@@ -688,10 +786,7 @@ using gcc : : : <compileflags>$(RPM_OPT_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
-%if %{with python3}
 using python : %{python2_version} : /usr/bin/python2 : /usr/include/python%{python2_version} : : : : ;
-using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}%{python3_abiflags} : : : : %{python3_abiflags} ;
-%endif
 EOF
 
 ./bootstrap.sh --with-toolset=gcc --with-icu
@@ -700,13 +795,6 @@ EOF
 # library in particular) end up being built second time during
 # installation.  Unsure why that is, but all sub-builds need to be
 # built with pch=off to avoid this.
-#
-# The "python=2.*" bit tells jam that we want to _also_ build 2.*, not
-# just 3.*.  When omitted, it just builds for python 3 twice, once
-# calling the library libboost_python and once libboost_python3.  I
-# assume this is for backward compatibility for apps that are used to
-# linking against -lboost_python, for when 2->3 transition is
-# eventually done.
 
 echo ============================= build serial ==================
 ./b2 -d+2 -q %{?_smp_mflags} \
@@ -729,6 +817,33 @@ fi
 m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
 	%{SOURCE2} > $(basename %{SOURCE2})
 
+%if %{with python3}
+
+# Previously, we built python 2.x and 3.x interfaces simultaneously.
+# However, this doesn't work once trying to build other Python components
+# such as libboost_numpy.  Therefore, we build for each separately, while
+# minimizing duplicate compilation as much as possible.
+
+cat > python3-config.jam << "EOF"
+import os ;
+local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
+
+using gcc : : : <compileflags>$(RPM_OPT_FLAGS) ;
+%if %{with openmpi} || %{with mpich}
+using mpi ;
+%endif
+using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}%{python3_abiflags} : : : : %{python3_abiflags} ;
+EOF
+
+echo ============================= build serial-py3 ==================
+./b2 -d+2 -q %{?_smp_mflags} \
+	--user-config=./python3-config.jam \
+	--with-python --build-dir=serial-py3 \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} stage
+
+%endif
+
 # Build MPI parts of Boost with OpenMPI support
 
 %if %{with openmpi} || %{with mpich}
@@ -737,9 +852,6 @@ m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
 module purge ||:
 %endif
 
-# N.B. python=2.* here behaves differently: it exactly selects a
-# version that we want to build against.  Boost MPI is not portable to
-# Python 3 due to API changes in Python, so this suits us.
 %if %{with openmpi}
 %{_openmpi_load}
 echo ============================= build $MPI_COMPILER ==================
@@ -747,6 +859,16 @@ echo ============================= build $MPI_COMPILER ==================
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
+
+%if %{with python3}
+echo ============================= build $MPI_COMPILER-py3 ==================
+./b2 -d+2 -q %{?_smp_mflags} \
+	--user-config=./python3-config.jam \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} stage
+%endif
+
 %{_openmpi_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -759,6 +881,16 @@ echo ============================= build $MPI_COMPILER ==================
 	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
+
+%if %{with python3}
+echo ============================= build $MPI_COMPILER-py3 ==================
+./b2 -d+2 -q %{?_smp_mflags} \
+	--user-config=./python3-config.jam \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} stage
+%endif
+
 %{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -792,6 +924,28 @@ echo ============================= install $MPI_COMPILER ==================
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
 
+# Move Python module to proper location for automatic loading
+mkdir -p ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost
+touch ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost/__init__.py
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+   ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost/
+
+%if %{with python3}
+echo ============================= install $MPI_COMPILER-py3 ==================
+./b2 -q %{?_smp_mflags} \
+	--user-config=./python3-config.jam \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} stage
+
+# Move Python module to proper location for automatic loading
+mkdir -p ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost
+touch ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost/__init__.py
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+   ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost/
+%endif
+
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 
@@ -807,6 +961,28 @@ echo ============================= install $MPI_COMPILER ==================
 	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python2_version} stage
+
+# Move Python module to proper location for automatic loading
+mkdir -p ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost
+touch ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost/__init__.py
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+   ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost/
+
+%if %{with python3}
+echo ============================= install $MPI_COMPILER-py3 ==================
+./b2 -q %{?_smp_mflags} \
+	--user-config=./python3-config.jam \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} stage
+
+# Move Python module to proper location for automatic loading
+mkdir -p ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost
+touch ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost/__init__.py
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+   ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost/
+%endif
 
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
@@ -832,6 +1008,18 @@ echo ============================= install serial ==================
 [ -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so ] # Must be present
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
 install -p -m 644 $(basename %{SOURCE2}) $RPM_BUILD_ROOT%{_libdir}/
+
+%if %{with python3}
+echo ============================= install serial-py3 ==================
+./b2 -d+2 -q %{?_smp_mflags} \
+	--user-config=python3-config.jam \
+	--with-python --build-dir=serial-py3 \
+	--prefix=$RPM_BUILD_ROOT%{_prefix} \
+	--libdir=$RPM_BUILD_ROOT%{_libdir} \
+	variant=release threading=multi debug-symbols=on pch=off \
+	python=%{python3_version} install
+
+%endif
 
 echo ============================= install Boost.Build ==================
 (cd tools/build
@@ -987,6 +1175,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun math -p /sbin/ldconfig
 
+%post numpy -p /sbin/ldconfig
+
+%postun numpy -p /sbin/ldconfig
+
+%if %{with python3}
+%post numpy3 -p /sbin/ldconfig
+
+%postun numpy3 -p /sbin/ldconfig
+%endif
+
 %post program-options -p /sbin/ldconfig
 
 %postun program-options -p /sbin/ldconfig
@@ -994,6 +1192,12 @@ rm -rf $RPM_BUILD_ROOT
 %post python -p /sbin/ldconfig
 
 %postun python -p /sbin/ldconfig
+
+%if %{with python3}
+%post python3 -p /sbin/ldconfig
+
+%postun python3 -p /sbin/ldconfig
+%endif
 
 %post random -p /sbin/ldconfig
 
@@ -1128,6 +1332,16 @@ fi
 %{_libdir}/libboost_math_tr1f.so.%{sonamever}
 %{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
+%files numpy
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_numpy.so.%{sonamever}
+
+%if %{with python3}
+%files numpy3
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_numpy3.so.%{sonamever}
+%endif
+
 %files test
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_prg_exec_monitor.so.%{sonamever}
@@ -1148,6 +1362,7 @@ fi
 
 %files python3-devel
 %license LICENSE_1_0.txt
+%{_libdir}/libboost_numpy3.so
 %{_libdir}/libboost_python3.so
 %endif
 
@@ -1220,6 +1435,7 @@ fi
 %{_libdir}/libboost_math_c99.so
 %{_libdir}/libboost_math_c99f.so
 %{_libdir}/libboost_math_c99l.so
+%{_libdir}/libboost_numpy.so
 %{_libdir}/libboost_prg_exec_monitor.so
 %{_libdir}/libboost_unit_test_framework.so
 %{_libdir}/libboost_program_options.so
@@ -1254,12 +1470,27 @@ fi
 
 %files openmpi-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_*.so
+%{_libdir}/openmpi/lib/libboost_mpi.so
+%{_libdir}/openmpi/lib/libboost_mpi_python.so
+%{_libdir}/openmpi/lib/libboost_graph_parallel.so
 
 %files openmpi-python
 %license LICENSE_1_0.txt
 %{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
-%{_libdir}/openmpi/lib/mpi.so
+%{python2_sitearch}/openmpi/boost/
+
+%if %{with python3}
+
+%files openmpi-python3
+%license LICENSE_1_0.txt
+%{_libdir}/openmpi/lib/libboost_mpi_python3.so.%{sonamever}
+%{python3_sitearch}/openmpi/boost/
+
+%files openmpi-python3-devel
+%license LICENSE_1_0.txt
+%{_libdir}/openmpi/lib/libboost_mpi_python3.so
+
+%endif
 
 %files graph-openmpi
 %license LICENSE_1_0.txt
@@ -1276,12 +1507,27 @@ fi
 
 %files mpich-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_*.so
+%{_libdir}/mpich/lib/libboost_mpi.so
+%{_libdir}/mpich/lib/libboost_mpi_python.so
+%{_libdir}/mpich/lib/libboost_graph_parallel.so
 
 %files mpich-python
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_mpi_python.so.%{sonamever}
-%{_libdir}/mpich/lib/mpi.so
+%{python2_sitearch}/mpich/boost/
+
+%if %{with python3}
+
+%files mpich-python3
+%license LICENSE_1_0.txt
+%{_libdir}/mpich/lib/libboost_mpi_python3.so.%{sonamever}
+%{python3_sitearch}/mpich/boost/
+
+%files mpich-python3-devel
+%license LICENSE_1_0.txt
+%{_libdir}/mpich/lib/libboost_mpi_python3.so
+
+%endif
 
 %files graph-mpich
 %license LICENSE_1_0.txt
@@ -1304,6 +1550,12 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Sep 22 2017 Yaakov Selkowitz <yselkowi@redhat.com> - 1.63.0-8
+- Add numpy and numpy3 packages (#1451982)
+- Fix location of openmpi-python and mpich-python modules
+- Add openmpi-python3 and mpich-python3 packages
+- Add missing ldconfig post/postun for python3 package
+
 * Tue Sep 12 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-7
 - Fix descriptions
 - Patch to fix #1485641
