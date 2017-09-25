@@ -458,7 +458,7 @@ The Boost.TypeErasure library provides runtime polymorphism in C++
 that is more flexible than that provided by the core language.
 
 %package wave
-Summary: Run-time component of boost C99/C++ pre-processing library
+Summary: Run-time component of boost C99/C++ preprocessing library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
