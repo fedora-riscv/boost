@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -139,6 +139,9 @@ Patch84: boost-1.63.0-VERSION-parameter.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1485641
 # https://github.com/boostorg/icl/pull/9
 Patch86: boost-1.63.0-icl-ttp-matching.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1421784
+Patch87: boost-1.63.0-asio-ssl.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -457,7 +460,7 @@ The Boost.TypeErasure library provides runtime polymorphism in C++
 that is more flexible than that provided by the core language.
 
 %package wave
-Summary: Run-time component of boost C99/C++ pre-processing library
+Summary: Run-time component of boost C99/C++ preprocessing library
 Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
@@ -469,7 +472,7 @@ Requires: boost-thread%{?_isa} = %{version}-%{release}
 
 Run-time support for the Boost.Wave library, a Standards conforming,
 and highly configurable implementation of the mandated C99/C++
-pre-processor functionality.
+preprocessor functionality.
 
 %package devel
 Summary: The Boost C++ headers and shared development libraries
@@ -739,10 +742,11 @@ Group: Development/Tools
 %description jam
 Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
 Historically, Boost.Jam is based on on FTJam and on Perforce Jam but has grown
-a number of significant features and is now developed independently
+a number of significant features and is now developed independently.
 
 %prep
 %setup -q -n %{toplev_dirname}
+find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
 %patch5 -p1
@@ -757,6 +761,7 @@ a number of significant features and is now developed independently
 %patch83 -p1
 %patch84 -p1
 %patch86 -p2
+%patch87 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1550,6 +1555,12 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Sep 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-9
+- Patch asio so header is self-contained (#1421784)
+- Fix some rpmlint issues:
+- Remove executable bits on header files (spurious-executable-perm)
+- Adjust boost.wave %%description (spelling-error)
+
 * Fri Sep 22 2017 Yaakov Selkowitz <yselkowi@redhat.com> - 1.63.0-8
 - Add numpy and numpy3 packages (#1451982)
 - Fix location of openmpi-python and mpich-python modules

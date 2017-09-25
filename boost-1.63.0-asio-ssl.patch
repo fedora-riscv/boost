@@ -1,0 +1,25 @@
+From 2b6230aef8c819a2118196861c46a9011cfaf46e Mon Sep 17 00:00:00 2001
+From: Christopher Kohlhoff <chris@kohlhoff.com>
+Date: Sun, 5 Mar 2017 22:58:18 +1100
+Subject: [PATCH] Make sure asio/ssl/error.hpp is self-contained.
+
+---
+ include/boost/asio/ssl/error.hpp |  1 +
+ test/ssl/Jamfile                 |  1 +
+ test/ssl/Jamfile.v2              |  2 ++
+ test/ssl/error.cpp               | 25 +++++++++++++++++++++++++
+ 4 files changed, 29 insertions(+)
+ create mode 100644 test/ssl/error.cpp
+
+diff --git a/include/boost/asio/ssl/error.hpp b/include/boost/asio/ssl/error.hpp
+index c7825e64..968902c5 100644
+--- a/include/boost/asio/ssl/error.hpp
++++ b/include/boost/asio/ssl/error.hpp
+@@ -17,6 +17,7 @@
+ 
+ #include <boost/asio/detail/config.hpp>
+ #include <boost/system/error_code.hpp>
++#include <boost/asio/ssl/detail/openssl_types.hpp>
+ 
+ #include <boost/asio/detail/push_options.hpp>
+ 
