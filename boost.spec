@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -285,9 +285,6 @@ tools along with public interfaces for extending the library.
 %package math
 Summary: Math functions for boost TR1 library
 Group: System Environment/Libraries
-%if %{with quadmath}
-Requires: libquadmath%{?_isa}
-%endif
 
 %description math
 
@@ -477,7 +474,7 @@ Requires: boost-thread%{?_isa} = %{version}-%{release}
 
 Run-time support for the Boost.Wave library, a Standards conforming,
 and highly configurable implementation of the mandated C99/C++
-pre-processor functionality.
+preprocessor functionality.
 
 %package devel
 Summary: The Boost C++ headers and shared development libraries
@@ -747,10 +744,11 @@ Group: Development/Tools
 %description jam
 Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
 Historically, Boost.Jam is based on on FTJam and on Perforce Jam but has grown
-a number of significant features and is now developed independently
+a number of significant features and is now developed independently.
 
 %prep
 %setup -q -n %{toplev_dirname}
+find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
 %patch5 -p1
@@ -1555,6 +1553,12 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Sep 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-4
+- Fix some rpmlint issues
+- Remove Requires for libquadmath (explicit-lib-dependency)
+- Remove executable bits on header files (spurious-executable-perm)
+- Adjust boost.wave %%description (spelling-error)
+
 * Wed Sep 13 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-3
 - Rename python2-boost to boost-python2
 
