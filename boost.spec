@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1553,6 +1553,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Nov 30 2017 Pete Walter <pwalter@fedoraproject.org> - 1.64.0-5
+- Rebuild for ICU 60.1
+
 * Mon Sep 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-4
 - Fix some rpmlint issues
 - Remove Requires for libquadmath (explicit-lib-dependency)
