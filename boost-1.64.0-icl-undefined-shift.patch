@@ -1,0 +1,28 @@
+From 9687dea689e58cd1f67440fa529cb5c9692e9858 Mon Sep 17 00:00:00 2001
+From: Avi Kivity <avi@scylladb.com>
+Date: Sun, 2 Jul 2017 12:56:35 +0300
+Subject: [PATCH] Fix undefined behavior in interval_bounds::reverse_right()
+
+The ~ operator converts _bits from unsigned char to int, and makes it
+negative to boot. Shifting left a negative number is undefined behavior.
+
+Cast it back to unsigned char to prevent undefined behavior.
+---
+ include/boost/icl/interval_bounds.hpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/boost/icl/interval_bounds.hpp b/include/boost/icl/interval_bounds.hpp
+index edf16d0..f917cb6 100644
+--- a/include/boost/icl/interval_bounds.hpp
++++ b/include/boost/icl/interval_bounds.hpp
+@@ -41,8 +41,8 @@ class interval_bounds
+     interval_bounds all  ()const { return interval_bounds(_bits & _all  ); }
+     interval_bounds left ()const { return interval_bounds(_bits & _left ); }
+     interval_bounds right()const { return interval_bounds(_bits & _right); }
+-    interval_bounds reverse_left ()const { return interval_bounds((~_bits>>1) & _right); }
+-    interval_bounds reverse_right()const { return interval_bounds((~_bits<<1) & _left ); }
++    interval_bounds reverse_left ()const { return interval_bounds((bound_type(~_bits)>>1) & _right); }
++    interval_bounds reverse_right()const { return interval_bounds((bound_type(~_bits)<<1) & _left ); }
+ 
+     bound_type bits()const{ return _bits; }
+ 
