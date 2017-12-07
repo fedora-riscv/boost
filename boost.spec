@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -142,6 +142,10 @@ Patch86: boost-1.63.0-icl-ttp-matching.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1421784
 Patch87: boost-1.63.0-asio-ssl.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1516837
+# https://github.com/boostorg/icl/pull/11
+Patch88: boost-1.64.0-icl-undefined-shift.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -761,7 +765,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch83 -p1
 %patch84 -p1
 %patch86 -p2
-%patch87 -p2
+%patch88 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1555,6 +1559,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Dec 07 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-10
+- Patch to fix #1516837
+
 * Mon Sep 25 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-9
 - Patch asio so header is self-contained (#1421784)
 - Fix some rpmlint issues:
