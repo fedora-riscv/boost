@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -143,6 +143,10 @@ Patch85: boost-1.64.0-serialization-make_array.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1485641
 # https://github.com/boostorg/icl/pull/9
 Patch86: boost-1.64.0-icl-ttp-matching.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1516837
+# https://github.com/boostorg/icl/pull/11
+Patch87: boost-1.64.0-icl-undefined-shift.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -764,6 +768,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch84 -p2
 %patch85 -p2
 %patch86 -p2
+%patch87 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1553,6 +1558,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Dec 07 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-6
+- Patch to fix #1516837
+
 * Thu Nov 30 2017 Pete Walter <pwalter@fedoraproject.org> - 1.64.0-5
 - Rebuild for ICU 60.1
 
