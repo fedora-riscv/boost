@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -339,6 +339,7 @@ conventional methods such as command-line and configuration file.
 
 %package python2
 # Remove before F30
+Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
 Obsoletes: python2-%{name} < %{version}-%{release}
@@ -1558,6 +1559,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jan 17 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-7
+- Restore "Provides: boost-python" for boost-python2
+
 * Thu Dec 07 2017 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-6
 - Patch to fix #1516837
 
