@@ -33,9 +33,9 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.64.0
-%global version_enc 1_64_0
-Release: 7%{?dist}
+Version: 1.66.0
+%global version_enc 1_66_0
+Release: 0.1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -119,34 +119,16 @@ Patch51: boost-1.58.0-pool-test_linking.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1102667
 Patch61: boost-1.57.0-python-libpython_dep.patch
-Patch62: boost-1.57.0-python-abi_letters.patch
+Patch62: boost-1.66.0-python-abi_letters.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1190039
-Patch65: boost-1.57.0-build-optflags.patch
+Patch65: boost-1.66.0-build-optflags.patch
 
 # Prevent gcc.jam from setting -m32 or -m64.
-Patch68: boost-1.58.0-address-model.patch
+Patch68: boost-1.66.0-address-model.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
-Patch82: boost-1.60.0-no-rpath.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1451982
-Patch83: boost-1.63.0-dual-python-build-v2.patch
-
-# https://github.com/boostorg/mpi/pull/39
-Patch84: boost-1.64.0-mpi-get_data.patch
-
-# https://svn.boost.org/trac10/ticket/12516
-# https://github.com/boostorg/serialization/commit/1d86261581230e2dc5d617a9b16287d326f3e229
-Patch85: boost-1.64.0-serialization-make_array.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1485641
-# https://github.com/boostorg/icl/pull/9
-Patch86: boost-1.64.0-icl-ttp-matching.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1516837
-# https://github.com/boostorg/icl/pull/11
-Patch87: boost-1.64.0-icl-undefined-shift.patch
+Patch82: boost-1.66.0-no-rpath.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -412,6 +394,14 @@ Group: System Environment/Libraries
 %description signals
 
 Run-time support for managed signals & slots callback implementation.
+
+%package stacktrace
+Summary: Run-time component of boost stacktrace library
+Group: System Environment/Libraries
+
+%description stacktrace
+
+Run-time component of the Boost stacktrace library.
 
 %package system
 Summary: Run-time component of boost system support library
@@ -764,12 +754,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch62 -p1
 %patch65 -p1
 %patch68 -p1
-%patch82 -p0
-%patch83 -p1
-%patch84 -p2
-%patch85 -p2
-%patch86 -p2
-%patch87 -p2
+%patch82 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1224,6 +1209,10 @@ rm -f tmp-doc-directories
 
 %postun signals -p /sbin/ldconfig
 
+%post stacktrace -p /sbin/ldconfig
+
+%postun stacktrace -p /sbin/ldconfig
+
 %post system -p /sbin/ldconfig
 
 %postun system -p /sbin/ldconfig
@@ -1392,6 +1381,12 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_signals.so.%{sonamever}
 
+%files stacktrace
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_stacktrace_addr2line.so.%{sonamever}
+%{_libdir}/libboost_stacktrace_basic.so.%{sonamever}
+%{_libdir}/libboost_stacktrace_noop.so.%{sonamever}
+
 %files system
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_system.so.%{sonamever}
@@ -1454,6 +1449,9 @@ fi
 %{_libdir}/libboost_serialization.so
 %{_libdir}/libboost_wserialization.so
 %{_libdir}/libboost_signals.so
+%{_libdir}/libboost_stacktrace_addr2line.so
+%{_libdir}/libboost_stacktrace_basic.so
+%{_libdir}/libboost_stacktrace_noop.so
 %{_libdir}/libboost_system.so
 %{_libdir}/libboost_thread.so
 %{_libdir}/libboost_timer.so
@@ -1559,6 +1557,15 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Jan 19 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-0.1
+- Rebase to 1.66.0
+  - Drop patches:
+    boost-1.63.0-dual-python-build-v2.patch
+    boost-1.64.0-mpi-get_data.patch
+    boost-1.64.0-serialization-make_array.patch
+    boost-1.64.0-icl-ttp-matching.patch
+    boost-1.64.0-icl-undefined-shift.patch
+
 * Wed Jan 17 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-7
 - Restore "Provides: boost-python" for boost-python2
 
