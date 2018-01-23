@@ -798,7 +798,7 @@ echo ============================= build serial ==================
 ./b2 -d+2 -q %{?_smp_mflags} \
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
-	--without-context --without-coroutine --without-coroutine2 \
+	--without-context --without-coroutine \
 	--without-fiber \
 %endif
 	variant=release threading=multi debug-symbols=on pch=off \
@@ -992,7 +992,7 @@ echo ============================= install serial ==================
 ./b2 -d+2 -q %{?_smp_mflags} \
 	--without-mpi --without-graph_parallel --build-dir=serial \
 %if !%{with context}
-	--without-context --without-coroutine --without-coroutine2 \
+	--without-context --without-coroutine \
 	--without-fiber \
 %endif
 	--prefix=$RPM_BUILD_ROOT%{_prefix} \
@@ -1559,6 +1559,7 @@ fi
 %changelog
 * Fri Jan 19 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-0.1
 - Rebase to 1.66.0
+  - Do not pass --without-coroutine2 to b2
   - Drop patches:
     boost-1.63.0-dual-python-build-v2.patch
     boost-1.64.0-mpi-get_data.patch
