@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 0.1%{?dist}
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -129,6 +129,9 @@ Patch68: boost-1.66.0-address-model.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.66.0-no-rpath.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1541035
+Patch83: boost-1.66.0-bjam-build-flags.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -755,6 +758,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch65 -p1
 %patch68 -p1
 %patch82 -p1
+%patch83 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -775,12 +779,14 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 # through them all at this time.
 # There are also lots of noisy but harmless unused local typedef warnings.
 export RPM_OPT_FLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-unused-local-typedefs -Wno-deprecated-declarations"
+export RPM_LD_FLAGS
 
 cat > ./tools/build/src/user-config.jam << "EOF"
 import os ;
 local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
+local RPM_LD_FLAGS = [ os.environ RPM_LD_FLAGS ] ;
 
-using gcc : : : <compileflags>$(RPM_OPT_FLAGS) ;
+using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
@@ -825,8 +831,9 @@ m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
 cat > python3-config.jam << "EOF"
 import os ;
 local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
+local RPM_LD_FLAGS = [ os.environ RPM_LD_FLAGS ] ;
 
-using gcc : : : <compileflags>$(RPM_OPT_FLAGS) ;
+using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
@@ -1557,6 +1564,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Feb 05 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-1
+- Add RPM_LD_FLAGS to Jamfile and patch build.sh to use RPM flags (#1541035).
+
 * Fri Jan 19 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-0.1
 - Rebase to 1.66.0
   - Do not pass --without-coroutine2 to b2
