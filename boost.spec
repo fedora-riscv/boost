@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1564,6 +1564,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Feb 07 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-2
+- Add RPM_OPT_FLAGS and RPM_LD_FLAGS to build flags for bjam (#1541035).
+
 * Mon Feb 05 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-1
 - Add RPM_LD_FLAGS to Jamfile and patch build.sh to use RPM flags (#1541035).
 
