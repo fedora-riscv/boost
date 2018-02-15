@@ -35,12 +35,11 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
 URL: http://www.boost.org
-Group: System Environment/Libraries
 
 Source0: https://sourceforge.net/projects/boost/files/boost/%{version}/%{toplev_dirname}.tar.bz2
 Source1: ver.py
@@ -148,7 +147,6 @@ in future standards.)
 
 %package atomic
 Summary: Run-time component of boost atomic library
-Group: System Environment/Libraries
 
 %description atomic
 
@@ -159,7 +157,6 @@ variables.
 
 %package chrono
 Summary: Run-time component of boost chrono library
-Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description chrono
@@ -168,7 +165,6 @@ Run-time support for Boost.Chrono, a set of useful time utilities.
 
 %package container
 Summary: Run-time component of boost container library
-Group: System Environment/Libraries
 
 %description container
 
@@ -180,7 +176,6 @@ standard draft features for compilers that comply with C++03.
 %if %{with context}
 %package context
 Summary: Run-time component of boost context switching library
-Group: System Environment/Libraries
 
 %description context
 
@@ -189,7 +184,6 @@ provides a sort of cooperative multitasking on a single thread.
 
 %package coroutine
 Summary: Run-time component of boost coroutine library
-Group: System Environment/Libraries
 
 %description coroutine
 Run-time support for Boost.Coroutine, a library that provides
@@ -200,7 +194,6 @@ suspending and resuming execution.
 
 %package date-time
 Summary: Run-time component of boost date-time library
-Group: System Environment/Libraries
 
 %description date-time
 
@@ -210,7 +203,6 @@ on generic programming concepts.
 %if %{with context}
 %package fiber
 Summary: Run-time component of boost fiber library
-Group: System Environment/Libraries
 
 %description fiber
 
@@ -220,7 +212,6 @@ micro-/userland-threads (fibers) scheduled cooperatively.
 
 %package filesystem
 Summary: Run-time component of boost filesystem library
-Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description filesystem
@@ -231,7 +222,6 @@ directories.
 
 %package graph
 Summary: Run-time component of boost graph library
-Group: System Environment/Libraries
 Requires: boost-regex%{?_isa} = %{version}-%{release}
 
 %description graph
@@ -242,7 +232,6 @@ Library (STL).
 
 %package iostreams
 Summary: Run-time component of boost iostreams library
-Group: System Environment/Libraries
 
 %description iostreams
 
@@ -251,7 +240,6 @@ stream buffers and i/o filters.
 
 %package locale
 Summary: Run-time component of boost locale library
-Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 Requires: boost-thread%{?_isa} = %{version}-%{release}
@@ -263,7 +251,6 @@ handling tools.
 
 %package log
 Summary: Run-time component of boost logging library
-Group: System Environment/Libraries
 
 %description log
 
@@ -273,7 +260,6 @@ tools along with public interfaces for extending the library.
 
 %package math
 Summary: Math functions for boost TR1 library
-Group: System Environment/Libraries
 
 %description math
 
@@ -282,7 +268,6 @@ portion of Boost.TR1.
 
 %package numpy
 Summary: Run-time component of boost python numpy extension
-Group: System Environment/Libraries
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: python2-numpy
 
@@ -298,7 +283,6 @@ support for the NumPy extension of the Boost Python Library for Python 2.
 
 %package numpy3
 Summary: Run-time component of boost numpy library for Python 3
-Group: System Environment/Libraries
 Requires: boost-python3%{?_isa} = %{version}-%{release}
 Requires: python3-numpy
 
@@ -314,7 +298,6 @@ support for the NumPy extension of the Boost Python Library for Python 3.
 
 %package program-options
 Summary:  Run-time component of boost program_options library
-Group: System Environment/Libraries
 
 %description program-options
 
@@ -329,7 +312,6 @@ Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
 Obsoletes: python2-%{name} < %{version}-%{release}
 Summary: Run-time component of boost python library
-Group: System Environment/Libraries
 
 %description python2
 
@@ -343,7 +325,6 @@ support for the Boost Python Library compiled for Python 2.
 
 %package python3
 Summary: Run-time component of boost python library for Python 3
-Group: System Environment/Libraries
 
 %description python3
 
@@ -355,7 +336,6 @@ support for the Boost Python Library compiled for Python 3.
 
 %package python3-devel
 Summary: Shared object symbolic links for Boost.Python 3
-Group: System Environment/Libraries
 Requires: boost-numpy3%{?_isa} = %{version}-%{release}
 Requires: boost-python3%{?_isa} = %{version}-%{release}
 Requires: boost-devel%{?_isa} = %{version}-%{release}
@@ -368,7 +348,6 @@ Shared object symbolic links for Python 3 variant of Boost.Python.
 
 %package random
 Summary: Run-time component of boost random library
-Group: System Environment/Libraries
 
 %description random
 
@@ -376,7 +355,6 @@ Run-time support for boost random library.
 
 %package regex
 Summary: Run-time component of boost regular expression library
-Group: System Environment/Libraries
 
 %description regex
 
@@ -384,7 +362,6 @@ Run-time support for boost regular expression library.
 
 %package serialization
 Summary: Run-time component of boost serialization library
-Group: System Environment/Libraries
 
 %description serialization
 
@@ -392,7 +369,6 @@ Run-time support for serialization for persistence and marshaling.
 
 %package signals
 Summary: Run-time component of boost signals and slots library
-Group: System Environment/Libraries
 
 %description signals
 
@@ -400,7 +376,6 @@ Run-time support for managed signals & slots callback implementation.
 
 %package stacktrace
 Summary: Run-time component of boost stacktrace library
-Group: System Environment/Libraries
 
 %description stacktrace
 
@@ -408,7 +383,6 @@ Run-time component of the Boost stacktrace library.
 
 %package system
 Summary: Run-time component of boost system support library
-Group: System Environment/Libraries
 
 %description system
 
@@ -417,7 +391,6 @@ the diagnostics support that is part of the C++11 standard library.
 
 %package test
 Summary: Run-time component of boost test library
-Group: System Environment/Libraries
 
 %description test
 
@@ -426,7 +399,6 @@ program execution monitoring.
 
 %package thread
 Summary: Run-time component of boost thread library
-Group: System Environment/Libraries
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
 %description thread
@@ -438,7 +410,6 @@ data specific to individual threads.
 
 %package timer
 Summary: Run-time component of boost timer library
-Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
@@ -450,7 +421,6 @@ with as little as one #include and one additional line of code.
 
 %package type_erasure
 Summary: Run-time component of boost type erasure library
-Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 
@@ -461,7 +431,6 @@ that is more flexible than that provided by the core language.
 
 %package wave
 Summary: Run-time component of boost C99/C++ preprocessing library
-Group: System Environment/Libraries
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-date-time%{?_isa} = %{version}-%{release}
 Requires: boost-filesystem%{?_isa} = %{version}-%{release}
@@ -476,7 +445,6 @@ preprocessor functionality.
 
 %package devel
 Summary: The Boost C++ headers and shared development libraries
-Group: Development/Libraries
 Requires: boost%{?_isa} = %{version}-%{release}
 Provides: boost-python-devel
 Requires: libicu-devel%{?_isa}
@@ -497,7 +465,6 @@ Headers and shared object symbolic links for the Boost C++ libraries.
 
 %package static
 Summary: The Boost C++ static development libraries
-Group: Development/Libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Obsoletes: boost-devel-static < 1.34.1-14
 Provides: boost-devel-static = %{version}-%{release}
@@ -507,7 +474,6 @@ Static Boost C++ libraries.
 
 %package doc
 Summary: HTML documentation for the Boost C++ libraries
-Group: Documentation
 %if 0%{?rhel} >= 6
 BuildArch: noarch
 %endif
@@ -524,7 +490,6 @@ web page (http://www.boost.org/doc/libs/%{version_enc}).
 
 %package examples
 Summary: Source examples for the Boost C++ libraries
-Group: Documentation
 %if 0%{?rhel} >= 6
 BuildArch: noarch
 %endif
@@ -538,7 +503,6 @@ This package contains example source files distributed with boost.
 
 %package openmpi
 Summary: Run-time component of Boost.MPI library
-Group: System Environment/Libraries
 BuildRequires: openmpi-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 
@@ -549,7 +513,6 @@ API over the OpenMPI implementation of MPI.
 
 %package openmpi-devel
 Summary: Shared library symbolic links for Boost.MPI
-Group: System Environment/Libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-openmpi-python%{?_isa} = %{version}-%{release}
@@ -562,7 +525,6 @@ API over the OpenMPI implementation of MPI.
 
 %package openmpi-python
 Summary: Python run-time component of Boost.MPI library
-Group: System Environment/Libraries
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -577,7 +539,6 @@ API over the OpenMPI implementation of MPI.
 
 %package openmpi-python3
 Summary: Python 3 run-time component of Boost.MPI library
-Group: System Environment/Libraries
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-python3%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -590,7 +551,6 @@ API over the OpenMPI implementation of MPI.
 
 %package openmpi-python3-devel
 Summary: Shared library symbolic links for Boost.MPI Python 3 component
-Group: System Environment/Libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-python3-devel%{?_isa} = %{version}-%{release}
 Requires: boost-openmpi-devel%{?_isa} = %{version}-%{release}
@@ -605,7 +565,6 @@ providing a clean C++ API over the OpenMPI implementation of MPI.
 
 %package graph-openmpi
 Summary: Run-time component of parallel boost graph library
-Group: System Environment/Libraries
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 
@@ -623,7 +582,6 @@ back-end to do the parallel work.
 
 %package mpich
 Summary: Run-time component of Boost.MPI library
-Group: System Environment/Libraries
 BuildRequires: mpich-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Provides: boost-mpich2 = %{version}-%{release}
@@ -636,7 +594,6 @@ API over the MPICH implementation of MPI.
 
 %package mpich-devel
 Summary: Shared library symbolic links for Boost.MPI
-Group: System Environment/Libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-mpich-python%{?_isa} = %{version}-%{release}
@@ -651,7 +608,6 @@ API over the MPICH implementation of MPI.
 
 %package mpich-python
 Summary: Python run-time component of Boost.MPI library
-Group: System Environment/Libraries
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -668,7 +624,6 @@ API over the MPICH implementation of MPI.
 
 %package mpich-python3
 Summary: Python 3 run-time component of Boost.MPI library
-Group: System Environment/Libraries
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-python3%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
@@ -681,7 +636,6 @@ API over the MPICH implementation of MPI.
 
 %package mpich-python3-devel
 Summary: Shared library symbolic links for Boost.MPI Python 3 component
-Group: System Environment/Libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-python3-devel%{?_isa} = %{version}-%{release}
 Requires: boost-mpich-devel%{?_isa} = %{version}-%{release}
@@ -696,7 +650,6 @@ providing a clean C++ API over the MPICH implementation of MPI.
 
 %package graph-mpich
 Summary: Run-time component of parallel boost graph library
-Group: System Environment/Libraries
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Provides: boost-graph-mpich2 = %{version}-%{release}
@@ -713,7 +666,6 @@ back-end to do the parallel work.
 
 %package build
 Summary: Cross platform build system for C++ projects
-Group: Development/Tools
 Requires: boost-jam
 BuildArch: noarch
 
@@ -727,7 +679,6 @@ C++ compilers -- on Windows, OSX, Linux and commercial UNIX systems.
 
 %package doctools
 Summary: Tools for working with Boost documentation
-Group: Applications/Publishing
 Requires: docbook-dtds
 Requires: docbook-style-xsl
 
@@ -737,7 +688,6 @@ Tools for working with Boost documentation in BoostBook or QuickBook format.
 
 %package jam
 Summary: A low-level build tool
-Group: Development/Tools
 
 %description jam
 Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
@@ -1115,135 +1065,6 @@ rm -f tmp-doc-directories
 %{__install} -p -m 644 -t $EXAMPLESPATH LICENSE_1_0.txt
 
 
-# MPI subpackages don't need the ldconfig magic.  They are hidden by
-# default, in MPI back-end-specific directory, and only show to the
-# user after the relevant environment module has been loaded.
-# rpmlint will report that as errors, but it is fine.
-
-%post atomic -p /sbin/ldconfig
-
-%postun atomic -p /sbin/ldconfig
-
-%post chrono -p /sbin/ldconfig
-
-%postun chrono -p /sbin/ldconfig
-
-%post container -p /sbin/ldconfig
-
-%postun container -p /sbin/ldconfig
-
-%if %{with context}
-%post context -p /sbin/ldconfig
-
-%postun context -p /sbin/ldconfig
-
-%post coroutine -p /sbin/ldconfig
-
-%postun coroutine -p /sbin/ldconfig
-%endif
-
-%post date-time -p /sbin/ldconfig
-
-%postun date-time -p /sbin/ldconfig
-
-%if %{with context}
-%post fiber -p /sbin/ldconfig
-
-%postun fiber -p /sbin/ldconfig
-%endif
-
-%post filesystem -p /sbin/ldconfig
-
-%postun filesystem -p /sbin/ldconfig
-
-%post graph -p /sbin/ldconfig
-
-%postun graph -p /sbin/ldconfig
-
-%post iostreams -p /sbin/ldconfig
-
-%postun iostreams -p /sbin/ldconfig
-
-%post locale -p /sbin/ldconfig
-
-%postun locale -p /sbin/ldconfig
-
-%post log -p /sbin/ldconfig
-
-%postun log -p /sbin/ldconfig
-
-%post math -p /sbin/ldconfig
-
-%postun math -p /sbin/ldconfig
-
-%post numpy -p /sbin/ldconfig
-
-%postun numpy -p /sbin/ldconfig
-
-%if %{with python3}
-%post numpy3 -p /sbin/ldconfig
-
-%postun numpy3 -p /sbin/ldconfig
-%endif
-
-%post program-options -p /sbin/ldconfig
-
-%postun program-options -p /sbin/ldconfig
-
-%post python2 -p /sbin/ldconfig
-
-%postun python2 -p /sbin/ldconfig
-
-%if %{with python3}
-%post python3 -p /sbin/ldconfig
-
-%postun python3 -p /sbin/ldconfig
-%endif
-
-%post random -p /sbin/ldconfig
-
-%postun random -p /sbin/ldconfig
-
-%post regex -p /sbin/ldconfig
-
-%postun regex -p /sbin/ldconfig
-
-%post serialization -p /sbin/ldconfig
-
-%postun serialization -p /sbin/ldconfig
-
-%post signals -p /sbin/ldconfig
-
-%postun signals -p /sbin/ldconfig
-
-%post stacktrace -p /sbin/ldconfig
-
-%postun stacktrace -p /sbin/ldconfig
-
-%post system -p /sbin/ldconfig
-
-%postun system -p /sbin/ldconfig
-
-%post test -p /sbin/ldconfig
-
-%postun test -p /sbin/ldconfig
-
-%post thread -p /sbin/ldconfig
-
-%postun thread -p /sbin/ldconfig
-
-%post timer -p /sbin/ldconfig
-
-%postun timer -p /sbin/ldconfig
-
-%post type_erasure -p /sbin/ldconfig
-
-%postun type_erasure -p /sbin/ldconfig
-
-%post wave -p /sbin/ldconfig
-
-%postun wave -p /sbin/ldconfig
-
 %post doctools
 CATALOG=%{_sysconfdir}/xml/catalog
 %{_bindir}/xmlcatalog --noout --add "rewriteSystem" \
@@ -1564,6 +1385,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Feb 15 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-3
+- Remove unnecessary Group tags and post/postun scriptlets running ldconfig
+
 * Wed Feb 07 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-2
 - Add RPM_OPT_FLAGS and RPM_LD_FLAGS to build flags for bjam (#1541035).
 
