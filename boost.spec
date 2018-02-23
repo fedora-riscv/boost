@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -131,6 +131,9 @@ Patch82: boost-1.66.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
 Patch83: boost-1.66.0-bjam-build-flags.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1545092
+Patch84: boost-1.66.0-spirit-abs-overflow.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -709,6 +712,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch68 -p1
 %patch82 -p1
 %patch83 -p1
+%patch84 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1385,6 +1389,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Feb 23 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-4
+- Add patch to fix integer overflow in Boost.Spirit absolute_value (#1545092)
+
 * Thu Feb 15 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-3
 - Remove unnecessary Group tags and post/postun scriptlets running ldconfig
 
