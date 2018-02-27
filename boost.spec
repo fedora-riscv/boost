@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -56,6 +56,7 @@ Source2: libboost_thread.so
 # to have interested parties install them explicitly.
 Requires: boost-atomic%{?_isa} = %{version}-%{release}
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
+Requires: boost-container%{?_isa} = %{version}-%{release}
 %if %{with context}
 Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
@@ -1559,6 +1560,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Feb 28 2018 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-11
+- Ensure boost metapackage installs boost-container
+
 * Thu Dec 07 2017 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-10
 - Patch to fix #1516837
 
