@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -49,13 +49,16 @@ Source2: libboost_thread.so
 # equal to the Boost version (e.g., 1.41.0).
 %global sonamever %{version}
 
-# boost is an "umbrella" package that pulls in all other boost
+# boost is an "umbrella" package that pulls in all boost shared library
 # components, except for MPI and Python 3 sub-packages.  Those are
 # special in that they are rarely necessary, and it's not a big burden
 # to have interested parties install them explicitly.
+# The subpackages that don't install shared libraries are also not pulled in
+# (doc, doctools, examples, jam, static).
 Requires: boost-atomic%{?_isa} = %{version}-%{release}
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 %if %{with context}
+Requires: boost-container%{?_isa} = %{version}-%{release}
 Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
 %endif
@@ -76,6 +79,7 @@ Requires: boost-random%{?_isa} = %{version}-%{release}
 Requires: boost-regex%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Requires: boost-signals%{?_isa} = %{version}-%{release}
+Requires: boost-stacktrace%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 Requires: boost-test%{?_isa} = %{version}-%{release}
 Requires: boost-thread%{?_isa} = %{version}-%{release}
@@ -1389,6 +1393,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Feb 27 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-5
+- Ensure boost metapackage installs boost-container and boost-stacktrace.
+
 * Fri Feb 23 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-4
 - Add patch to fix integer overflow in Boost.Spirit absolute_value (#1545092)
 
