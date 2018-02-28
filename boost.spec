@@ -58,8 +58,8 @@ Source2: libboost_thread.so
 # (doc, doctools, examples, jam, static).
 Requires: boost-atomic%{?_isa} = %{version}-%{release}
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
-%if %{with context}
 Requires: boost-container%{?_isa} = %{version}-%{release}
+%if %{with context}
 Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
 %endif
@@ -1557,6 +1557,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Feb 28 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-5
+- Move Requires: boost-container out of conditional block.
+
 * Tue Feb 27 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-5
 - Ensure boost metapackage installs boost-container.
 
