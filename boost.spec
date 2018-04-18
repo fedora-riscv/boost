@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.63.0
 %global version_enc 1_63_0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -147,6 +147,10 @@ Patch87: boost-1.63.0-asio-ssl.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1516837
 # https://github.com/boostorg/icl/pull/11
 Patch88: boost-1.64.0-icl-undefined-shift.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1564252
+# https://svn.boost.org/trac10/ticket/13036
+Patch90: boost-1.64.0-regex-overflow.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -767,6 +771,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch84 -p1
 %patch86 -p2
 %patch88 -p2
+%patch90 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1560,6 +1565,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Apr 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-12
+- Add patch for Boost.Regex integer overflow (#1564252)
+
 * Wed Feb 28 2018 Jonathan Wakely <jwakely@redhat.com> - 1.63.0-11
 - Ensure boost metapackage installs boost-container
 
