@@ -155,6 +155,10 @@ Patch87: boost-1.64.0-icl-undefined-shift.patch
 # https://svn.boost.org/trac10/ticket/13036
 Patch90: boost-1.64.0-regex-overflow.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1530828
+# https://github.com/boostorg/config/pull/175
+Patch91: boost-1.64.0-config-cuda-version.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -773,6 +777,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch86 -p2
 %patch87 -p2
 %patch90 -p2
+%patch91 -p2
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1564,6 +1569,7 @@ fi
 %changelog
 * Wed Apr 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-6
 - Add patch for Boost.Regex integer overflow (#1564252)
+- Add patch for CUDA version macro changes (#1530828)
 
 * Wed Feb 28 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-5
 - Move Requires: boost-container out of conditional block.
