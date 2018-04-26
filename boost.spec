@@ -43,8 +43,7 @@ License: Boost and MIT and Python
 URL: http://www.boost.org
 
 Source0: https://sourceforge.net/projects/boost/files/boost/%{version}/%{toplev_dirname}.tar.bz2
-Source1: ver.py
-Source2: libboost_thread.so
+Source1: libboost_thread.so
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
 # equal to the Boost version (e.g., 1.41.0).
@@ -767,21 +766,15 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch83 -p1
 %patch84 -p1
 
-%if %{with python2}
-%global python2_version %(/usr/bin/python2 %{SOURCE1})
-%endif
-%if %{with python3}
-%global python3_version %(/usr/bin/python3 %{SOURCE1})
-%global python3_abiflags %(/usr/bin/python3-config --abiflags)
-%endif
-
 %build
+# Dump the versions being used into the build logs.
 %if %{with python2}
 : PYTHON2_VERSION=%{python2_version}
 %endif
 %if %{with python3}
+PYTHON3_ABIFLAGS=$(/usr/bin/python3-config --abiflags)
 : PYTHON3_VERSION=%{python3_version}
-: PYTHON3_ABIFLAGS=%{python3_abiflags}
+: PYTHON3_ABIFLAGS=${PYTHON3_ABIFLAGS}
 %endif
 
 # There are many strict aliasing warnings, and it's not feasible to go
@@ -836,7 +829,7 @@ else
 fi
 
 m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
-	%{SOURCE2} > $(basename %{SOURCE2})
+	%{SOURCE1} > $(basename %{SOURCE1})
 
 %if %{with python3}
 
@@ -854,7 +847,10 @@ using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
-using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}%{python3_abiflags} : : : : %{python3_abiflags} ;
+EOF
+
+cat >> python3-config.jam << EOF
+using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}${PYTHON3_ABIFLAGS} : : : : ${PYTHON3_ABIFLAGS} ;
 EOF
 
 echo ============================= build serial-py3 ==================
@@ -1042,7 +1038,7 @@ echo ============================= install serial ==================
 # itself for details of why we need to do this.
 [ -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so ] # Must be present
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
-install -p -m 644 $(basename %{SOURCE2}) $RPM_BUILD_ROOT%{_libdir}/
+install -p -m 644 $(basename %{SOURCE1}) $RPM_BUILD_ROOT%{_libdir}/
 
 %if %{with python3}
 echo ============================= install serial-py3 ==================
@@ -1494,6 +1490,8 @@ fi
 - Split new subpackage boost-openmpi-python2-devel out of boost-openmpi-devel.
 - Split new subpackage boost-mpich-python2-devel out of boost-mpich-devel.
 - Enable conditional build for python2 packages.
+- Drop ver.py source file and use python2_version and python3_version macros.
+- Use shell variable for Python 3 ABI flags instead of global macro.
 
 * Tue Feb 27 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-5
 - Ensure boost metapackage installs boost-container and boost-stacktrace.
