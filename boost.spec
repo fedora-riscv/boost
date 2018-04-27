@@ -489,8 +489,6 @@ Headers and shared object symbolic links for the Boost C++ libraries.
 %package static
 Summary: The Boost C++ static development libraries
 Requires: boost-devel%{?_isa} = %{version}-%{release}
-Obsoletes: boost-devel-static < 1.34.1-14
-Provides: boost-devel-static = %{version}-%{release}
 
 %description static
 Static Boost C++ libraries.
@@ -1476,6 +1474,7 @@ fi
 - Fix Provides: and Obsoletes: tags for renamed python2 subpackages
 - Remove old Provides: and Obsoletes: tags for odeint packages
 - Remove old Provides: and Obsoletes: tags for mpich2 packages
+- Remove old Provides: and Obsoletes: tags for boost-devel-static
 
 * Mon Apr 30 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-8
 - Rebuild for ICU 61.1
