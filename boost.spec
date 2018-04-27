@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -280,6 +280,9 @@ portion of Boost.TR1.
 Summary: Run-time component of boost numpy library for Python 2
 Requires: boost-python2%{?_isa} = %{version}-%{release}
 Requires: python2-numpy
+# Added for F29, remove for F31:
+Provides: boost-numpy%{?_isa} = %{version}-%{release}
+Obsoletes: boost-numpy < %{version}-%{release}
 
 %description numpy2
 
@@ -320,7 +323,7 @@ conventional methods such as command-line and configuration file.
 %if %{with python2}
 
 %package python2
-# Remove before F30
+# These Provides: and Obsoletes: were added for F28, remove for F30
 Provides: %{name}-python = %{version}-%{release}
 Provides: %{name}-python%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-python < %{version}-%{release}
@@ -340,6 +343,9 @@ Summary: Shared object symbolic links for Boost.Python 2
 Requires: boost-numpy2%{?_isa} = %{version}-%{release}
 Requires: boost-python2%{?_isa} = %{version}-%{release}
 Requires: boost-devel%{?_isa} = %{version}-%{release}
+# These Provides: and Obsoletes: were added for F28, remove them for F30
+Provides: boost-python-devel%{?_isa} = %{version}-%{release}
+Obsoletes: boost-python-devel < %{version}-%{release}
 
 %description python2-devel
 
@@ -472,7 +478,6 @@ preprocessor functionality.
 %package devel
 Summary: The Boost C++ headers and shared development libraries
 Requires: boost%{?_isa} = %{version}-%{release}
-Provides: boost-python-devel
 Requires: libicu-devel%{?_isa}
 %if %{with quadmath}
 Requires: libquadmath-devel%{?_isa}
@@ -556,6 +561,9 @@ Requires: boost-openmpi%{?_isa} = %{version}-%{release}
 Requires: boost-python%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Requires: python2-openmpi%{?_isa}
+# Added for F29, remove for F31:
+Provides: boost-openmpi-python%{?_isa} = %{version}-%{release}
+Obsoletes: boost-openmpi-python < %{version}-%{release}
 
 %description openmpi-python2
 
@@ -655,6 +663,9 @@ Requires: boost-serialization%{?_isa} = %{version}-%{release}
 Provides: boost-mpich2-python = %{version}-%{release}
 Obsoletes: boost-mpich2-python < 1.53.0-9
 Requires: python2-mpich%{?_isa}
+# Added for F29, remove for F31:
+Provides: boost-mpich-python%{?_isa} = %{version}-%{release}
+Obsoletes: boost-mpich-python < %{version}-%{release}
 
 %description mpich-python2
 
@@ -1482,6 +1493,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue May 01 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-9
+- Fix Provides: and Obsoletes: tags for renamed python2 subpackages
+
 * Mon Apr 30 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-8
 - Rebuild for ICU 61.1
 
