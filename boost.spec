@@ -58,8 +58,8 @@ Source1: libboost_thread.so
 # (doc, doctools, examples, jam, static).
 Requires: boost-atomic%{?_isa} = %{version}-%{release}
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
-%if %{with context}
 Requires: boost-container%{?_isa} = %{version}-%{release}
+%if %{with context}
 Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
 %endif
@@ -1475,6 +1475,7 @@ fi
 - Remove old Provides: and Obsoletes: tags for odeint packages
 - Remove old Provides: and Obsoletes: tags for mpich2 packages
 - Remove old Provides: and Obsoletes: tags for boost-devel-static
+- Make Requires: for boost-container unconditional
 
 * Mon Apr 30 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-8
 - Rebuild for ICU 61.1
