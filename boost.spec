@@ -619,8 +619,6 @@ back-end to do the parallel work.
 Summary: Run-time component of Boost.MPI library
 BuildRequires: mpich-devel
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
-Provides: boost-mpich2 = %{version}-%{release}
-Obsoletes: boost-mpich2 < 1.53.0-9
 
 %description mpich
 
@@ -632,8 +630,6 @@ Summary: Shared library symbolic links for Boost.MPI
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-graph-mpich%{?_isa} = %{version}-%{release}
-Provides: boost-mpich2-devel = %{version}-%{release}
-Obsoletes: boost-mpich2-devel < 1.53.0-9
 
 %description mpich-devel
 
@@ -647,8 +643,6 @@ Summary: Python run-time component of Boost.MPI library
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-python2%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
-Provides: boost-mpich2-python = %{version}-%{release}
-Obsoletes: boost-mpich2-python < 1.53.0-9
 Requires: python2-mpich%{?_isa}
 # Added for F29, remove for F31:
 Provides: boost-mpich-python%{?_isa} = %{version}-%{release}
@@ -704,8 +698,6 @@ providing a clean C++ API over the MPICH implementation of MPI.
 Summary: Run-time component of parallel boost graph library
 Requires: boost-mpich%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
-Provides: boost-graph-mpich2 = %{version}-%{release}
-Obsoletes: boost-graph-mpich2 < 1.53.0-9
 
 %description graph-mpich
 
@@ -1483,6 +1475,7 @@ fi
 * Tue May 01 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-9
 - Fix Provides: and Obsoletes: tags for renamed python2 subpackages
 - Remove old Provides: and Obsoletes: tags for odeint packages
+- Remove old Provides: and Obsoletes: tags for mpich2 packages
 
 * Mon Apr 30 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-8
 - Rebuild for ICU 61.1
