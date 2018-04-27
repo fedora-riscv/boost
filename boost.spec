@@ -483,14 +483,6 @@ Requires: libicu-devel%{?_isa}
 Requires: libquadmath-devel%{?_isa}
 %endif
 
-# Odeint was shipped in Fedora 18, but later became part of Boost.
-# Note we also obsolete odeint-doc down there.
-# https://bugzilla.redhat.com/show_bug.cgi?id=892850
-Provides: odeint = 2.2-5
-Obsoletes: odeint < 2.2-5
-Provides: odeint-devel = 2.2-5
-Obsoletes: odeint-devel < 2.2-5
-
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
 
@@ -508,11 +500,6 @@ Summary: HTML documentation for the Boost C++ libraries
 %if 0%{?rhel} >= 6
 BuildArch: noarch
 %endif
-Provides: boost-python-docs = %{version}-%{release}
-
-# See the description above.
-Provides: odeint-doc = 2.2-5
-Obsoletes: odeint-doc < 2.2-5
 
 %description doc
 This package contains the documentation in the HTML format of the Boost C++
@@ -1495,6 +1482,7 @@ fi
 %changelog
 * Tue May 01 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-9
 - Fix Provides: and Obsoletes: tags for renamed python2 subpackages
+- Remove old Provides: and Obsoletes: tags for odeint packages
 
 * Mon Apr 30 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-8
 - Rebuild for ICU 61.1
