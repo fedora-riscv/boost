@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -541,7 +541,6 @@ API over the OpenMPI implementation of MPI.
 Summary: Shared library symbolic links for Boost.MPI
 Requires: boost-devel%{?_isa} = %{version}-%{release}
 Requires: boost-openmpi%{?_isa} = %{version}-%{release}
-Requires: boost-openmpi-python%{?_isa} = %{version}-%{release}
 Requires: boost-graph-openmpi%{?_isa} = %{version}-%{release}
 
 %description openmpi-devel
@@ -1483,6 +1482,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Apr 27 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-7
+- Remove Requires: boost-openmpi-python from boost-openmpi-devel
+
 * Thu Apr 26 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-6
 - Remove main package dependency on boost-python and boost-numpy (#1569483)
 - Rename all subpackages using python2 from boost-xxx to boost-xxx2.
