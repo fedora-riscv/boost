@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -139,6 +139,9 @@ Patch83: boost-1.66.0-bjam-build-flags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1545092
 Patch84: boost-1.66.0-spirit-abs-overflow.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1585515
+Patch85: boost-1.66.0-compute.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -752,6 +755,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch82 -p1
 %patch83 -p1
 %patch84 -p1
+%patch85 -p2
 
 %build
 # Dump the versions being used into the build logs.
@@ -1470,6 +1474,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Jun 04 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-10
+- Add patch for Boost.Compute (#1585515)
+
 * Tue May 01 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-9
 - Fix Provides: and Obsoletes: tags for renamed python2 subpackages
 - Remove old Provides: and Obsoletes: tags for odeint packages
