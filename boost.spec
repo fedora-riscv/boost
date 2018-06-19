@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1474,6 +1474,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 1.66.0-11
+- Rebuilt for Python 3.7
+
 * Mon Jun 04 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-10
 - Add patch for Boost.Compute (#1585515)
 
