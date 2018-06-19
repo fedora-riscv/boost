@@ -143,6 +143,9 @@ Patch84: boost-1.66.0-spirit-abs-overflow.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1585515
 Patch85: boost-1.66.0-compute.patch
 
+# https://github.com/boostorg/python/pull/186
+Patch86: boost-1.66.0-python37.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -756,6 +759,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch83 -p1
 %patch84 -p1
 %patch85 -p2
+%patch86 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1474,6 +1478,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jun 19 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-11
+- Add patch to fix build with Python 3.7
+
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 1.66.0-11
 - Rebuilt for Python 3.7
 
