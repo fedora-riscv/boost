@@ -86,6 +86,7 @@ Requires: boost-timer%{?_isa} = %{version}-%{release}
 Requires: boost-type_erasure%{?_isa} = %{version}-%{release}
 Requires: boost-wave%{?_isa} = %{version}-%{release}
 
+BuildRequires: gcc-c++
 BuildRequires: m4
 BuildRequires: libstdc++-devel
 BuildRequires: bzip2-devel
