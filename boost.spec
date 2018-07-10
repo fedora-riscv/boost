@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1479,6 +1479,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jul 10 2018 Pete Walter <pwalter@fedoraproject.org> - 1.66.0-12
+- Rebuild for ICU 62
+
 * Tue Jun 19 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-11
 - Add patch to fix build with Python 3.7
 
