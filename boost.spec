@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.64.0
 %global version_enc 1_64_0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -158,6 +158,10 @@ Patch90: boost-1.64.0-regex-overflow.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1530828
 # https://github.com/boostorg/config/pull/175
 Patch91: boost-1.64.0-config-cuda-version.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1596468
+# https://github.com/boostorg/python/pull/218
+Patch92: boost-1.66.0-numpy3.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -778,6 +782,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch87 -p2
 %patch90 -p2
 %patch91 -p2
+%patch92 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1567,6 +1572,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-7
+- Patch numpy for Python 3 (#1596468)
+
 * Wed Apr 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.64.0-6
 - Add patch for Boost.Regex integer overflow (#1564252)
 - Add patch for CUDA version macro changes (#1530828)
