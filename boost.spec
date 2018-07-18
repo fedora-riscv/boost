@@ -36,7 +36,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -146,6 +146,10 @@ Patch85: boost-1.66.0-compute.patch
 
 # https://github.com/boostorg/python/pull/186
 Patch86: boost-1.66.0-python37.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1596468
+# https://github.com/boostorg/python/pull/218
+Patch87: boost-1.66.0-numpy3.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -761,6 +765,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch84 -p1
 %patch85 -p2
 %patch86 -p1
+%patch87 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1479,6 +1484,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-14
+- Patch numpy for Python 3 (#1596468)
+
 * Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.66.0-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
