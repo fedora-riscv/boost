@@ -35,7 +35,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -141,6 +141,10 @@ Patch84: boost-1.66.0-spirit-abs-overflow.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1585515
 Patch85: boost-1.66.0-compute.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1596468
+# https://github.com/boostorg/python/pull/218
+Patch87: boost-1.66.0-numpy3.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -721,6 +725,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch83 -p1
 %patch84 -p1
 %patch85 -p2
+%patch87 -p1
 
 # At least python2_version needs to be a macro so that it's visible in
 # %%install as well.
@@ -1397,6 +1402,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-8
+- Patch numpy for Python 3 (#1596468)
+
 * Tue Jun 05 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-7
 - Add patch for Boost.Compute (#1585515)
 
