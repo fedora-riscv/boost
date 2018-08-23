@@ -1058,7 +1058,11 @@ echo ============================= install Boost.Build ==================
  ./b2 --prefix=$RPM_BUILD_ROOT%{_prefix} install
  # Fix some permissions
  chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/build/alias.py
+ chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/kernel/boost-build.jam
+ chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/options/help.jam
  chmod +x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxproc.py
+ # Fix shebang using unversioned python
+ sed -i '1s@^#!/usr/bin.python$@&3@' $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxproc.py
  # We don't want to distribute this
  rm -f $RPM_BUILD_ROOT%{_bindir}/b2
  # Not a real file
@@ -1484,6 +1488,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Aug 23 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-14
+- Fix permissions and python shebang of Boost.Build files
+
 * Wed Jul 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-14
 - Patch numpy for Python 3 (#1596468)
 
