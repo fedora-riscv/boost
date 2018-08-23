@@ -42,8 +42,7 @@ License: Boost and MIT and Python
 URL: http://www.boost.org
 
 Source0: https://sourceforge.net/projects/boost/files/boost/%{version}/%{toplev_dirname}.tar.bz2
-Source1: ver.py
-Source2: libboost_thread.so
+Source1: libboost_thread.so
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
 # equal to the Boost version (e.g., 1.41.0).
@@ -1402,6 +1401,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Aug 23 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-8
+- Remove unused ver.py source file.
+
 * Wed Jul 18 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-8
 - Patch numpy for Python 3 (#1596468)
 
