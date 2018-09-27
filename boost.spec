@@ -7,6 +7,12 @@
 %global boost_docdir __tmp_docdir
 %global boost_examplesdir __tmp_examplesdir
 
+%if 0%{?flatpak}
+# For bundling in Flatpak, currently build without mpich and openmpi,
+# which aren't needed and cause prefix=/app errors.
+%bcond_with mpich
+%bcond_with openmpi
+%else
 # All arches have mpich
 %bcond_without mpich
 
@@ -15,6 +21,7 @@
   %bcond_with openmpi
 %else
   %bcond_without openmpi
+%endif
 %endif
 
 %ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64
@@ -36,7 +43,7 @@ Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.66.0
 %global version_enc 1_66_0
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1488,6 +1495,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Sep 27 2018 Owen Taylor <otaylor@redhat.com> - 1.66.0-15
+- Disable openmpi and mpich for Flatpak-bundled builds
+
 * Thu Aug 23 2018 Jonathan Wakely <jwakely@redhat.com> - 1.66.0-14
 - Fix permissions and python shebang of Boost.Build files
 
