@@ -137,7 +137,7 @@ Patch62: boost-1.66.0-python-abi_letters.patch
 Patch65: boost-1.66.0-build-optflags.patch
 
 # Prevent gcc.jam from setting -m32 or -m64.
-Patch68: boost-1.66.0-address-model.patch
+#Patch68: boost-1.66.0-address-model.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.66.0-no-rpath.patch
@@ -766,7 +766,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch61 -p1
 %patch62 -p1
 %patch65 -p1
-%patch68 -p1
 %patch82 -p1
 %patch83 -p1
 %patch84 -p1
