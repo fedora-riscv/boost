@@ -136,20 +136,11 @@ Patch62: boost-1.66.0-python-abi_letters.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1190039
 Patch65: boost-1.66.0-build-optflags.patch
 
-# Prevent gcc.jam from setting -m32 or -m64.
-#Patch68: boost-1.66.0-address-model.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.66.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
 Patch83: boost-1.66.0-bjam-build-flags.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1545092
-Patch84: boost-1.66.0-spirit-abs-overflow.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1585515
-Patch85: boost-1.66.0-compute.patch
 
 # https://github.com/boostorg/python/pull/186
 Patch86: boost-1.66.0-python37.patch
@@ -768,8 +759,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch65 -p1
 %patch82 -p1
 %patch83 -p1
-%patch84 -p1
-%patch85 -p2
 %patch86 -p1
 %patch87 -p1
 
