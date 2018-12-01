@@ -41,9 +41,9 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.66.0
-%global version_enc 1_66_0
-Release: 15%{?dist}
+Version: 1.68.0
+%global version_enc 1_68_0
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{name}_%{version_enc}
@@ -1495,6 +1495,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sun Nov 25 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.68.0-1
+- Rebase to 1.68.0
+
 * Thu Sep 27 2018 Owen Taylor <otaylor@redhat.com> - 1.66.0-15
 - Disable openmpi and mpich for Flatpak-bundled builds
 
