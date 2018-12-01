@@ -66,6 +66,7 @@ Source1: libboost_thread.so
 Requires: boost-atomic%{?_isa} = %{version}-%{release}
 Requires: boost-chrono%{?_isa} = %{version}-%{release}
 Requires: boost-container%{?_isa} = %{version}-%{release}
+Requires: boost-contract%{?_isa} = %{version}-%{release}
 %if %{with context}
 Requires: boost-context%{?_isa} = %{version}-%{release}
 Requires: boost-coroutine%{?_isa} = %{version}-%{release}
@@ -182,6 +183,18 @@ Boost.Container library implements several well-known containers,
 including STL containers. The aim of the library is to offer advanced
 features not present in standard containers or to offer the latest
 standard draft features for compilers that comply with C++03.
+
+%package contract
+Summary: Run-time component of boost contract library
+
+%description contract
+
+Run-time support for boost contract library.
+Contract programming for C++. All contract programming features are supported:
+Subcontracting, class invariants, postconditions (with old and return values),
+preconditions, customizable actions on assertion failure (e.g., terminate
+or throw), optional compilation and checking of assertions, etc,
+from Lorenzo Caminiti.
 
 %if %{with context}
 %package context
@@ -1229,13 +1242,13 @@ fi
 %if %{with python2}
 %files numpy2
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy.so.%{sonamever}
+%{_libdir}/libboost_numpy27.so.%{sonamever}
 %endif
 
 %if %{with python3}
 %files numpy3
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy3.so.%{sonamever}
+%{_libdir}/libboost_numpy37.so.%{sonamever}
 %endif
 
 %files test
@@ -1250,23 +1263,23 @@ fi
 %if %{with python2}
 %files python2
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_python.so.%{sonamever}
+%{_libdir}/libboost_python27.so.%{sonamever}
 
 %files python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy.so
-%{_libdir}/libboost_python.so
+%{_libdir}/libboost_numpy27.so
+%{_libdir}/libboost_python27.so
 %endif
 
 %if %{with python3}
 %files python3
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_python3.so.%{sonamever}
+%{_libdir}/libboost_python37.so.%{sonamever}
 
 %files python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy3.so
-%{_libdir}/libboost_python3.so
+%{_libdir}/libboost_numpy37.so
+%{_libdir}/libboost_python37.so
 %endif
 
 %files random
@@ -1312,6 +1325,10 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_wave.so.%{sonamever}
 
+%files contract
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_contract.so.%{sonamever}
+
 %files doc
 %doc %{boost_docdir}/*
 
@@ -1324,6 +1341,7 @@ fi
 %{_libdir}/libboost_atomic.so
 %{_libdir}/libboost_chrono.so
 %{_libdir}/libboost_container.so
+%{_libdir}/libboost_contract.so
 %if %{with context}
 %{_libdir}/libboost_context.so
 %{_libdir}/libboost_coroutine.so
@@ -1400,12 +1418,12 @@ fi
 
 %files openmpi-python3
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python3.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
 %{python3_sitearch}/openmpi/boost/
 
 %files openmpi-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python3.so
+%{_libdir}/openmpi/lib/libboost_mpi_python.so
 
 %endif
 
@@ -1444,12 +1462,12 @@ fi
 
 %files mpich-python3
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python3.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi_python.so.%{sonamever}
 %{python3_sitearch}/mpich/boost/
 
 %files mpich-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python3.so
+%{_libdir}/mpich/lib/libboost_mpi_python.so
 
 %endif
 
@@ -1474,8 +1492,17 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
-* Sun Nov 25 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.68.0-1
+* Sat Dec 01 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.68.0-1
 - Rebase to 1.68.0
+- New library: Boost.Contract
+- The Python-related shared libraries now carry the full Python version,
+  eg _python27.so and _python37.so
+- Drop patches:
+    deleted: boost-1.66.0-address-model.patch
+    deleted: boost-1.66.0-compute.patch
+    deleted: boost-1.66.0-numpy3.patch
+    deleted: boost-1.66.0-python37.patch
+    deleted: boost-1.66.0-spirit-abs-overflow.patch
 
 * Thu Sep 27 2018 Owen Taylor <otaylor@redhat.com> - 1.66.0-15
 - Disable openmpi and mpich for Flatpak-bundled builds
