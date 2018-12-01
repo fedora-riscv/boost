@@ -142,13 +142,6 @@ Patch82: boost-1.66.0-no-rpath.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
 Patch83: boost-1.66.0-bjam-build-flags.patch
 
-# https://github.com/boostorg/python/pull/186
-Patch86: boost-1.66.0-python37.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1596468
-# https://github.com/boostorg/python/pull/218
-Patch87: boost-1.66.0-numpy3.patch
-
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -759,8 +752,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch65 -p1
 %patch82 -p1
 %patch83 -p1
-%patch86 -p1
-%patch87 -p1
 
 %build
 # Dump the versions being used into the build logs.
