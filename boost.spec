@@ -41,8 +41,8 @@
 
 Name: boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.68.0
-%global version_enc 1_68_0
+Version: 1.69.0
+%global version_enc 1_69_0
 Release: 1%{?dist}
 License: Boost and MIT and Python
 
@@ -85,7 +85,6 @@ Requires: boost-program-options%{?_isa} = %{version}-%{release}
 Requires: boost-random%{?_isa} = %{version}-%{release}
 Requires: boost-regex%{?_isa} = %{version}-%{release}
 Requires: boost-serialization%{?_isa} = %{version}-%{release}
-Requires: boost-signals%{?_isa} = %{version}-%{release}
 Requires: boost-stacktrace%{?_isa} = %{version}-%{release}
 Requires: boost-system%{?_isa} = %{version}-%{release}
 Requires: boost-test%{?_isa} = %{version}-%{release}
@@ -413,13 +412,6 @@ Summary: Run-time component of boost serialization library
 %description serialization
 
 Run-time support for serialization for persistence and marshaling.
-
-%package signals
-Summary: Run-time component of boost signals and slots library
-
-%description signals
-
-Run-time support for managed signals & slots callback implementation.
 
 %package stacktrace
 Summary: Run-time component of boost stacktrace library
@@ -1295,10 +1287,6 @@ fi
 %{_libdir}/libboost_serialization.so.%{sonamever}
 %{_libdir}/libboost_wserialization.so.%{sonamever}
 
-%files signals
-%license LICENSE_1_0.txt
-%{_libdir}/libboost_signals.so.%{sonamever}
-
 %files stacktrace
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_stacktrace_addr2line.so.%{sonamever}
@@ -1369,7 +1357,6 @@ fi
 %{_libdir}/libboost_regex.so
 %{_libdir}/libboost_serialization.so
 %{_libdir}/libboost_wserialization.so
-%{_libdir}/libboost_signals.so
 %{_libdir}/libboost_stacktrace_addr2line.so
 %{_libdir}/libboost_stacktrace_basic.so
 %{_libdir}/libboost_stacktrace_noop.so
@@ -1405,12 +1392,12 @@ fi
 
 %files openmpi-python2
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python27.so.%{sonamever}
 %{python2_sitearch}/openmpi/boost/
 
 %files openmpi-python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python.so
+%{_libdir}/openmpi/lib/libboost_mpi_python27.so
 
 %endif
 
@@ -1418,12 +1405,12 @@ fi
 
 %files openmpi-python3
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python37.so.%{sonamever}
 %{python3_sitearch}/openmpi/boost/
 
 %files openmpi-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python.so
+%{_libdir}/openmpi/lib/libboost_mpi_python37.so
 
 %endif
 
@@ -1449,12 +1436,12 @@ fi
 
 %files mpich-python2
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi_python27.so.%{sonamever}
 %{python2_sitearch}/mpich/boost/
 
 %files mpich-python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python.so
+%{_libdir}/mpich/lib/libboost_mpi_python27.so
 
 %endif
 
@@ -1462,12 +1449,12 @@ fi
 
 %files mpich-python3
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi_python37.so.%{sonamever}
 %{python3_sitearch}/mpich/boost/
 
 %files mpich-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python.so
+%{_libdir}/mpich/lib/libboost_mpi_python37.so
 
 %endif
 
@@ -1492,6 +1479,10 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat Dec 15 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-1
+- Rebase to 1.69.0
+- Dropped library: Boost.Signals (now replaced by header-only Boost.Signlas2)
+
 * Sat Dec 01 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.68.0-1
 - Rebase to 1.68.0
 - New library: Boost.Contract
