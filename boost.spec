@@ -740,7 +740,7 @@ a number of significant features and is now developed independently.
 
 %prep
 %setup -q -n %{toplev_dirname}
-find ./%{name} -name '*.hpp' -perm /111 | xargs chmod a-x
+find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
 %patch5 -p1
