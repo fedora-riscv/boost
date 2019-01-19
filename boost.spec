@@ -40,16 +40,18 @@
 %endif
 
 Name: boost
+%global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
+%global version_suffix 169
 Release: 1%{?dist}
 License: Boost and MIT and Python
 
-%global toplev_dirname %{name}_%{version_enc}
+%global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://sourceforge.net/projects/boost/files/boost/%{version}/%{toplev_dirname}.tar.bz2
+Source0: https://sourceforge.net/projects/boost/files/%{real_name}/%{version}/%{toplev_dirname}.tar.bz2
 Source1: libboost_thread.so
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
@@ -168,7 +170,7 @@ variables.
 
 %package chrono
 Summary: Run-time component of boost chrono library
-Requires: boost-system%{?_isa} = %{version}-%{release}
+Requires: %{name}-system%{?_isa} = %{version}-%{release}
 
 %description chrono
 
@@ -235,7 +237,7 @@ micro-/userland-threads (fibers) scheduled cooperatively.
 
 %package filesystem
 Summary: Run-time component of boost filesystem library
-Requires: boost-system%{?_isa} = %{version}-%{release}
+Requires: %{name}-system%{?_isa} = %{version}-%{release}
 
 %description filesystem
 
@@ -245,7 +247,7 @@ directories.
 
 %package graph
 Summary: Run-time component of boost graph library
-Requires: boost-regex%{?_isa} = %{version}-%{release}
+Requires: %{name}-regex%{?_isa} = %{version}-%{release}
 
 %description graph
 
@@ -263,9 +265,9 @@ stream buffers and i/o filters.
 
 %package locale
 Summary: Run-time component of boost locale library
-Requires: boost-chrono%{?_isa} = %{version}-%{release}
-Requires: boost-system%{?_isa} = %{version}-%{release}
-Requires: boost-thread%{?_isa} = %{version}-%{release}
+Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
+Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Requires: %{name}-thread%{?_isa} = %{version}-%{release}
 
 %description locale
 
@@ -738,7 +740,7 @@ a number of significant features and is now developed independently.
 
 %prep
 %setup -q -n %{toplev_dirname}
-find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
+find ./%{name} -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
 %patch5 -p1
@@ -819,7 +821,7 @@ m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
 %if %{with python3}
 
 # Previously, we built python 2.x and 3.x interfaces simultaneously.
-# However, this doesn't work once trying to build other Python components
+# However, this does not work once trying to build other Python components
 # such as libboost_numpy.  Therefore, we build for each separately, while
 # minimizing duplicate compilation as much as possible.
 
@@ -850,7 +852,7 @@ echo ============================= build serial-py3 ==================
 # Build MPI parts of Boost with OpenMPI support
 
 %if %{with openmpi} || %{with mpich}
-# First, purge all modules so that user environment doesn't conflict
+# First, purge all modules so that user environment does not conflict
 # with the build.
 module purge ||:
 %endif
@@ -914,7 +916,7 @@ echo ============================= build Boost.Build ==================
 cd %{_builddir}/%{toplev_dirname}
 
 %if %{with openmpi} || %{with mpich}
-# First, purge all modules so that user environment doesn't conflict
+# First, purge all modules so that user environment does not conflict
 # with the build.
 module purge ||:
 %endif
@@ -1881,7 +1883,7 @@ fi
 - Enable MPICH and OpenMPI support on ARM as it's long had them both
 
 * Fri Dec 13 2013 Petr Machata <pmachata@redhat.com> - 1.54.0-8
-- Add aarch64 into the list of arches that OpenMPI doesn't support.
+- Add aarch64 into the list of arches that OpenMPI does not support.
 
 * Sun Dec  1 2013 Petr Machata <pmachata@redhat.com> - 1.54.0-7
 - Fix shameful blunders in implementation of the previous fix: don't
@@ -2038,7 +2040,7 @@ fi
 
 * Tue Aug  7 2012 Petr Machata <pmachata@redhat.com> - 1.50.0-2
 - Enable Python 3 builds.  This is still disabled in Boost MPI, which
-  doesn't seem to support Python 3
+  does not seem to support Python 3
 
 * Thu Jul 26 2012 Petr Machata <pmachata@redhat.com> - 1.50.0-1
 - Upstream 1.50
@@ -2264,7 +2266,7 @@ fi
 
 * Fri Jun  4 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-12
 - Turn on mpich2 on s390.  Add arm to the list of arches that openmpi
-  doesn't support.
+  does not support.
 
 * Fri Jun  4 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-12
 - Don't distribute cmake support files.
@@ -2290,10 +2292,10 @@ fi
 
 * Tue Feb  2 2010 Petr Machata <pmachata@redhat.com> - 1.41.0-6
 - More subpackage interdependency adjustments
-  - boost doesn't bring in the MPI stuff.  Instead, $MPI-devel does.
+  - boost does not bring in the MPI stuff.  Instead, $MPI-devel does.
     It needs to, so that the symbolic links don't dangle.
   - boost-graph-$MPI depends on boost-$MPI so that boost-mpich2
-    doesn't satisfy the SONAME dependency of boost-graph-openmpi.
+    does not satisfy the SONAME dependency of boost-graph-openmpi.
 - Resolves: #559009
 
 * Mon Feb  1 2010 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.41.0-5
