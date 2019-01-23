@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -1473,6 +1473,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jan 23 2019 Pete Walter <pwalter@fedoraproject.org> - 1.69.0-2
+- Rebuild for ICU 63
+
 * Sat Dec 15 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-1
 - Rebase to 1.69.0
 - Dropped library: Boost.Signals (now replaced by header-only Boost.Signlas2)
