@@ -1228,13 +1228,13 @@ fi
 %if %{with python2}
 %files numpy2
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy27.so.%{sonamever}
+%{_libdir}/libboost_numpy%{python2_version_nodots}.so.%{sonamever}
 %endif
 
 %if %{with python3}
 %files numpy3
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy37.so.%{sonamever}
+%{_libdir}/libboost_numpy%{python3_version_nodots}.so.%{sonamever}
 %endif
 
 %files test
@@ -1249,23 +1249,23 @@ fi
 %if %{with python2}
 %files python2
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_python27.so.%{sonamever}
+%{_libdir}/libboost_python%{python2_version_nodots}.so.%{sonamever}
 
 %files python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy27.so
-%{_libdir}/libboost_python27.so
+%{_libdir}/libboost_numpy%{python2_version_nodots}.so
+%{_libdir}/libboost_python%{python2_version_nodots}.so
 %endif
 
 %if %{with python3}
 %files python3
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_python37.so.%{sonamever}
+%{_libdir}/libboost_python%{python3_version_nodots}.so.%{sonamever}
 
 %files python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy37.so
-%{_libdir}/libboost_python37.so
+%{_libdir}/libboost_numpy%{python3_version_nodots}.so
+%{_libdir}/libboost_python%{python3_version_nodots}.so
 %endif
 
 %files random
@@ -1386,12 +1386,12 @@ fi
 
 %files openmpi-python2
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python27.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python%{python2_version_nodots}.so.%{sonamever}
 %{python2_sitearch}/openmpi/boost/
 
 %files openmpi-python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python27.so
+%{_libdir}/openmpi/lib/libboost_mpi_python%{python2_version_nodots}.so
 
 %endif
 
@@ -1399,12 +1399,12 @@ fi
 
 %files openmpi-python3
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python37.so.%{sonamever}
+%{_libdir}/openmpi/lib/libboost_mpi_python%{python3_version_nodots}.so.%{sonamever}
 %{python3_sitearch}/openmpi/boost/
 
 %files openmpi-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python37.so
+%{_libdir}/openmpi/lib/libboost_mpi_python%{python3_version_nodots}.so
 
 %endif
 
@@ -1430,12 +1430,12 @@ fi
 
 %files mpich-python2
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python27.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi_python%{python2_version_nodots}.so.%{sonamever}
 %{python2_sitearch}/mpich/boost/
 
 %files mpich-python2-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python27.so
+%{_libdir}/mpich/lib/libboost_mpi_python%{python2_version_nodots}.so
 
 %endif
 
@@ -1443,12 +1443,12 @@ fi
 
 %files mpich-python3
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python37.so.%{sonamever}
+%{_libdir}/mpich/lib/libboost_mpi_python%{python3_version_nodots}.so.%{sonamever}
 %{python3_sitearch}/mpich/boost/
 
 %files mpich-python3-devel
 %license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python37.so
+%{_libdir}/mpich/lib/libboost_mpi_python%{python3_version_nodots}.so
 
 %endif
 
