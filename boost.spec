@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -143,6 +143,9 @@ Patch82: boost-1.66.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
 Patch83: boost-1.66.0-bjam-build-flags.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1673669
+Patch84: boost-1.69-random.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -751,6 +754,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch65 -p1
 %patch82 -p1
 %patch83 -p1
+%patch84 -p2
 
 %build
 # Dump the versions being used into the build logs.
@@ -1473,6 +1477,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Feb 12 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-4
+- Patch Boost.Random to fix warning (#1673669)
+
 * Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.69.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
