@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -146,6 +146,9 @@ Patch83: boost-1.66.0-bjam-build-flags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1673669
 Patch84: boost-1.69-random.patch
+
+# https://github.com/boostorg/mpi/pull/81
+Patch85: boost-1.69-mpi-c_data.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -755,6 +758,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch82 -p1
 %patch83 -p1
 %patch84 -p2
+%patch85 -p2
 
 %build
 # Dump the versions being used into the build logs.
@@ -1477,6 +1481,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Feb 14 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-6
+- Add patch for out-of-bounds vector access in Boost.MPI
+
 * Thu Feb 14 2019 Orion Poplawski <orion@nwra.com> - 1.69.0-5
 - Rebuild for openmpi 3.1.3
 
