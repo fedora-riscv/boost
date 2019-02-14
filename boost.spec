@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -1477,6 +1477,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Feb 14 2019 Orion Poplawski <orion@nwra.com> - 1.69.0-5
+- Rebuild for openmpi 3.1.3
+
 * Tue Feb 12 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-4
 - Patch Boost.Random to fix warning (#1673669)
 
