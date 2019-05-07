@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -94,6 +94,8 @@ Requires: %{name}-thread%{?_isa} = %{version}-%{release}
 Requires: %{name}-timer%{?_isa} = %{version}-%{release}
 Requires: %{name}-type_erasure%{?_isa} = %{version}-%{release}
 Requires: %{name}-wave%{?_isa} = %{version}-%{release}
+# Added for F30, remove for F32
+Obsoletes: %{name}-signals%{?_isa} < 1.69.0
 
 BuildRequires: gcc-c++
 BuildRequires: m4
@@ -1481,6 +1483,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue May 07 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-7
+- Make main package obsolete old boost-signals subpackage (#1706079)
+
 * Thu Feb 14 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-6
 - Add patch for out-of-bounds vector access in Boost.MPI
 
