@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -1483,6 +1483,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.69.0-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Fri May 10 2019 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-8
 - Fix Obsoletes tag to remove _isa (#1706079)
 
