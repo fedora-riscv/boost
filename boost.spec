@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -1483,6 +1483,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.69.0-11
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
 * Sun Aug 18 2019 Miro Hrončok <mhroncok@redhat.com> - 1.69.0-10
 - Rebuilt for Python 3.8
 
