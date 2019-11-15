@@ -30,7 +30,6 @@
   %bcond_without context
 %endif
 
-%bcond_without python2
 %bcond_without python3
 
 %ifnarch %{ix86} x86_64
@@ -45,13 +44,14 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://sourceforge.net/projects/boost/files/%{real_name}/%{version}/%{toplev_dirname}.tar.bz2
+Source0: https://sourceforge.net/projects/%{name}/files/%{name}/%{version}/%{toplev_dirname}.tar.bz2
+#Source0: https://dl.bintray.com/boostorg/master/%%{name}_%%{version_enc}-snapshot.tar.gz
 Source1: libboost_thread.so
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
@@ -94,18 +94,12 @@ Requires: %{name}-thread%{?_isa} = %{version}-%{release}
 Requires: %{name}-timer%{?_isa} = %{version}-%{release}
 Requires: %{name}-type_erasure%{?_isa} = %{version}-%{release}
 Requires: %{name}-wave%{?_isa} = %{version}-%{release}
-# Added for F30, remove for F32
-Obsoletes: %{name}-signals < 1.69.0
 
 BuildRequires: gcc-c++
 BuildRequires: m4
 BuildRequires: libstdc++-devel
 BuildRequires: bzip2-devel
 BuildRequires: zlib-devel
-%if %{with python2}
-BuildRequires: python2-devel
-BuildRequires: python2-numpy
-%endif
 %if %{with python3}
 BuildRequires: python3-devel
 BuildRequires: python3-numpy
@@ -298,26 +292,6 @@ Summary: Math functions for boost TR1 library
 Run-time support for C99 and C++ TR1 C-style Functions from the math
 portion of Boost.TR1.
 
-%if %{with python2}
-
-%package numpy2
-Summary: Run-time component of boost numpy library for Python 2
-Requires: %{name}-python2%{?_isa} = %{version}-%{release}
-Requires: python2-numpy
-# Added for F29, remove for F31:
-Provides: %{name}-numpy%{?_isa} = %{version}-%{release}
-Obsoletes: %{name}-numpy < %{version}-%{release}
-
-%description numpy2
-
-The Boost Python Library is a framework for interfacing Python and
-C++. It allows you to quickly and seamlessly expose C++ classes,
-functions and objects to Python, and vice versa, using no special
-tools -- just your C++ compiler.  This package contains run-time
-support for the NumPy extension of the Boost Python Library for Python 2.
-
-%endif
-
 %if %{with python3}
 
 %package numpy3
@@ -343,31 +317,6 @@ Summary:  Run-time component of boost program_options library
 Run-time support of boost program options library, which allows program
 developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
-
-%if %{with python2}
-
-%package python2
-Summary: Run-time component of boost python library for Python 2
-
-%description python2
-
-The Boost Python Library is a framework for interfacing Python and
-C++. It allows you to quickly and seamlessly expose C++ classes,
-functions and objects to Python, and vice versa, using no special
-tools -- just your C++ compiler.  This package contains run-time
-support for the Boost Python Library compiled for Python 2.
-
-%package python2-devel
-Summary: Shared object symbolic links for Boost.Python 2
-Requires: %{name}-numpy2%{?_isa} = %{version}-%{release}
-Requires: %{name}-python2%{?_isa} = %{version}-%{release}
-Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-
-%description python2-devel
-
-Shared object symbolic links for Python 2 variant of Boost.Python.
-
-%endif
 
 %if %{with python3}
 
@@ -547,36 +496,6 @@ Requires: %{name}-graph-openmpi%{?_isa} = %{version}-%{release}
 Devel package for Boost.MPI-OpenMPI, a library providing a clean C++
 API over the OpenMPI implementation of MPI.
 
-%if %{with python2}
-
-%package openmpi-python2
-Summary: Python 2 run-time component of Boost.MPI library
-Requires: %{name}-openmpi%{?_isa} = %{version}-%{release}
-Requires: %{name}-python2%{?_isa} = %{version}-%{release}
-Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
-Requires: python2-openmpi%{?_isa}
-# Added for F29, remove for F31:
-Provides: %{name}-openmpi-python%{?_isa} = %{version}-%{release}
-Obsoletes: %{name}-openmpi-python < %{version}-%{release}
-
-%description openmpi-python2
-
-Python 2 support for Boost.MPI-OpenMPI, a library providing a clean C++
-API over the OpenMPI implementation of MPI.
-
-%package openmpi-python2-devel
-Summary: Shared library symbolic links for Boost.MPI Python 2 component
-Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-openmpi-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-openmpi-python2%{?_isa} = %{version}-%{release}
-
-%description openmpi-python2-devel
-
-Devel package for the Python 2 interface of Boost.MPI-OpenMPI, a library
-providing a clean C++ API over the OpenMPI implementation of MPI.
-
-%endif
-
 %if %{with python3}
 
 %package openmpi-python3
@@ -642,36 +561,6 @@ Requires: %{name}-graph-mpich%{?_isa} = %{version}-%{release}
 
 Devel package for Boost.MPI-MPICH, a library providing a clean C++
 API over the MPICH implementation of MPI.
-
-%if %{with python2}
-
-%package mpich-python2
-Summary: Python run-time component of Boost.MPI library
-Requires: %{name}-mpich%{?_isa} = %{version}-%{release}
-Requires: %{name}-python2%{?_isa} = %{version}-%{release}
-Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
-Requires: python2-mpich%{?_isa}
-# Added for F29, remove for F31:
-Provides: %{name}-mpich-python%{?_isa} = %{version}-%{release}
-Obsoletes: %{name}-mpich-python < %{version}-%{release}
-
-%description mpich-python2
-
-Python 2 support for Boost.MPI-MPICH, a library providing a clean C++
-API over the MPICH implementation of MPI.
-
-%package mpich-python2-devel
-Summary: Shared library symbolic links for Boost.MPI Python 2 component
-Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-mpich-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-mpich-python2%{?_isa} = %{version}-%{release}
-
-%description mpich-python2-devel
-
-Devel package for the Python 2 interface of Boost.MPI-MPICH, a library
-providing a clean C++ API over the MPICH implementation of MPI.
-
-%endif
 
 %if %{with python3}
 
@@ -764,9 +653,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %build
 # Dump the versions being used into the build logs.
-%if %{with python2}
-: PYTHON2_VERSION=%{python2_version}
-%endif
 %if %{with python3}
 PYTHON3_ABIFLAGS=$(/usr/bin/python3-config --abiflags)
 : PYTHON3_VERSION=%{python3_version}
@@ -788,9 +674,6 @@ using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
-%if %{with python2}
-using python : %{python2_version} : /usr/bin/python2 : /usr/include/python%{python2_version} : : : : ;
-%endif
 EOF
 
 ./bootstrap.sh --with-toolset=gcc --with-icu
@@ -807,13 +690,7 @@ echo ============================= build serial ==================
 	--without-context --without-coroutine \
 	--without-fiber \
 %endif
-%if !%{with python2}
-	--without-python \
-%endif
 	variant=release threading=multi debug-symbols=on pch=off \
-%if %{with python2}
-	python=%{python2_version} \
-%endif
 	stage
 
 # See libs/thread/build/Jamfile.v2 for where this file comes from.
@@ -868,13 +745,6 @@ module purge ||:
 
 %if %{with openmpi}
 %{_openmpi_load}
-%if %{with python2}
-echo ============================= build $MPI_COMPILER ==================
-./b2 -d+2 -q %{?_smp_mflags} \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python2_version} stage
-%endif
 
 %if %{with python3}
 echo ============================= build $MPI_COMPILER-py3 ==================
@@ -892,13 +762,6 @@ export PATH=/bin${PATH:+:}$PATH
 # Build MPI parts of Boost with MPICH support
 %if %{with mpich}
 %{_mpich_load}
-%if %{with python2}
-echo ============================= build $MPI_COMPILER ==================
-./b2 -d+2 -q %{?_smp_mflags} \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python2_version} stage
-%endif
 
 %if %{with python3}
 echo ============================= build $MPI_COMPILER-py3 ==================
@@ -934,20 +797,6 @@ module purge ||:
 %{_openmpi_load}
 # XXX We want to extract this from RPM flags
 # b2 instruction-set=i686 etc.
-%if %{with python2}
-echo ============================= install $MPI_COMPILER ==================
-./b2 -q %{?_smp_mflags} \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
-	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python2_version} stage
-
-# Move Python module to proper location for automatic loading
-mkdir -p ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost
-touch ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost/__init__.py
-mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
-   ${RPM_BUILD_ROOT}%{python2_sitearch}/openmpi/boost/
-%endif
 
 %if %{with python3}
 echo ============================= install $MPI_COMPILER-py3 ==================
@@ -974,20 +823,6 @@ export PATH=/bin${PATH:+:}$PATH
 
 %if %{with mpich}
 %{_mpich_load}
-%if %{with python2}
-echo ============================= install $MPI_COMPILER ==================
-./b2 -q %{?_smp_mflags} \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
-	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python2_version} stage
-
-# Move Python module to proper location for automatic loading
-mkdir -p ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost
-touch ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost/__init__.py
-mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
-   ${RPM_BUILD_ROOT}%{python2_sitearch}/mpich/boost/
-%endif
 
 %if %{with python3}
 echo ============================= install $MPI_COMPILER-py3 ==================
@@ -1019,15 +854,9 @@ echo ============================= install serial ==================
 	--without-context --without-coroutine \
 	--without-fiber \
 %endif
-%if !%{with python2}
-	--without-python \
-%endif
 	--prefix=$RPM_BUILD_ROOT%{_prefix} \
 	--libdir=$RPM_BUILD_ROOT%{_libdir} \
 	variant=release threading=multi debug-symbols=on pch=off \
-%if %{with python2}
-	python=%{python2_version} \
-%endif
 	install
 
 # Override DSO symlink with a linker script.  See the linker script
@@ -1235,12 +1064,6 @@ fi
 %{_libdir}/libboost_math_tr1f.so.%{sonamever}
 %{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
-%if %{with python2}
-%files numpy2
-%license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy%{python2_version_nodots}.so.%{sonamever}
-%endif
-
 %if %{with python3}
 %files numpy3
 %license LICENSE_1_0.txt
@@ -1255,17 +1078,6 @@ fi
 %files program-options
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_program_options.so.%{sonamever}
-
-%if %{with python2}
-%files python2
-%license LICENSE_1_0.txt
-%{_libdir}/libboost_python%{python2_version_nodots}.so.%{sonamever}
-
-%files python2-devel
-%license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy%{python2_version_nodots}.so
-%{_libdir}/libboost_python%{python2_version_nodots}.so
-%endif
 
 %if %{with python3}
 %files python3
@@ -1392,19 +1204,6 @@ fi
 %{_libdir}/openmpi/lib/libboost_mpi.so
 %{_libdir}/openmpi/lib/libboost_graph_parallel.so
 
-%if %{with python2}
-
-%files openmpi-python2
-%license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python%{python2_version_nodots}.so.%{sonamever}
-%{python2_sitearch}/openmpi/boost/
-
-%files openmpi-python2-devel
-%license LICENSE_1_0.txt
-%{_libdir}/openmpi/lib/libboost_mpi_python%{python2_version_nodots}.so
-
-%endif
-
 %if %{with python3}
 
 %files openmpi-python3
@@ -1435,19 +1234,6 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/mpich/lib/libboost_mpi.so
 %{_libdir}/mpich/lib/libboost_graph_parallel.so
-
-%if %{with python2}
-
-%files mpich-python2
-%license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python%{python2_version_nodots}.so.%{sonamever}
-%{python2_sitearch}/mpich/boost/
-
-%files mpich-python2-devel
-%license LICENSE_1_0.txt
-%{_libdir}/mpich/lib/libboost_mpi_python%{python2_version_nodots}.so
-
-%endif
 
 %if %{with python3}
 
@@ -1483,6 +1269,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri Nov 15 2019 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-12
+- Removed the Python2 sub-packages
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.69.0-11
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
@@ -1515,7 +1304,7 @@ fi
 
 * Sat Dec 15 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-1
 - Rebase to 1.69.0
-- Dropped library: Boost.Signals (now replaced by header-only Boost.Signlas2)
+- Dropped library: Boost.Signals (now replaced by header-only Boost.Signals2)
 
 * Sat Dec 01 2018 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.68.0-1
 - Rebase to 1.68.0
