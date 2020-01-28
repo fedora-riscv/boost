@@ -44,7 +44,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -1269,6 +1269,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.69.0-14
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Nov 15 2019 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-13
 - Removed the Python2 sub-packages
 
