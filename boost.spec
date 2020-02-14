@@ -24,7 +24,7 @@
 %endif
 %endif
 
-%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64
+%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64 s390x
   %bcond_with context
 %else
   %bcond_without context
