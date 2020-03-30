@@ -44,7 +44,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 14%{?dist}
+Release: 15%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -145,6 +145,9 @@ Patch84: boost-1.69-random.patch
 
 # https://github.com/boostorg/mpi/pull/81
 Patch85: boost-1.69-mpi-c_data.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1818723
+Patch86: boost-1.69-format-allocator.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -650,6 +653,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch83 -p1
 %patch84 -p2
 %patch85 -p2
+%patch86 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1269,6 +1273,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon Mar 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-15
+- Patch Boost.Format for C++20 compatibility with GCC 10 (#1818723)
+
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.69.0-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
