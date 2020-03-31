@@ -42,11 +42,15 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
-%global version_enc 1_69_0
-%global version_suffix 169
 Release: 16%{?dist}
 License: Boost and MIT and Python
 
+# Replace each . with _ in %%{version}
+%global version_enc %{lua:
+  local ver = rpm.expand("%{version}")
+  ver = ver:gsub("%.", "_")
+  print(ver)
+}
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
@@ -1238,6 +1242,7 @@ fi
 * Thu Apr 02 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-16
 - Drop boost-1.57.0-mpl-print.patch patch that doesn't work
 - Remove vestigial parts of separate python2/python3 build
+- Generate version_enc automatically from version and drop version_suffix
 
 * Mon Mar 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-15
 - Patch Boost.Format for C++20 compatibility with GCC 10 (#1818723)
