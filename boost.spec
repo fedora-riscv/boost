@@ -44,7 +44,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 15%{?dist}
+Release: 16%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -120,9 +120,6 @@ Patch5: boost-1.48.0-add-bjam-man-page.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
 # https://svn.boost.org/trac/boost/ticket/6701
 Patch15: boost-1.58.0-pool.patch
-
-# https://svn.boost.org/trac/boost/ticket/5637
-Patch25: boost-1.57.0-mpl-print.patch
 
 # https://svn.boost.org/trac/boost/ticket/9038
 Patch51: boost-1.58.0-pool-test_linking.patch
@@ -644,7 +641,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch4 -p1
 %patch5 -p1
 %patch15 -p0
-%patch25 -p1
 %patch51 -p1
 %patch61 -p1
 %patch62 -p1
@@ -1273,6 +1269,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu Apr 02 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-16
+- Drop boost-1.57.0-mpl-print.patch patch that doesn't work
+
 * Mon Mar 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-15
 - Patch Boost.Format for C++20 compatibility with GCC 10 (#1818723)
 
