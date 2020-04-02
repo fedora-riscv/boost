@@ -676,6 +676,12 @@ using mpi ;
 %endif
 EOF
 
+%if %{with python3}
+cat >> ./tools/build/src/user-config.jam << EOF
+using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}${PYTHON3_ABIFLAGS} : : : : ${PYTHON3_ABIFLAGS} ;
+EOF
+%endif
+
 ./bootstrap.sh --with-toolset=gcc --with-icu
 
 # N.B. When we build the following with PCH, parts of boost (math
@@ -691,6 +697,9 @@ echo ============================= build serial ==================
 	--without-fiber \
 %endif
 	variant=release threading=multi debug-symbols=on pch=off \
+%if %{with python3}
+	python=%{python3_version} \
+%endif
 	stage
 
 # See libs/thread/build/Jamfile.v2 for where this file comes from.
@@ -704,37 +713,6 @@ fi
 m4 -${DEF}HAS_ATOMIC_FLAG_LOCKFREE -DVERSION=%{version} \
 	%{SOURCE1} > $(basename %{SOURCE1})
 
-%if %{with python3}
-
-# Previously, we built python 2.x and 3.x interfaces simultaneously.
-# However, this does not work once trying to build other Python components
-# such as libboost_numpy.  Therefore, we build for each separately, while
-# minimizing duplicate compilation as much as possible.
-
-cat > python3-config.jam << "EOF"
-import os ;
-local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
-local RPM_LD_FLAGS = [ os.environ RPM_LD_FLAGS ] ;
-
-using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
-%if %{with openmpi} || %{with mpich}
-using mpi ;
-%endif
-EOF
-
-cat >> python3-config.jam << EOF
-using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}${PYTHON3_ABIFLAGS} : : : : ${PYTHON3_ABIFLAGS} ;
-EOF
-
-echo ============================= build serial-py3 ==================
-./b2 -d+2 -q %{?_smp_mflags} \
-	--user-config=./python3-config.jam \
-	--with-python --build-dir=serial-py3 \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python3_version} stage
-
-%endif
-
 # Build MPI parts of Boost with OpenMPI support
 
 %if %{with openmpi} || %{with mpich}
@@ -747,10 +725,9 @@ module purge ||:
 %{_openmpi_load}
 
 %if %{with python3}
-echo ============================= build $MPI_COMPILER-py3 ==================
+echo ============================= build $MPI_COMPILER ==================
 ./b2 -d+2 -q %{?_smp_mflags} \
-	--user-config=./python3-config.jam \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python3_version} stage
 %endif
@@ -764,10 +741,9 @@ export PATH=/bin${PATH:+:}$PATH
 %{_mpich_load}
 
 %if %{with python3}
-echo ============================= build $MPI_COMPILER-py3 ==================
+echo ============================= build $MPI_COMPILER ==================
 ./b2 -d+2 -q %{?_smp_mflags} \
-	--user-config=./python3-config.jam \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python3_version} stage
 %endif
@@ -799,10 +775,9 @@ module purge ||:
 # b2 instruction-set=i686 etc.
 
 %if %{with python3}
-echo ============================= install $MPI_COMPILER-py3 ==================
+echo ============================= install $MPI_COMPILER ==================
 ./b2 -q %{?_smp_mflags} \
-	--user-config=./python3-config.jam \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python3_version} stage
@@ -825,10 +800,9 @@ export PATH=/bin${PATH:+:}$PATH
 %{_mpich_load}
 
 %if %{with python3}
-echo ============================= install $MPI_COMPILER-py3 ==================
+echo ============================= install $MPI_COMPILER ==================
 ./b2 -q %{?_smp_mflags} \
-	--user-config=./python3-config.jam \
-	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER-py3 \
+	--with-mpi --with-graph_parallel --build-dir=$MPI_COMPILER \
 	--stagedir=${RPM_BUILD_ROOT}${MPI_HOME} \
 	variant=release threading=multi debug-symbols=on pch=off \
 	python=%{python3_version} stage
@@ -857,6 +831,9 @@ echo ============================= install serial ==================
 	--prefix=$RPM_BUILD_ROOT%{_prefix} \
 	--libdir=$RPM_BUILD_ROOT%{_libdir} \
 	variant=release threading=multi debug-symbols=on pch=off \
+%if %{with python3}
+	python=%{python3_version} \
+%endif
 	install
 
 # Override DSO symlink with a linker script.  See the linker script
@@ -865,17 +842,6 @@ echo ============================= install serial ==================
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
 install -p -m 644 $(basename %{SOURCE1}) $RPM_BUILD_ROOT%{_libdir}/
 
-%if %{with python3}
-echo ============================= install serial-py3 ==================
-./b2 -d+2 -q %{?_smp_mflags} \
-	--user-config=python3-config.jam \
-	--with-python --build-dir=serial-py3 \
-	--prefix=$RPM_BUILD_ROOT%{_prefix} \
-	--libdir=$RPM_BUILD_ROOT%{_libdir} \
-	variant=release threading=multi debug-symbols=on pch=off \
-	python=%{python3_version} install
-
-%endif
 
 echo ============================= install Boost.Build ==================
 (cd tools/build
@@ -1271,6 +1237,7 @@ fi
 %changelog
 * Thu Apr 02 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-16
 - Drop boost-1.57.0-mpl-print.patch patch that doesn't work
+- Remove vestigial parts of separate python2/python3 build
 
 * Mon Mar 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-15
 - Patch Boost.Format for C++20 compatibility with GCC 10 (#1818723)
