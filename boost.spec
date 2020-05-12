@@ -45,7 +45,7 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -157,6 +157,9 @@ Patch86: boost-1.69-format-allocator.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1832639
 Patch87: boost-1.69.0-test-cxx20.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1834764
+Patch88: auto_buffer-C-20-compatibility.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -769,6 +772,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch85 -p2
 %patch86 -p1
 %patch87 -p2
+%patch88 -p2
 
 %build
 # Dump the versions being used into the build logs.
@@ -1491,6 +1495,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Tue May 12 2020 Avi Kivity <avi@scylladb.com> - 1.69.0-12
+- Add patch for C++20 compatibility in Boost.Signals2 (#1834764)
+
 * Mon May 11 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-11
 - Add patch for C++20 compatibility in Boost.Test (#1832639)
 
