@@ -44,7 +44,8 @@ Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
-Release: 17%{?dist}
+%global obsver 1.69.0-7
+Release: 18%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -170,6 +171,8 @@ in future standards.)
 
 %package atomic
 Summary: Run-time component of boost atomic library
+Provides:  boost169-atomic = %{obsver}
+Obsoletes: boost169-atomic < %{obsver}
 
 %description atomic
 
@@ -181,6 +184,8 @@ variables.
 %package chrono
 Summary: Run-time component of boost chrono library
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Provides:  boost169-chrono = %{obsver}
+Obsoletes: boost169-chrono < %{obsver}
 
 %description chrono
 
@@ -188,6 +193,8 @@ Run-time support for Boost.Chrono, a set of useful time utilities.
 
 %package container
 Summary: Run-time component of boost container library
+Provides:  boost169-container = %{obsver}
+Obsoletes: boost169-container < %{obsver}
 
 %description container
 
@@ -198,6 +205,8 @@ standard draft features for compilers that comply with C++03.
 
 %package contract
 Summary: Run-time component of boost contract library
+Provides:  boost169-contract = %{obsver}
+Obsoletes: boost169-contract < %{obsver}
 
 %description contract
 
@@ -211,6 +220,8 @@ from Lorenzo Caminiti.
 %if %{with context}
 %package context
 Summary: Run-time component of boost context switching library
+Provides:  boost169-context = %{obsver}
+Obsoletes: boost169-context < %{obsver}
 
 %description context
 
@@ -219,6 +230,8 @@ provides a sort of cooperative multitasking on a single thread.
 
 %package coroutine
 Summary: Run-time component of boost coroutine library
+Provides:  boost169-coroutine = %{obsver}
+Obsoletes: boost169-coroutine < %{obsver}
 
 %description coroutine
 Run-time support for Boost.Coroutine, a library that provides
@@ -229,6 +242,8 @@ suspending and resuming execution.
 
 %package date-time
 Summary: Run-time component of boost date-time library
+Provides:  boost169-date-time = %{obsver}
+Obsoletes: boost169-date-time < %{obsver}
 
 %description date-time
 
@@ -238,6 +253,8 @@ on generic programming concepts.
 %if %{with context}
 %package fiber
 Summary: Run-time component of boost fiber library
+Provides:  boost169-fiber = %{obsver}
+Obsoletes: boost169-fiber < %{obsver}
 
 %description fiber
 
@@ -248,6 +265,8 @@ micro-/userland-threads (fibers) scheduled cooperatively.
 %package filesystem
 Summary: Run-time component of boost filesystem library
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Provides:  boost169-filesystem = %{obsver}
+Obsoletes: boost169-filesystem < %{obsver}
 
 %description filesystem
 
@@ -258,6 +277,8 @@ directories.
 %package graph
 Summary: Run-time component of boost graph library
 Requires: %{name}-regex%{?_isa} = %{version}-%{release}
+Provides:  boost169-graph = %{obsver}
+Obsoletes: boost169-graph < %{obsver}
 
 %description graph
 
@@ -267,6 +288,8 @@ Library (STL).
 
 %package iostreams
 Summary: Run-time component of boost iostreams library
+Provides:  boost169-iostreams = %{obsver}
+Obsoletes: boost169-iostreams < %{obsver}
 
 %description iostreams
 
@@ -278,6 +301,8 @@ Summary: Run-time component of boost locale library
 Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
 Requires: %{name}-thread%{?_isa} = %{version}-%{release}
+Provides:  boost169-locale = %{obsver}
+Obsoletes: boost169-locale < %{obsver}
 
 %description locale
 
@@ -286,6 +311,8 @@ handling tools.
 
 %package log
 Summary: Run-time component of boost logging library
+Provides:  boost169-log = %{obsver}
+Obsoletes: boost169-log < %{obsver}
 
 %description log
 
@@ -295,6 +322,8 @@ tools along with public interfaces for extending the library.
 
 %package math
 Summary: Math functions for boost TR1 library
+Provides:  boost169-math = %{obsver}
+Obsoletes: boost169-math < %{obsver}
 
 %description math
 
@@ -307,6 +336,8 @@ portion of Boost.TR1.
 Summary: Run-time component of boost numpy library for Python 3
 Requires: %{name}-python3%{?_isa} = %{version}-%{release}
 Requires: python3-numpy
+Provides:  boost169-numpy3 = %{obsver}
+Obsoletes: boost169-numpy3 < %{obsver}
 
 %description numpy3
 
@@ -320,6 +351,8 @@ support for the NumPy extension of the Boost Python Library for Python 3.
 
 %package program-options
 Summary:  Run-time component of boost program_options library
+Provides:  boost169-program_options = %{obsver}
+Obsoletes: boost169-program_options < %{obsver}
 
 %description program-options
 
@@ -331,6 +364,8 @@ conventional methods such as command-line and configuration file.
 
 %package python3
 Summary: Run-time component of boost python library for Python 3
+Provides:  boost169-python3 = %{obsver}
+Obsoletes: boost169-python3 < %{obsver}
 
 %description python3
 
@@ -345,6 +380,8 @@ Summary: Shared object symbolic links for Boost.Python 3
 Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
 Requires: %{name}-python3%{?_isa} = %{version}-%{release}
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
+Provides:  boost169-python3-devel = %{obsver}
+Obsoletes: boost169-python3-devel < %{obsver}
 
 %description python3-devel
 
@@ -354,6 +391,8 @@ Shared object symbolic links for Python 3 variant of Boost.Python.
 
 %package random
 Summary: Run-time component of boost random library
+Provides:  boost169-random = %{obsver}
+Obsoletes: boost169-random < %{obsver}
 
 %description random
 
@@ -361,6 +400,8 @@ Run-time support for boost random library.
 
 %package regex
 Summary: Run-time component of boost regular expression library
+Provides:  boost169-regex = %{obsver}
+Obsoletes: boost169-regex < %{obsver}
 
 %description regex
 
@@ -368,6 +409,8 @@ Run-time support for boost regular expression library.
 
 %package serialization
 Summary: Run-time component of boost serialization library
+Provides:  boost169-serialization = %{obsver}
+Obsoletes: boost169-serialization < %{obsver}
 
 %description serialization
 
@@ -375,6 +418,8 @@ Run-time support for serialization for persistence and marshaling.
 
 %package stacktrace
 Summary: Run-time component of boost stacktrace library
+Provides:  boost169-stacktrace = %{obsver}
+Obsoletes: boost169-stacktrace < %{obsver}
 
 %description stacktrace
 
@@ -382,6 +427,8 @@ Run-time component of the Boost stacktrace library.
 
 %package system
 Summary: Run-time component of boost system support library
+Provides:  boost169-system = %{obsver}
+Obsoletes: boost169-system < %{obsver}
 
 %description system
 
@@ -390,6 +437,8 @@ the diagnostics support that is part of the C++11 standard library.
 
 %package test
 Summary: Run-time component of boost test library
+Provides:  boost169-test = %{obsver}
+Obsoletes: boost169-test < %{obsver}
 
 %description test
 
@@ -399,6 +448,8 @@ program execution monitoring.
 %package thread
 Summary: Run-time component of boost thread library
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Provides:  boost169-thread = %{obsver}
+Obsoletes: boost169-thread < %{obsver}
 
 %description thread
 
@@ -411,6 +462,8 @@ data specific to individual threads.
 Summary: Run-time component of boost timer library
 Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Provides:  boost169-timer = %{obsver}
+Obsoletes: boost169-timer < %{obsver}
 
 %description timer
 
@@ -422,6 +475,8 @@ with as little as one #include and one additional line of code.
 Summary: Run-time component of boost type erasure library
 Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
+Provides:  boost169-type_erasure = %{obsver}
+Obsoletes: boost169-type_erasure < %{obsver}
 
 %description type_erasure
 
@@ -435,6 +490,8 @@ Requires: %{name}-date-time%{?_isa} = %{version}-%{release}
 Requires: %{name}-filesystem%{?_isa} = %{version}-%{release}
 Requires: %{name}-system%{?_isa} = %{version}-%{release}
 Requires: %{name}-thread%{?_isa} = %{version}-%{release}
+Provides:  boost169-wave = %{obsver}
+Obsoletes: boost169-wave < %{obsver}
 
 %description wave
 
@@ -449,6 +506,8 @@ Requires: libicu-devel%{?_isa}
 %if %{with quadmath}
 Requires: libquadmath-devel%{?_isa}
 %endif
+Provides:  boost169-devel = %{obsver}
+Obsoletes: boost169-devel < %{obsver}
 
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
@@ -456,6 +515,8 @@ Headers and shared object symbolic links for the Boost C++ libraries.
 %package static
 Summary: The Boost C++ static development libraries
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
+Provides:  boost169-static = %{obsver}
+Obsoletes: boost169-static < %{obsver}
 
 %description static
 Static Boost C++ libraries.
@@ -465,6 +526,8 @@ Summary: HTML documentation for the Boost C++ libraries
 %if 0%{?rhel} >= 6
 BuildArch: noarch
 %endif
+Provides:  boost169-doc = %{obsver}
+Obsoletes: boost169-doc < %{obsver}
 
 %description doc
 This package contains the documentation in the HTML format of the Boost C++
@@ -477,6 +540,8 @@ Summary: Source examples for the Boost C++ libraries
 BuildArch: noarch
 %endif
 Requires: %{name}-devel = %{version}-%{release}
+Provides:  boost169-examples = %{obsver}
+Obsoletes: boost169-examples < %{obsver}
 
 %description examples
 This package contains example source files distributed with boost.
@@ -488,6 +553,8 @@ This package contains example source files distributed with boost.
 Summary: Run-time component of Boost.MPI library
 BuildRequires: openmpi-devel
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
+Provides:  boost169-openmpi = %{obsver}
+Obsoletes: boost169-openmpi < %{obsver}
 
 %description openmpi
 
@@ -499,6 +566,8 @@ Summary: Shared library symbolic links for Boost.MPI
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-openmpi%{?_isa} = %{version}-%{release}
 Requires: %{name}-graph-openmpi%{?_isa} = %{version}-%{release}
+Provides:  boost169-openmpi-devel = %{obsver}
+Obsoletes: boost169-openmpi-devel < %{obsver}
 
 %description openmpi-devel
 
@@ -513,6 +582,8 @@ Requires: %{name}-openmpi%{?_isa} = %{version}-%{release}
 Requires: %{name}-python3%{?_isa} = %{version}-%{release}
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
 Requires: python3-openmpi%{?_isa}
+Provides:  boost169-openmpi-python3 = %{obsver}
+Obsoletes: boost169-openmpi-python3 < %{obsver}
 
 %description openmpi-python3
 
@@ -525,6 +596,8 @@ Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-openmpi-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-openmpi-python3%{?_isa} = %{version}-%{release}
+Provides:  boost169-openmpi-python3-devel = %{obsver}
+Obsoletes: boost169-openmpi-python3-devel < %{obsver}
 
 %description openmpi-python3-devel
 
@@ -537,6 +610,8 @@ providing a clean C++ API over the OpenMPI implementation of MPI.
 Summary: Run-time component of parallel boost graph library
 Requires: %{name}-openmpi%{?_isa} = %{version}-%{release}
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
+Provides:  boost169-graph-openmpi = %{obsver}
+Obsoletes: boost169-graph-openmpi < %{obsver}
 
 %description graph-openmpi
 
@@ -554,6 +629,8 @@ back-end to do the parallel work.
 Summary: Run-time component of Boost.MPI library
 BuildRequires: mpich-devel
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
+Provides:  boost169-mpich = %{obsver}
+Obsoletes: boost169-mpich < %{obsver}
 
 %description mpich
 
@@ -565,6 +642,8 @@ Summary: Shared library symbolic links for Boost.MPI
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-mpich%{?_isa} = %{version}-%{release}
 Requires: %{name}-graph-mpich%{?_isa} = %{version}-%{release}
+Provides:  boost169-mpich-devel = %{obsver}
+Obsoletes: boost169-mpich-devel < %{obsver}
 
 %description mpich-devel
 
@@ -579,6 +658,8 @@ Requires: %{name}-mpich%{?_isa} = %{version}-%{release}
 Requires: %{name}-python3%{?_isa} = %{version}-%{release}
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
 Requires: python3-mpich%{?_isa}
+Provides:  boost169-mpich-python3 = %{obsver}
+Obsoletes: boost169-mpich-python3 < %{obsver}
 
 %description mpich-python3
 
@@ -591,6 +672,8 @@ Requires: %{name}-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-mpich-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-mpich-python3%{?_isa} = %{version}-%{release}
+Provides:  boost169-mpich-python3-devel = %{obsver}
+Obsoletes: boost169-mpich-python3-devel < %{obsver}
 
 %description mpich-python3-devel
 
@@ -603,6 +686,8 @@ providing a clean C++ API over the MPICH implementation of MPI.
 Summary: Run-time component of parallel boost graph library
 Requires: %{name}-mpich%{?_isa} = %{version}-%{release}
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
+Provides:  boost169-graph-mpich = %{obsver}
+Obsoletes: boost169-graph-mpich < %{obsver}
 
 %description graph-mpich
 
@@ -617,6 +702,8 @@ back-end to do the parallel work.
 Summary: Cross platform build system for C++ projects
 Requires: %{name}-jam
 BuildArch: noarch
+Provides:  boost169-build = %{obsver}
+Obsoletes: boost169-build < %{obsver}
 
 %description build
 Boost.Build is an easy way to build C++ projects, everywhere. You name
@@ -630,6 +717,8 @@ C++ compilers -- on Windows, OSX, Linux and commercial UNIX systems.
 Summary: Tools for working with Boost documentation
 Requires: docbook-dtds
 Requires: docbook-style-xsl
+Provides:  boost169-doctools = %{obsver}
+Obsoletes: boost169-doctools < %{obsver}
 
 %description doctools
 
@@ -637,6 +726,8 @@ Tools for working with Boost documentation in BoostBook or QuickBook format.
 
 %package jam
 Summary: A low-level build tool
+Provides:  boost169-jam = %{obsver}
+Obsoletes: boost169-jam < %{obsver}
 
 %description jam
 Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
@@ -1281,6 +1372,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Thu May 14 2020 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-18
+- Obsoletes all sub-packages of boost169 (on F32) (#1835079)
+
 * Tue May 12 2020 Avi Kivity <avi@scylladb.com> - 1.69.0-17
 - Add patch for C++20 compatibility in Boost.Signals2 (#1834764)
 
