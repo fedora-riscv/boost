@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1247,6 +1247,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri May 15 2020 Pete Walter <pwalter@fedoraproject.org> - 1.69.0-19
+- Rebuild for ICU 67
+
 * Tue May 12 2020 Avi Kivity <avi@scylladb.com> - 1.69.0-18
 - Add patch for C++20 compatibility in Boost.Signals2 (#1834764)
 
