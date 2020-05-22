@@ -134,10 +134,6 @@ Patch15: boost-1.58.0-pool.patch
 # https://svn.boost.org/trac/boost/ticket/9038
 Patch51: boost-1.58.0-pool-test_linking.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1102667
-Patch61: boost-1.57.0-python-libpython_dep.patch
-Patch62: boost-1.66.0-python-abi_letters.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=1190039
 Patch65: boost-1.66.0-build-optflags.patch
 
@@ -650,8 +646,6 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch5 -p1
 %patch15 -p0
 %patch51 -p1
-%patch61 -p1
-%patch62 -p1
 %patch65 -p1
 %patch82 -p1
 %patch83 -p1
@@ -688,7 +682,7 @@ EOF
 
 %if %{with python3}
 cat >> ./tools/build/src/user-config.jam << EOF
-using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}${PYTHON3_ABIFLAGS} : : : : ${PYTHON3_ABIFLAGS} ;
+using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{python3_version}${PYTHON3_ABIFLAGS} : : : ;
 EOF
 %endif
 
@@ -1248,6 +1242,7 @@ fi
 %changelog
 * Fri May 22 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-20
 - Require boost-python3 for boost, fold boost-python3-devel into boost-devel
+- Do not link Python extensions to libpython
 
 * Fri May 15 2020 Pete Walter <pwalter@fedoraproject.org> - 1.69.0-19
 - Rebuild for ICU 67
