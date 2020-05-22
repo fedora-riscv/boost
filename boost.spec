@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
-Release: 19%{?dist}
+Release: 20%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -63,12 +63,11 @@ Source1: libboost_thread.so
 %global sonamever %{version}
 
 # boost is an "umbrella" package that pulls in all boost shared library
-# components, except for MPI and Python sub-packages.  Those are special
-# in that there are alternative implementations to choose from
-# (Open MPI and MPICH, and Python 2 and 3), and it's not a big burden
-# to have interested parties install them explicitly.
+# components, except for MPI sub-packages.  Those are special in that
+# there are alternative implementations to choose from (Open MPI and MPICH),
+# and it's not a big burden to have interested parties install them explicitly.
 # The subpackages that don't install shared libraries are also not pulled in
-# (doc, doctools, examples, jam, static).
+# (build, doc, doctools, examples, jam, static).
 Requires: %{name}-atomic%{?_isa} = %{version}-%{release}
 Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
 Requires: %{name}-container%{?_isa} = %{version}-%{release}
@@ -88,6 +87,9 @@ Requires: %{name}-locale%{?_isa} = %{version}-%{release}
 Requires: %{name}-log%{?_isa} = %{version}-%{release}
 Requires: %{name}-math%{?_isa} = %{version}-%{release}
 Requires: %{name}-program-options%{?_isa} = %{version}-%{release}
+%if %{with python3}
+Requires: %{name}-python3%{?_isa} = %{version}-%{release}
+%endif
 Requires: %{name}-random%{?_isa} = %{version}-%{release}
 Requires: %{name}-regex%{?_isa} = %{version}-%{release}
 Requires: %{name}-serialization%{?_isa} = %{version}-%{release}
@@ -98,6 +100,10 @@ Requires: %{name}-thread%{?_isa} = %{version}-%{release}
 Requires: %{name}-timer%{?_isa} = %{version}-%{release}
 Requires: %{name}-type_erasure%{?_isa} = %{version}-%{release}
 Requires: %{name}-wave%{?_isa} = %{version}-%{release}
+
+%if %{with python3}
+Recommends: (boost-numpy3 if python3-numpy)
+%endif
 
 BuildRequires: gcc-c++
 BuildRequires: m4
@@ -329,7 +335,6 @@ developers to obtain (name, value) pairs from the user, via
 conventional methods such as command-line and configuration file.
 
 %if %{with python3}
-
 %package python3
 Summary: Run-time component of boost python library for Python 3
 
@@ -340,17 +345,6 @@ C++. It allows you to quickly and seamlessly expose C++ classes,
 functions and objects to Python, and vice versa, using no special
 tools -- just your C++ compiler.  This package contains run-time
 support for the Boost Python Library compiled for Python 3.
-
-%package python3-devel
-Summary: Shared object symbolic links for Boost.Python 3
-Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
-Requires: %{name}-python3%{?_isa} = %{version}-%{release}
-Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-
-%description python3-devel
-
-Shared object symbolic links for Python 3 variant of Boost.Python.
-
 %endif
 
 %package random
@@ -450,6 +444,12 @@ Requires: libicu-devel%{?_isa}
 %if %{with quadmath}
 Requires: libquadmath-devel%{?_isa}
 %endif
+%if %{with python3}
+# Require boost-numpy3 here, because main boost metapackage only Recommends: it
+Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
+# Added for F33, remove for F35:
+Obsoletes: %{name}-python3-devel < 1.69.0-20
+%endif
 
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
@@ -523,7 +523,6 @@ API over the OpenMPI implementation of MPI.
 %package openmpi-python3-devel
 Summary: Shared library symbolic links for Boost.MPI Python 3 component
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-openmpi-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-openmpi-python3%{?_isa} = %{version}-%{release}
 
@@ -589,7 +588,6 @@ API over the MPICH implementation of MPI.
 %package mpich-python3-devel
 Summary: Shared library symbolic links for Boost.MPI Python 3 component
 Requires: %{name}-devel%{?_isa} = %{version}-%{release}
-Requires: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-mpich-devel%{?_isa} = %{version}-%{release}
 Requires: %{name}-mpich-python3%{?_isa} = %{version}-%{release}
 
@@ -1061,11 +1059,6 @@ fi
 %files python3
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_python%{python3_version_nodots}.so.%{sonamever}
-
-%files python3-devel
-%license LICENSE_1_0.txt
-%{_libdir}/libboost_numpy%{python3_version_nodots}.so
-%{_libdir}/libboost_python%{python3_version_nodots}.so
 %endif
 
 %files random
@@ -1144,9 +1137,15 @@ fi
 %{_libdir}/libboost_math_c99.so
 %{_libdir}/libboost_math_c99f.so
 %{_libdir}/libboost_math_c99l.so
+%if %{with python3}
+%{_libdir}/libboost_numpy%{python3_version_nodots}.so
+%endif
 %{_libdir}/libboost_prg_exec_monitor.so
 %{_libdir}/libboost_unit_test_framework.so
 %{_libdir}/libboost_program_options.so
+%if %{with python3}
+%{_libdir}/libboost_python%{python3_version_nodots}.so
+%endif
 %{_libdir}/libboost_random.so
 %{_libdir}/libboost_regex.so
 %{_libdir}/libboost_serialization.so
@@ -1247,6 +1246,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Fri May 22 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-20
+- Require boost-python3 for boost, fold boost-python3-devel into boost-devel
+
 * Fri May 15 2020 Pete Walter <pwalter@fedoraproject.org> - 1.69.0-19
 - Rebuild for ICU 67
 
