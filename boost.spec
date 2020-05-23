@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
-Release: 20%{?dist}
+Release: 21%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -445,6 +445,8 @@ Requires: libquadmath-devel%{?_isa}
 Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
 # Added for F33, remove for F35:
 Obsoletes: %{name}-python3-devel < 1.69.0-20
+Provides: %{name}-python3-devel = %{version}-%{release}
+Provides: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 %endif
 
 %description devel
@@ -1240,6 +1242,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Sat May 23 2020 Igor Raits <ignatenkobrain@fedoraproject.org> - 1.69.0-21
+- Add Provides for boost-python3-devel
+
 * Fri May 22 2020 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-20
 - Require boost-python3 for boost, fold boost-python3-devel into boost-devel
 - Do not link Python extensions to libpython
