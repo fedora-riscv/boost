@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.69.0
-Release: 21%{?dist}
+Release: 22%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1242,6 +1242,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Mon May 25 2020 Miro Hrončok <mhroncok@redhat.com> - 1.69.0-22
+- Rebuilt for Python 3.9
+
 * Sat May 23 2020 Igor Raits <ignatenkobrain@fedoraproject.org> - 1.69.0-21
 - Add Provides for boost-python3-devel
 
