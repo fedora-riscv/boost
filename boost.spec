@@ -41,8 +41,8 @@
 Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.69.0
-Release: 22%{?dist}
+Version: 1.73.0
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -54,9 +54,12 @@ License: Boost and MIT and Python
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://sourceforge.net/projects/%{name}/files/%{name}/%{version}/%{toplev_dirname}.tar.bz2
-#Source0: https://dl.bintray.com/boostorg/master/%%{name}_%%{version_enc}-snapshot.tar.gz
+Source0: https://sourceforge.net/projects/%%{name}/files/%{name}/%{version}/%{toplev_dirname}.tar.bz2
+#Source0: https://dl.bintray.com/boostorg/master/%%{name}_%%{version_enc}.tar.gz
 Source1: libboost_thread.so
+# Add a manual page for b2, based on the online documentation:
+# http://www.boost.org/boost-build2/doc/html/bbv2/overview.html
+Source2: b2.1
 
 # Since Fedora 13, the Boost libraries are delivered with sonames
 # equal to the Boost version (e.g., 1.41.0).
@@ -67,7 +70,7 @@ Source1: libboost_thread.so
 # there are alternative implementations to choose from (Open MPI and MPICH),
 # and it's not a big burden to have interested parties install them explicitly.
 # The subpackages that don't install shared libraries are also not pulled in
-# (build, doc, doctools, examples, jam, static).
+# (b2, build, doc, doctools, examples, static).
 Requires: %{name}-atomic%{?_isa} = %{version}-%{release}
 Requires: %{name}-chrono%{?_isa} = %{version}-%{release}
 Requires: %{name}-container%{?_isa} = %{version}-%{release}
@@ -86,6 +89,7 @@ Requires: %{name}-iostreams%{?_isa} = %{version}-%{release}
 Requires: %{name}-locale%{?_isa} = %{version}-%{release}
 Requires: %{name}-log%{?_isa} = %{version}-%{release}
 Requires: %{name}-math%{?_isa} = %{version}-%{release}
+Requires: %{name}-nowide%{?_isa} = %{version}-%{release}
 Requires: %{name}-program-options%{?_isa} = %{version}-%{release}
 %if %{with python3}
 Requires: %{name}-python3%{?_isa} = %{version}-%{release}
@@ -118,13 +122,10 @@ BuildRequires: libicu-devel
 %if %{with quadmath}
 BuildRequires: libquadmath-devel
 %endif
+BuildRequires: bison
 
 # https://svn.boost.org/trac/boost/ticket/6150
 Patch4: boost-1.50.0-fix-non-utf8-files.patch
-
-# Add a manual page for bjam, based on the on-line documentation:
-# http://www.boost.org/boost-build2/doc/html/bbv2/overview.html
-Patch5: boost-1.48.0-add-bjam-man-page.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
@@ -135,19 +136,13 @@ Patch15: boost-1.58.0-pool.patch
 Patch51: boost-1.58.0-pool-test_linking.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1190039
-Patch65: boost-1.66.0-build-optflags.patch
+Patch65: boost-1.73.0-build-optflags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch82: boost-1.66.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch83: boost-1.66.0-bjam-build-flags.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1673669
-Patch84: boost-1.69-random.patch
-
-# https://github.com/boostorg/mpi/pull/81
-Patch85: boost-1.69-mpi-c_data.patch
+Patch83: boost-1.73.0-b2-build-flags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1818723
 Patch86: boost-1.69-format-allocator.patch
@@ -155,8 +150,11 @@ Patch86: boost-1.69-format-allocator.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1832639
 Patch87: boost-1.69.0-test-cxx20.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1834764
-Patch88: auto_buffer-C-20-compatibility.patch
+# https://lists.boost.org/Archives/boost/2020/04/248812.php
+Patch88: boost-1.73.0-cmakedir.patch
+
+# https://github.com/ned14/outcome/issues/223
+Patch89: boost-1.73.0-outcome-assert.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -304,6 +302,15 @@ Summary: Math functions for boost TR1 library
 Run-time support for C99 and C++ TR1 C-style Functions from the math
 portion of Boost.TR1.
 
+%package nowide
+Summary: Standard library functions with UTF-8 API on Windows
+# Added for F33, remove for F35:
+Obsoletes: boost-nowide <= 0.20190814
+
+%description nowide
+
+Run-time support for Boost.Nowide.
+
 %if %{with python3}
 
 %package numpy3
@@ -448,6 +455,10 @@ Obsoletes: %{name}-python3-devel < 1.69.0-20
 Provides: %{name}-python3-devel = %{version}-%{release}
 Provides: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 %endif
+# Added for F33, remove for F35:
+Obsoletes: boost-nowide-devel <= 0.20190814
+Provides: boost-nowide-devel = %{version}
+Provides: boost-nowide-devel%{?_isa} = %{version}
 
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
@@ -612,7 +623,7 @@ back-end to do the parallel work.
 
 %package build
 Summary: Cross platform build system for C++ projects
-Requires: %{name}-jam
+Requires: %{name}-b2
 BuildArch: noarch
 
 %description build
@@ -632,12 +643,16 @@ Requires: docbook-style-xsl
 
 Tools for working with Boost documentation in BoostBook or QuickBook format.
 
-%package jam
+%package b2
 Summary: A low-level build tool
+# Added for F33, remove for F35:
+Obsoletes: boost-jam < 1.73.0
+Provides: boost-jam = %{version}
+Provides: boost-jam%{?_isa} = %{version}
 
-%description jam
-Boost.Jam (BJam) is the low-level build engine tool for Boost.Build.
-Historically, Boost.Jam is based on on FTJam and on Perforce Jam but has grown
+%description b2
+B2 (formerly Boost.Jam) is the low-level build engine tool for Boost.Build.
+Historically, B2 was based on on FTJam and on Perforce Jam but has grown
 a number of significant features and is now developed independently.
 
 %prep
@@ -645,17 +660,15 @@ a number of significant features and is now developed independently.
 find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch4 -p1
-%patch5 -p1
 %patch15 -p0
 %patch51 -p1
 %patch65 -p1
 %patch82 -p1
 %patch83 -p1
-%patch84 -p2
-%patch85 -p2
 %patch86 -p1
 %patch87 -p2
-%patch88 -p2
+%patch88 -p1
+%patch89 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -791,12 +804,21 @@ echo ============================= install $MPI_COMPILER ==================
 # Move Python module to proper location for automatic loading
 mkdir -p ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost
 touch ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost/__init__.py
-mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
    ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost/
 %endif
 
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
+rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
+
+# Remove cmake files (some of these are duplicates of the generic bits anyway).
+rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
+
+# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
+version=%{version}
+rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%.*}
+rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%%%.*}
 
 %{_openmpi_unload}
 export PATH=/bin${PATH:+:}$PATH
@@ -816,12 +838,21 @@ echo ============================= install $MPI_COMPILER ==================
 # Move Python module to proper location for automatic loading
 mkdir -p ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost
 touch ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost/__init__.py
-mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/mpi.so \
+mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
    ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost/
 %endif
 
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
+rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
+
+# Remove cmake files (some of these are duplicates of the generic bits anyway).
+rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
+
+# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
+version=%{version}
+rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%.*}
+rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%%%.*}
 
 %{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
@@ -848,25 +879,26 @@ echo ============================= install serial ==================
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
 install -p -m 644 $(basename %{SOURCE1}) $RPM_BUILD_ROOT%{_libdir}/
 
+# Remove cmake files until we know somebody wants them.
+rm -r $RPM_BUILD_ROOT/%{_libdir}/cmake
+
+# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
+version=%{version}
+rm $RPM_BUILD_ROOT%{_libdir}/libboost_*.so.${version%%.*}
+rm $RPM_BUILD_ROOT%{_libdir}/libboost_*.so.${version%%%%.*}
 
 echo ============================= install Boost.Build ==================
 (cd tools/build
  ./b2 --prefix=$RPM_BUILD_ROOT%{_prefix} install
  # Fix some permissions
- chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/build/alias.py
- chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/kernel/boost-build.jam
- chmod -x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/options/help.jam
  chmod +x $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxproc.py
  # Fix shebang using unversioned python
  sed -i '1s@^#!/usr/bin.python$@&3@' $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxproc.py
- # We don't want to distribute this
- rm -f $RPM_BUILD_ROOT%{_bindir}/b2
- # Not a real file
- rm -f $RPM_BUILD_ROOT%{_datadir}/boost-build/src/build/project.ann.py
  # Empty file
+ rm $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxygen/windows-paths-check.hpp
  rm -f $RPM_BUILD_ROOT%{_datadir}/boost-build/src/tools/doxygen/windows-paths-check.hpp
  # Install the manual page
- %{__install} -p -m 644 v2/doc/bjam.1 -D $RPM_BUILD_ROOT%{_mandir}/man1/bjam.1
+ %{__install} -p -m 644 %{SOURCE2} -D $RPM_BUILD_ROOT%{_mandir}/man1/b2.1
 )
 
 echo ============================= install Boost.QuickBook ==================
@@ -1036,6 +1068,10 @@ fi
 %{_libdir}/libboost_math_tr1f.so.%{sonamever}
 %{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
+%files nowide
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_nowide.so.%{sonamever}
+
 %if %{with python3}
 %files numpy3
 %license LICENSE_1_0.txt
@@ -1133,6 +1169,7 @@ fi
 %{_libdir}/libboost_math_c99.so
 %{_libdir}/libboost_math_c99f.so
 %{_libdir}/libboost_math_c99l.so
+%{_libdir}/libboost_nowide.so
 %if %{with python3}
 %{_libdir}/libboost_numpy%{python3_version_nodots}.so
 %endif
@@ -1236,12 +1273,17 @@ fi
 %{_bindir}/quickbook
 %{_datadir}/boostbook/
 
-%files jam
+%files b2
 %license LICENSE_1_0.txt
-%{_bindir}/bjam
-%{_mandir}/man1/bjam.1*
+%{_bindir}/b2
+%{_mandir}/man1/b2.1*
 
 %changelog
+* Thu May 28 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-1
+- Rebase to 1.73.0
+- Replace boost-jam and bjam with boost-b2 and b2
+- Add boost-nowide subpackage
+
 * Mon May 25 2020 Miro Hrončok <mhroncok@redhat.com> - 1.69.0-22
 - Rebuilt for Python 3.9
 
