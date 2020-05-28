@@ -156,6 +156,9 @@ Patch88: boost-1.73.0-cmakedir.patch
 # https://github.com/ned14/outcome/issues/223
 Patch89: boost-1.73.0-outcome-assert.patch
 
+# https://github.com/boostorg/beast/pull/1927
+Patch90: boost-1.73.0-beast-coroutines.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -669,6 +672,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch87 -p2
 %patch88 -p1
 %patch89 -p1
+%patch90 -p1
 
 %build
 # Dump the versions being used into the build logs.
