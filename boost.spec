@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1283,6 +1283,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri May 29 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-2
+- Rebuilt for Python 3.9
+
 * Thu May 28 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-1
 - Rebase to 1.73.0
 - Replace boost-jam and bjam with boost-b2 and b2
