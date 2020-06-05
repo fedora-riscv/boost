@@ -10,8 +10,8 @@ Fixes #721
 
 diff --git a/include/boost/geometry/index/detail/rtree/visitors/insert.hpp b/include/boost/geometry/index/detail/rtree/visitors/insert.hpp
 index 2d324cb7f4..5709a930cc 100644
---- a/include/boost/geometry/index/detail/rtree/visitors/insert.hpp
-+++ b/include/boost/geometry/index/detail/rtree/visitors/insert.hpp
+--- a/boost/geometry/index/detail/rtree/visitors/insert.hpp
++++ b/boost/geometry/index/detail/rtree/visitors/insert.hpp
 @@ -265,7 +265,7 @@ struct insert_traverse_data
  // Default insert visitor
  template <typename Element, typename MembersHolder>
