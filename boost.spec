@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -158,6 +158,9 @@ Patch89: boost-1.73.0-outcome-assert.patch
 
 # https://github.com/boostorg/beast/pull/1927
 Patch90: boost-1.73.0-beast-coroutines.patch
+
+# https://github.com/boostorg/geometry/issues/721
+Patch91: boost-1.73-geometry-issue721.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -673,6 +676,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch88 -p1
 %patch89 -p1
 %patch90 -p1
+%patch91 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1283,6 +1287,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Jun 05 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-4
+- Add patch for Boost.Geometry issue #721
+
 * Fri May 29 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-3
 - Rebuilt for Python 3.9
 
