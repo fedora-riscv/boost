@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -114,6 +114,7 @@ BuildRequires: m4
 BuildRequires: libstdc++-devel
 BuildRequires: bzip2-devel
 BuildRequires: zlib-devel
+BuildRequires: xz-devel
 %if %{with python3}
 BuildRequires: python3-devel
 BuildRequires: python3-numpy
@@ -278,6 +279,7 @@ Library (STL).
 
 %package iostreams
 Summary: Run-time component of boost iostreams library
+Requires: xz%{?_isa}
 
 %description iostreams
 
@@ -1292,6 +1294,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Oct 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-8
+- Build Boost.Iostreams with LZMA support (#1893060)
+
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.73.0-7
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
