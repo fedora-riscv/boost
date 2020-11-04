@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -279,7 +279,6 @@ Library (STL).
 
 %package iostreams
 Summary: Run-time component of boost iostreams library
-Requires: xz%{?_isa}
 
 %description iostreams
 
@@ -1294,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Nov 04 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-9
+- Remove incorrect dependency on xz, only the shared lib is needed
+
 * Fri Oct 30 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-8
 - Build Boost.Iostreams with LZMA support (#1893060)
 
