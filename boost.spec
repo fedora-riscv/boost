@@ -695,6 +695,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch94 -p1
 
 %build
+%set_build_flags
 # Dump the versions being used into the build logs.
 %if %{with python3}
 PYTHON3_ABIFLAGS=$(/usr/bin/python3-config --abiflags)
@@ -713,7 +714,7 @@ import os ;
 local RPM_OPT_FLAGS = [ os.environ RPM_OPT_FLAGS ] ;
 local RPM_LD_FLAGS = [ os.environ RPM_LD_FLAGS ] ;
 
-using gcc : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
+using %{toolchain} : : : <compileflags>$(RPM_OPT_FLAGS) <linkflags>$(RPM_LD_FLAGS) ;
 %if %{with openmpi} || %{with mpich}
 using mpi ;
 %endif
@@ -725,7 +726,7 @@ using python : %{python3_version} : /usr/bin/python3 : /usr/include/python%{pyth
 EOF
 %endif
 
-./bootstrap.sh --with-toolset=gcc --with-icu
+./bootstrap.sh --with-toolset=%{toolchain} --with-icu
 
 # N.B. When we build the following with PCH, parts of boost (math
 # library in particular) end up being built second time during
@@ -797,7 +798,7 @@ export PATH=/bin${PATH:+:}$PATH
 
 echo ============================= build Boost.Build ==================
 (cd tools/build
- ./bootstrap.sh --with-toolset=gcc)
+ ./bootstrap.sh --with-toolset=%{toolchain})
 
 %check
 :
