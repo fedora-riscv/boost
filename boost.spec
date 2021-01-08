@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -174,6 +174,9 @@ Patch93: boost-1.73-python3.10.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1899888
 # https://github.com/boostorg/locale/issues/52
 Patch94: boost-1.73-locale-empty-vector.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1912903
+Patch95: boost-1.73-python3.10-Py_fopen.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -693,6 +696,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch92 -p1
 %patch93 -p1
 %patch94 -p1
+%patch95 -p1
 
 %build
 %set_build_flags
@@ -1304,6 +1308,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Jan  8 14:14:00 CET 2021 Tomas Hrnciar <thrnciar@redhat.com> - 1.73.0-12
+- Patch Boost.Python for Python 3.10 - replace _Py_fopen() with fopen() (#1912903)
+
 * Fri Nov 20 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-11
 - Patch Boost.Locale to not access empty vector (#1899888)
 
