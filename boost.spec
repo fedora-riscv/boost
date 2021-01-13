@@ -41,8 +41,8 @@
 Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.73.0
-Release: 12%{?dist}
+Version: 1.75.0
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -54,8 +54,7 @@ License: Boost and MIT and Python
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://sourceforge.net/projects/%%{name}/files/%{name}/%{version}/%{toplev_dirname}.tar.bz2
-#Source0: https://dl.bintray.com/boostorg/master/%%{name}_%%{version_enc}.tar.gz
+Source0: https://dl.bintray.com/boostorg/release/%{version}/source/%{name}_%%{version_enc}.tar.bz2
 Source1: libboost_thread.so
 # Add a manual page for b2, based on the online documentation:
 # http://www.boost.org/boost-build2/doc/html/bbv2/overview.html
@@ -125,9 +124,6 @@ BuildRequires: libquadmath-devel
 %endif
 BuildRequires: bison
 
-# https://svn.boost.org/trac/boost/ticket/6150
-Patch4: boost-1.50.0-fix-non-utf8-files.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
 # https://svn.boost.org/trac/boost/ticket/6701
@@ -136,36 +132,17 @@ Patch15: boost-1.58.0-pool.patch
 # https://svn.boost.org/trac/boost/ticket/9038
 Patch51: boost-1.58.0-pool-test_linking.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1190039
-Patch65: boost-1.73.0-build-optflags.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1541035
+Patch96: boost-1.75.0-build-optflags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
-Patch82: boost-1.66.0-no-rpath.patch
+Patch97: boost-1.75.0-no-rpath.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
 Patch83: boost-1.73.0-b2-build-flags.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1818723
-Patch86: boost-1.69-format-allocator.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1832639
-Patch87: boost-1.69.0-test-cxx20.patch
-
 # https://lists.boost.org/Archives/boost/2020/04/248812.php
 Patch88: boost-1.73.0-cmakedir.patch
-
-# https://github.com/ned14/outcome/issues/223
-Patch89: boost-1.73.0-outcome-assert.patch
-
-# https://github.com/boostorg/beast/pull/1927
-Patch90: boost-1.73.0-beast-coroutines.patch
-
-# https://github.com/boostorg/geometry/issues/721
-Patch91: boost-1.73-geometry-issue721.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1843105
-# https://github.com/boostorg/mpi/pull/119
-Patch92: boost-1.73-mpi-vector-data.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1896382
 # https://github.com/boostorg/python/issues/325
@@ -174,9 +151,6 @@ Patch93: boost-1.73-python3.10.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1899888
 # https://github.com/boostorg/locale/issues/52
 Patch94: boost-1.73-locale-empty-vector.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1912903
-Patch95: boost-1.73-python3.10-Py_fopen.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -295,6 +269,15 @@ Summary: Run-time component of boost iostreams library
 
 Run-time support for Boost.Iostreams, a framework for defining streams,
 stream buffers and i/o filters.
+
+%package json
+Summary: Run-time component of boost json library
+
+%description json
+
+Run-time support for Boost.Json, a portable C++ library which provides
+containers and algorithms that implement JavaScript Object Notation, or
+simply "JSON"
 
 %package locale
 Summary: Run-time component of boost locale library
@@ -681,22 +664,14 @@ a number of significant features and is now developed independently.
 %setup -q -n %{toplev_dirname}
 find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
-%patch4 -p1
 %patch15 -p0
 %patch51 -p1
-%patch65 -p1
-%patch82 -p1
+%patch96 -p1
+%patch97 -p1
 %patch83 -p1
-%patch86 -p1
-%patch87 -p2
 %patch88 -p1
-%patch89 -p1
-%patch90 -p1
-%patch91 -p1
-%patch92 -p1
 %patch93 -p1
 %patch94 -p1
-%patch95 -p1
 
 %build
 %set_build_flags
@@ -844,11 +819,6 @@ rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
 # Remove cmake files (some of these are duplicates of the generic bits anyway).
 rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
 
-# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
-version=%{version}
-rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%.*}
-rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%%%.*}
-
 %{_openmpi_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -878,11 +848,6 @@ rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
 # Remove cmake files (some of these are duplicates of the generic bits anyway).
 rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
 
-# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
-version=%{version}
-rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%.*}
-rm ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_*.so.${version%%%%.*}
-
 %{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -910,11 +875,6 @@ install -p -m 644 $(basename %{SOURCE1}) $RPM_BUILD_ROOT%{_libdir}/
 
 # Remove cmake files until we know somebody wants them.
 rm -r $RPM_BUILD_ROOT/%{_libdir}/cmake
-
-# Remove the useless libboost_foo.so.1.NN and libboost_foo.so.1 symlinks.
-version=%{version}
-rm $RPM_BUILD_ROOT%{_libdir}/libboost_*.so.${version%%.*}
-rm $RPM_BUILD_ROOT%{_libdir}/libboost_*.so.${version%%%%.*}
 
 echo ============================= install Boost.Build ==================
 (cd tools/build
@@ -1079,6 +1039,10 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_iostreams.so.%{sonamever}
 
+%files json
+%license LICENSE_1_0.txt
+%{_libdir}/libboost_json.so.%{sonamever}
+
 %files locale
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_locale.so.%{sonamever}
@@ -1189,6 +1153,7 @@ fi
 %{_libdir}/libboost_filesystem.so
 %{_libdir}/libboost_graph.so
 %{_libdir}/libboost_iostreams.so
+%{_libdir}/libboost_json.so
 %{_libdir}/libboost_locale.so
 %{_libdir}/libboost_log.so
 %{_libdir}/libboost_log_setup.so
@@ -1308,6 +1273,10 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Mon Jan 11 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-1
+- Rebase to 1.75.0
+- Add boost-json subpackage
+
 * Fri Jan  8 14:14:00 CET 2021 Tomas Hrnciar <thrnciar@redhat.com> - 1.73.0-12
 - Patch Boost.Python for Python 3.10 - replace _Py_fopen() with fopen() (#1912903)
 

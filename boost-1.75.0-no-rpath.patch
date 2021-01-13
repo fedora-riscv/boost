@@ -1,6 +1,14 @@
---- boost_1_66_0/tools/build/src/tools/gcc.jam~	2018-01-19 13:23:45.361330881 +0000
-+++ boost_1_66_0/tools/build/src/tools/gcc.jam	2018-01-19 13:23:45.362330880 +0000
-@@ -1191,7 +1191,7 @@ rule link ( targets * : sources * : prop
+diff --git a/tools/build/src/tools/gcc.jam b/tools/build/src/tools/gcc.jam
+index 02dc154cf..c076f70f4 100644
+--- a/tools/build/src/tools/gcc.jam
++++ b/tools/build/src/tools/gcc.jam
+@@ -1132,17 +1132,17 @@ actions link.mingw bind LIBRARIES
+ 
+ actions link.dll.mingw bind LIBRARIES
+ {
+-    "$(CONFIG_COMMAND)" -L"$(LINKPATH)" "$(.IMPLIB-COMMAND)$(<[1])" -o "$(<[-1])" -shared @"@($(<[-1]:T).rsp:E=$(START-GROUP) "$(>:T)" "$(LIBRARIES:T)" $(FINDLIBS-ST-PFX:T) -l$(FINDLIBS-ST:T) $(FINDLIBS-SA-PFX:T) -l$(FINDLIBS-SA:T) $(END-GROUP))" $(OPTIONS) $(USER_OPTIONS)
++    "$(CONFIG_COMMAND)" -L"$(LINKPATH)" "$(.IMPLIB-COMMAND)$(<[0])" -o "$(<[-1])" -shared @"@($(<[-1]:T).rsp:E=$(START-GROUP) "$(>:T)" "$(LIBRARIES:T)" $(FINDLIBS-ST-PFX:T) -l$(FINDLIBS-ST:T) $(FINDLIBS-SA-PFX:T) -l$(FINDLIBS-SA:T) $(END-GROUP))" $(OPTIONS) $(USER_OPTIONS)
+ }
  
  actions link bind LIBRARIES
  {
@@ -8,9 +16,6 @@
 +    "$(CONFIG_COMMAND)" -L"$(LINKPATH)" -o "$(<)" $(START-GROUP) "$(>)" "$(LIBRARIES)" $(FINDLIBS-ST-PFX) -l$(FINDLIBS-ST) $(FINDLIBS-SA-PFX) -l$(FINDLIBS-SA) $(END-GROUP) $(OPTIONS) $(USER_OPTIONS)
  }
  
- rule link.dll ( targets * : sources * : properties * )
-@@ -1204,7 +1204,7 @@ rule link.dll ( targets * : sources * :
- # Differs from 'link' above only by -shared.
  actions link.dll bind LIBRARIES
  {
 -    "$(CONFIG_COMMAND)" -L"$(LINKPATH)" -Wl,$(RPATH_OPTION:E=-R)$(SPACE)-Wl,$(RPATH) "$(.IMPLIB-COMMAND)$(<[1])" -o "$(<[-1])" $(HAVE_SONAME)-Wl,$(SONAME_OPTION)$(SPACE)-Wl,$(<[-1]:D=) -shared $(START-GROUP) "$(>)" "$(LIBRARIES)" $(FINDLIBS-ST-PFX) -l$(FINDLIBS-ST) $(FINDLIBS-SA-PFX) -l$(FINDLIBS-SA) $(END-GROUP) $(OPTIONS) $(USER_OPTIONS)
