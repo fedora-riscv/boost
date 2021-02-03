@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -151,6 +151,10 @@ Patch93: boost-1.73-python3.10.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1899888
 # https://github.com/boostorg/locale/issues/52
 Patch94: boost-1.73-locale-empty-vector.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1923740
+# https://github.com/boostorg/build/issues/696
+Patch95: boost-1.75.0-boost-build-fix.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -672,6 +676,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch88 -p1
 %patch93 -p1
 %patch94 -p1
+%patch95 -p1
 
 %build
 %set_build_flags
@@ -1273,6 +1278,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Feb 02 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-3
+- Patch for https://bugzilla.redhat.com/show_bug.cgi?id=1923740
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.75.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
