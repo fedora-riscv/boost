@@ -45,7 +45,7 @@ Version: 1.69.0
 %global version_enc 1_69_0
 %global version_suffix 169
 %global obsver 1.69.0-7
-Release: 18%{?dist}
+Release: 19%{?dist}
 License: Boost and MIT and Python
 
 %global toplev_dirname %{real_name}_%{version_enc}
@@ -155,6 +155,10 @@ Patch87: boost-1.69.0-test-cxx20.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1834764
 Patch88: auto_buffer-C-20-compatibility.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1899888
+# https://github.com/boostorg/locale/issues/52
+Patch94: boost-1.73-locale-empty-vector.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -753,6 +757,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch86 -p1
 %patch87 -p2
 %patch88 -p2
+%patch94 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1372,6 +1377,9 @@ fi
 %{_mandir}/man1/bjam.1*
 
 %changelog
+* Wed Mar 03 2021 Jonathan Wakely <jwakely@redhat.com> - 1.69.0-19
+- Patch Boost.Locale to not access empty vector (#1899888)
+
 * Thu May 14 2020 Denis Arnaud <denis.arnaud_fedora@m4x.org> - 1.69.0-18
 - Obsoletes all sub-packages of boost169 (on F32) (#1835079)
 
