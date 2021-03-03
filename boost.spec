@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1278,8 +1278,11 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Mar 03 2021 Jonathan Wakely <jwakely@redhat.com> - 1.75.0-4
+- Adjust Boost.Locale patch to use NULL instead of nullptr
+
 * Tue Feb 02 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-3
-- Patch for https://bugzilla.redhat.com/show_bug.cgi?id=1923740
+- Patch Boost.Build to find boost-build.jam (#1923740)
 
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.75.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
