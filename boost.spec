@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.73.0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -166,6 +166,10 @@ Patch91: boost-1.73-geometry-issue721.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1843105
 # https://github.com/boostorg/mpi/pull/119
 Patch92: boost-1.73-mpi-vector-data.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1899888
+# https://github.com/boostorg/locale/issues/52
+Patch94: boost-1.73-locale-empty-vector.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -683,6 +687,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch90 -p1
 %patch91 -p1
 %patch92 -p1
+%patch94 -p1
 
 %build
 # Dump the versions being used into the build logs.
@@ -1293,6 +1298,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Mar 03 2021 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-10
+- Patch Boost.Locale to not access empty vector (#1899888)
+
 * Wed Nov 04 2020 Jonathan Wakely <jwakely@redhat.com> - 1.73.0-9
 - Remove incorrect dependency on xz, only the shared lib is needed
 
