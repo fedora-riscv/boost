@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1278,6 +1278,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 1.75.0-4
+- Rebuilt for removed libstdc++ symbol (#1937698)
+
 * Tue Feb 02 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-3
 - Patch for https://bugzilla.redhat.com/show_bug.cgi?id=1923740
 
