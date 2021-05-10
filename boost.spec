@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -155,6 +155,10 @@ Patch94: boost-1.73-locale-empty-vector.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1923740
 # https://github.com/boostorg/build/issues/696
 Patch95: boost-1.75.0-boost-build-fix.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1958382
+# https://github.com/boostorg/graph/pull/218
+Patch98: boost-1.75.0-remove-deprecated-boost-iterator.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -677,6 +681,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch93 -p1
 %patch94 -p1
 %patch95 -p1
+%patch98 -p1
 
 %build
 %set_build_flags
@@ -1278,6 +1283,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri May 07 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-5
+- Patch to fix deprecated iterator warnings (#1958382)
+
 * Tue Mar 30 2021 Jonathan Wakely <jwakely@redhat.com> - 1.75.0-4
 - Rebuilt for removed libstdc++ symbol (#1937698)
 
