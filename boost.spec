@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1283,6 +1283,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed May 19 2021 Pete Walter <pwalter@fedoraproject.org> - 1.75.0-6
+- Rebuild for ICU 69
+
 * Fri May 07 2021 Thomas Rodgers <trodgers@redhat.com> - 1.75.0-5
 - Patch to fix deprecated iterator warnings (#1958382)
 
