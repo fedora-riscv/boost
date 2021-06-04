@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.75.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1283,6 +1283,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 1.75.0-8
+- Rebuilt for Python 3.10
+
 * Wed May 19 2021 Pete Walter <pwalter@fedoraproject.org> - 1.75.0-7
 - Rebuild for ICU 69
 
