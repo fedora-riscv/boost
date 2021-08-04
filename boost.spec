@@ -41,8 +41,8 @@
 Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.75.0
-Release: 9%{?dist}
+Version: 1.76.0
+Release: 0%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -54,7 +54,7 @@ License: Boost and MIT and Python
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://dl.bintray.com/boostorg/release/%{version}/source/%{name}_%%{version_enc}.tar.bz2
+Source0: https://boostorg.jfrog.io/artifactory/main/release/%{version}/source/%{name}_%%{version_enc}.tar.bz2
 Source1: libboost_thread.so
 # Add a manual page for b2, based on the online documentation:
 # http://www.boost.org/boost-build2/doc/html/bbv2/overview.html
@@ -138,27 +138,25 @@ Patch96: boost-1.75.0-build-optflags.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
 Patch97: boost-1.75.0-no-rpath.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch83: boost-1.73.0-b2-build-flags.patch
-
 # https://lists.boost.org/Archives/boost/2020/04/248812.php
 Patch88: boost-1.73.0-cmakedir.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1896382
-# https://github.com/boostorg/python/issues/325
-Patch93: boost-1.73-python3.10.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1899888
 # https://github.com/boostorg/locale/issues/52
 Patch94: boost-1.73-locale-empty-vector.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1923740
-# https://github.com/boostorg/build/issues/696
-Patch95: boost-1.75.0-boost-build-fix.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=1958382
 # https://github.com/boostorg/graph/pull/218
 Patch98: boost-1.75.0-remove-deprecated-boost-iterator.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1541035
+Patch99: boost-1.76.0-b2-build-flags.patch
+
+# https://github.com/boostorg/math/pull/670
+Patch100: boost-1.76.0-fix-include-inside-boost-namespace.patch
+
+# https://github.com/boostorg/math/pull/671
+Patch101: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -676,12 +674,12 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch51 -p1
 %patch96 -p1
 %patch97 -p1
-%patch83 -p1
+%patch99 -p1
 %patch88 -p1
-%patch93 -p1
 %patch94 -p1
-%patch95 -p1
 %patch98 -p1
+%patch100 -p1
+%patch101 -p1
 
 %build
 %set_build_flags
@@ -1283,6 +1281,18 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Aug 04 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-1
+- Rebase to 1.75.0
+  See https://fedoraproject.org/wiki/Changes/F35Boost176
+- Drop patches:
+    deleted: boost-1.73-python3.10.patch
+    deleted: boost-1.73.0-b2-build-flags.patch
+    deleted: boost-1.75.0-boost-build-fix.patch
+- Fix include inside boost namespace in boost/math/tools/mp.hpp
+  See https://github.com/boostorg/math/pull/670
+- Fix duplicate typedef in boost/math/tools/mp.hpp
+  See https://github.com/boostorg/math/pull/671
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.75.0-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
