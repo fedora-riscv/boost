@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 1%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1065,14 +1065,14 @@ fi
 %{_libdir}/libboost_math_c99.so.%{sonamever}
 %{_libdir}/libboost_math_c99f.so.%{sonamever}
 %ifnarch ppc64 ppc64le
-# long double not supported for this platform
-%{_libdir}/libboost_math_c99l.so.%{sonamever}
+  # long double not supported for this platform
+  %{_libdir}/libboost_math_c99l.so.%{sonamever}
 %endif
 %{_libdir}/libboost_math_tr1.so.%{sonamever}
 %{_libdir}/libboost_math_tr1f.so.%{sonamever}
 %ifnarch ppc64 ppc64le
-# long double not supported for this platform
-%{_libdir}/libboost_math_tr1l.so.%{sonamever}
+  # long double not supported for this platform
+  %{_libdir}/libboost_math_tr1l.so.%{sonamever}
 %endif
 
 %files nowide
@@ -1287,6 +1287,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-3
+- Second attempt at making the long double c99 and tr1 math libs conditional
+  on ppc64le
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-2
 - Boost.Math does not support 'long double' of ppc64le
   See https://github.com/boostorg/math/pull/524
