@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1173,10 +1173,14 @@ fi
 %{_libdir}/libboost_log_setup.so
 %{_libdir}/libboost_math_tr1.so
 %{_libdir}/libboost_math_tr1f.so
+%ifnarch ppc64 ppc64le
 %{_libdir}/libboost_math_tr1l.so
+%endif
 %{_libdir}/libboost_math_c99.so
 %{_libdir}/libboost_math_c99f.so
+%ifnarch ppc64 ppc64le
 %{_libdir}/libboost_math_c99l.so
+%endif
 %{_libdir}/libboost_nowide.so
 %if %{with python3}
 %{_libdir}/libboost_numpy%{python3_version_nodots}.so
@@ -1287,6 +1291,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
+- Third attempt at making the long double c99 and tr1 math libs conditional
+  on ppc64le
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-3
 - Second attempt at making the long double c99 and tr1 math libs conditional
   on ppc64le
