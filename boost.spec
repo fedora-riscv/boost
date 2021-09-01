@@ -54,7 +54,7 @@ License: Boost and MIT and Python
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
-Source0: https://boostorg.jfrog.io/artifactory/main/release/%{version}/source/%{name}_%%{version_enc}.tar.bz2
+Source0: https://boostorg.jfrog.io/artifactory/main/release/%{version}/source/%{name}_%{version_enc}.tar.bz2
 Source1: libboost_thread.so
 # Add a manual page for b2, based on the online documentation:
 # http://www.boost.org/boost-build2/doc/html/bbv2/overview.html
