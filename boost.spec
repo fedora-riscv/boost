@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -157,6 +157,9 @@ Patch100: boost-1.76.0-fix-include-inside-boost-namespace.patch
 
 # https://github.com/boostorg/math/pull/671
 Patch101: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
+
+# https://github.com/boostorg/random/issues/82
+Patch102: boost-1.76.0-random-test.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -681,6 +684,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch98 -p1
 %patch100 -p1
 %patch101 -p1
+%patch102 -p1
 
 %build
 %set_build_flags
@@ -1292,6 +1296,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Sep 01 2021 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-6
+- Add patch to fix CI failure
+
 * Wed Sep 01 2021 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-5
 - Make boost-python3 depend on specific 3.X version (#1896713)
 
