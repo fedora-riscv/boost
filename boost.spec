@@ -1294,12 +1294,15 @@ fi
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
   on ppc64le
+
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-3
 - Second attempt at making the long double c99 and tr1 math libs conditional
   on ppc64le
+
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-2
 - Boost.Math does not support 'long double' of ppc64le
   See https://github.com/boostorg/math/pull/524
+
 * Wed Aug 04 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-1
 - Rebase to 1.75.0
   See https://fedoraproject.org/wiki/Changes/F35Boost176
