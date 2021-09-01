@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -351,6 +351,7 @@ conventional methods such as command-line and configuration file.
 %if %{with python3}
 %package python3
 Summary: Run-time component of boost python library for Python 3
+Requires: python(abi) = %{python3_version}
 
 %description python3
 
@@ -1291,6 +1292,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Sep 01 2021 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-5
+- Make boost-python3 depend on specific 3.X version (#1896713)
+
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
   on ppc64le
