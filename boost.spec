@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -164,6 +164,11 @@ Patch102: boost-1.76.0-random-test.patch
 # PR https://github.com/boostorg/multiprecision/pull/421
 # fixes ppc64le issue https://github.com/boostorg/multiprecision/issues/419
 Patch103: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
+
+# PR https://github.com/boostorg/interval/pull/30
+# Fixes narrowing conversions for ppc -
+#   https://github.com/boostorg/interval/issues/29
+Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch 
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -690,6 +695,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch101 -p1
 %patch102 -p1
 %patch103 -p2
+%patch104 -p2
 
 %build
 %set_build_flags
@@ -1291,6 +1297,10 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Feb  2 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-9
+- Add patch to fix narrowing conversions on ppc64le
+  https://github.com/boostorg/interval/issues/29
+
 * Tue Feb  1 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.76.0-8
 - Add patch to fix Boost Multiprecision on ppc64le
   https://github.com/boostorg/multiprecision/issues/419
