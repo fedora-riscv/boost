@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -160,6 +160,10 @@ Patch101: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
 
 # https://github.com/boostorg/random/issues/82
 Patch102: boost-1.76.0-random-test.patch
+
+# PR https://github.com/boostorg/multiprecision/pull/421
+# fixes ppc64le issue https://github.com/boostorg/multiprecision/issues/419
+Patch103: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -685,6 +689,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch100 -p1
 %patch101 -p1
 %patch102 -p1
+%patch103 -p2
 
 %build
 %set_build_flags
@@ -1069,16 +1074,10 @@ fi
 %license LICENSE_1_0.txt
 %{_libdir}/libboost_math_c99.so.%{sonamever}
 %{_libdir}/libboost_math_c99f.so.%{sonamever}
-%ifnarch ppc64 ppc64le
-  # long double not supported for this platform
-  %{_libdir}/libboost_math_c99l.so.%{sonamever}
-%endif
+%{_libdir}/libboost_math_c99l.so.%{sonamever}
 %{_libdir}/libboost_math_tr1.so.%{sonamever}
 %{_libdir}/libboost_math_tr1f.so.%{sonamever}
-%ifnarch ppc64 ppc64le
-  # long double not supported for this platform
-  %{_libdir}/libboost_math_tr1l.so.%{sonamever}
-%endif
+%{_libdir}/libboost_math_tr1l.so.%{sonamever}
 
 %files nowide
 %license LICENSE_1_0.txt
@@ -1178,14 +1177,10 @@ fi
 %{_libdir}/libboost_log_setup.so
 %{_libdir}/libboost_math_tr1.so
 %{_libdir}/libboost_math_tr1f.so
-%ifnarch ppc64 ppc64le
 %{_libdir}/libboost_math_tr1l.so
-%endif
 %{_libdir}/libboost_math_c99.so
 %{_libdir}/libboost_math_c99f.so
-%ifnarch ppc64 ppc64le
 %{_libdir}/libboost_math_c99l.so
-%endif
 %{_libdir}/libboost_nowide.so
 %if %{with python3}
 %{_libdir}/libboost_numpy%{python3_version_nodots}.so
@@ -1296,6 +1291,11 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Feb  1 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.76.0-8
+- Add patch to fix Boost Multiprecision on ppc64le
+  https://github.com/boostorg/multiprecision/issues/419
+- Acknowledge the change of the ABI of ppc64le with long double.
+
 * Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.76.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
