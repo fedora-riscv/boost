@@ -161,6 +161,9 @@ Patch101: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
 # https://github.com/boostorg/random/issues/82
 Patch102: boost-1.76.0-random-test.patch
 
+# https://github.com/boostorg/ptr_container/pull/27
+Patch105: boost-1.76.0-ptr_cont-xml.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -685,6 +688,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch100 -p1
 %patch101 -p1
 %patch102 -p1
+%patch105 -p1
 
 %build
 %set_build_flags
@@ -1299,6 +1303,7 @@ fi
 * Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-5
 - Make boost-python3 depend on specific 3.X version (#1896713)
 - Add patch to fix CI failure
+- Add patch to fix XML validation errors in ptr_container docs
 
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
