@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 9%{?dist}
+Release: 10%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -169,6 +169,9 @@ Patch103: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
 # Fixes narrowing conversions for ppc -
 #   https://github.com/boostorg/interval/issues/29
 Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch 
+
+# https://github.com/boostorg/ptr_container/pull/27
+Patch105: boost-1.76.0-ptr_cont-xml.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -696,6 +699,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch102 -p1
 %patch103 -p2
 %patch104 -p2
+%patch105 -p1
 
 %build
 %set_build_flags
@@ -1297,6 +1301,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Thu Mar 31 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-10
+- Add patch to fix XML validation errors in ptr_container docs
+
 * Wed Feb  2 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-9
 - Add patch to fix narrowing conversions on ppc64le
   https://github.com/boostorg/interval/issues/29
