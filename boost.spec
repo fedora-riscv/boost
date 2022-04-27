@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1306,6 +1306,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Apr 27 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-12
+- And this time with the boost-1.76.0-enum_type_object-type-python-3.11.patch
+
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-12
 - Merged https://src.fedoraproject.org/rpms/boost/pull-request/13 (#204336)
   Miro Hrončok <mhroncok@redhat.com> - Fix enum_type_object type on Python 3.11
