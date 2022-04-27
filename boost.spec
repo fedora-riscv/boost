@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 10%{?dist}
+Release: 11%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -123,6 +123,7 @@ BuildRequires: libicu-devel
 BuildRequires: libquadmath-devel
 %endif
 BuildRequires: bison
+BuildRequires: libzstd-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
@@ -1301,6 +1302,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Apr 26 2022 Thomas Rodgers <jwakely@redhat.com> - 1.76.0-11
+- Add BuildRequires: libstd-devel to fix (#2042336)
+
 * Thu Mar 31 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-10
 - Add patch to fix XML validation errors in ptr_container docs
 
