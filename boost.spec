@@ -1306,17 +1306,14 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
-* Wed Apr 27 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-12
-- And this time with the boost-1.76.0-enum_type_object-type-python-3.11.patch
+* Wed Apr 27 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-13
+- Add missing boost-1.76.0-enum_type_object-type-python-3.11.patch file
 
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-12
 - Merged https://src.fedoraproject.org/rpms/boost/pull-request/13 (#204336)
-  Miro Hrončok <mhroncok@redhat.com> - Fix enum_type_object type on Python 3.11
-  See https://github.com/boostorg/python/pull/385#event-6498973175
-- Fix previous changelog copy-pasta
 
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-11
-- Add BuildRequires: libstd-devel to fix (#2042336)
+- Add BuildRequires: libzstd-devel to fix (#2042336)
 
 * Thu Mar 31 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-10
 - Add patch to fix XML validation errors in ptr_container docs
