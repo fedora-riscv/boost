@@ -123,6 +123,7 @@ BuildRequires: libicu-devel
 BuildRequires: libquadmath-devel
 %endif
 BuildRequires: bison
+BuildRequires: libzstd-devel
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
@@ -1304,6 +1305,7 @@ fi
 - Make boost-python3 depend on specific 3.X version (#1896713)
 - Add patch to fix CI failure
 - Add patch to fix XML validation errors in ptr_container docs
+- Add BuildRequires: libzstd-devel (#2042336)
 
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
