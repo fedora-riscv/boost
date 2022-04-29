@@ -41,8 +41,8 @@
 Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
-Version: 1.76.0
-Release: 13%{?dist}
+Version: 1.78.0
+Release: 0%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -54,6 +54,7 @@ License: Boost and MIT and Python
 %global toplev_dirname %{real_name}_%{version_enc}
 URL: http://www.boost.org
 
+# https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.bz2
 Source0: https://boostorg.jfrog.io/artifactory/main/release/%{version}/source/%{name}_%{version_enc}.tar.bz2
 Source1: libboost_thread.so
 # Add a manual page for b2, based on the online documentation:
@@ -134,10 +135,10 @@ Patch15: boost-1.58.0-pool.patch
 Patch51: boost-1.58.0-pool-test_linking.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch96: boost-1.75.0-build-optflags.patch
+Patch105: boost-1.78.0-build-optflags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
-Patch97: boost-1.75.0-no-rpath.patch
+Patch106: boost-1.78.0-no-rpath.patch
 
 # https://lists.boost.org/Archives/boost/2020/04/248812.php
 Patch88: boost-1.73.0-cmakedir.patch
@@ -146,18 +147,8 @@ Patch88: boost-1.73.0-cmakedir.patch
 # https://github.com/boostorg/locale/issues/52
 Patch94: boost-1.73-locale-empty-vector.patch
 
-# https://bugzilla.redhat.com/show_bug.cgi?id=1958382
-# https://github.com/boostorg/graph/pull/218
-Patch98: boost-1.75.0-remove-deprecated-boost-iterator.patch
-
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch99: boost-1.76.0-b2-build-flags.patch
-
-# https://github.com/boostorg/math/pull/670
-Patch100: boost-1.76.0-fix-include-inside-boost-namespace.patch
-
-# https://github.com/boostorg/math/pull/671
-Patch101: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
+Patch107: boost-1.78.0-b2-build-flags.patch
 
 # https://github.com/boostorg/random/issues/82
 Patch102: boost-1.76.0-random-test.patch
@@ -172,10 +163,14 @@ Patch103: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
 Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch 
 
 # https://github.com/boostorg/ptr_container/pull/27
-Patch105: boost-1.76.0-ptr_cont-xml.patch
+Patch108: boost-1.76.0-ptr_cont-xml.patch
+
+# Fixes missing libboost_fiber.so
+#  https://github.com/boostorg/boost/issues/632
+Patch109: boost-1.78.0-fix-b2-staging.patch
 
 # https://github.com/boostorg/python/pull/385
-Patch106: boost-1.76.0-enum_type_object-type-python-3.11.patch
+Patch110: boost-1.76.0-enum_type_object-type-python-3.11.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -692,19 +687,17 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 
 %patch15 -p0
 %patch51 -p1
-%patch96 -p1
-%patch97 -p1
-%patch99 -p1
+%patch105 -p1
+%patch106 -p1
+%patch107 -p1
 %patch88 -p1
 %patch94 -p1
-%patch98 -p1
-%patch100 -p1
-%patch101 -p1
 %patch102 -p1
 %patch103 -p2
 %patch104 -p2
-%patch105 -p1
-%patch106 -p1
+%patch108 -p1
+%patch109 -p1
+%patch110 -p1
 
 %build
 %set_build_flags
@@ -1306,6 +1299,18 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Apr 29 2022 Thomas Rodgers <trodgers@redhat.com> - 1.78.0-0
+- Rebase to 1.78.0
+  See https://fedoraproject.org/wiki/Changes/F37Boost178
+- Drop patches:
+    deleted: boost-1.75.0-build-optflags.patch 
+    deleted: boost-1.75.0-no-rpath.patch
+    deleted: boost-1.76.0-b2-build-flags.patch
+    deleted: boost-1.76.0-fix-include-inside-boost-namespace.patch
+    deleted: boost-1.76.0-fix-duplicate-typedef-in-mp.patch
+- Fix silent dropping of some libraries
+  See https://github.com/bfgroup/b2/pull/113
+
 * Wed Apr 27 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-13
 - Add missing boost-1.76.0-enum_type_object-type-python-3.11.patch file
 
