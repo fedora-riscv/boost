@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -842,9 +842,6 @@ mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
 
-# Remove cmake files (some of these are duplicates of the generic bits anyway).
-rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
-
 %{_openmpi_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -871,9 +868,6 @@ mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
 
-# Remove cmake files (some of these are duplicates of the generic bits anyway).
-rm -r ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake
-
 %{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
 %endif
@@ -898,9 +892,6 @@ echo ============================= install serial ==================
 [ -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so ] # Must be present
 rm -f $RPM_BUILD_ROOT%{_libdir}/libboost_thread.so
 install -p -m 644 $(basename %{SOURCE1}) $RPM_BUILD_ROOT%{_libdir}/
-
-# Remove cmake files until we know somebody wants them.
-rm -r $RPM_BUILD_ROOT/%{_libdir}/cmake
 
 echo ============================= install Boost.Build ==================
 (cd tools/build
@@ -1164,6 +1155,7 @@ fi
 %files devel
 %license LICENSE_1_0.txt
 %{_includedir}/%{name}
+%{_libdir}/cmake
 %{_libdir}/libboost_atomic.so
 %{_libdir}/libboost_chrono.so
 %{_libdir}/libboost_container.so
@@ -1231,6 +1223,7 @@ fi
 
 %files openmpi-devel
 %license LICENSE_1_0.txt
+%{_libdir}/openmpi/lib/cmake
 %{_libdir}/openmpi/lib/libboost_mpi.so
 %{_libdir}/openmpi/lib/libboost_graph_parallel.so
 
@@ -1262,6 +1255,7 @@ fi
 
 %files mpich-devel
 %license LICENSE_1_0.txt
+%{_libdir}/mpich/lib/cmake
 %{_libdir}/mpich/lib/libboost_mpi.so
 %{_libdir}/mpich/lib/libboost_graph_parallel.so
 
@@ -1299,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Jun 14 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.78.0-2
+- Re-add the CMake config file provided by Boost
+
 * Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 1.78.0-1
 - Rebuilt for Python 3.11
 
