@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 0%{?dist}
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1299,6 +1299,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 1.78.0-1
+- Rebuilt for Python 3.11
+
 * Fri Apr 29 2022 Thomas Rodgers <trodgers@redhat.com> - 1.78.0-0
 - Rebase to 1.78.0
   See https://fedoraproject.org/wiki/Changes/F37Boost178
