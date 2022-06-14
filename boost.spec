@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1293,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Jun 14 2022 Python Maint <python-maint@redhat.com> - 1.78.0-3
+- Rebuilt for Python 3.11
+
 * Tue Jun 14 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.78.0-2
 - Re-add the CMake config file provided by Boost
 
