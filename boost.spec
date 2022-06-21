@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -329,8 +329,6 @@ portion of Boost.TR1.
 
 %package nowide
 Summary: Standard library functions with UTF-8 API on Windows
-# Added for F33, remove for F35:
-Obsoletes: boost-nowide <= 0.20190814
 
 %description nowide
 
@@ -476,15 +474,7 @@ Requires: libquadmath-devel%{?_isa}
 %if %{with python3}
 # Require boost-numpy3 here, because main boost metapackage only Recommends: it
 Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
-# Added for F33, remove for F35:
-Obsoletes: %{name}-python3-devel < 1.69.0-20
-Provides: %{name}-python3-devel = %{version}-%{release}
-Provides: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 %endif
-# Added for F33, remove for F35:
-Obsoletes: boost-nowide-devel <= 0.20190814
-Provides: boost-nowide-devel = %{version}
-Provides: boost-nowide-devel%{?_isa} = %{version}
 
 %description devel
 Headers and shared object symbolic links for the Boost C++ libraries.
@@ -671,10 +661,6 @@ Tools for working with Boost documentation in BoostBook or QuickBook format.
 
 %package b2
 Summary: A low-level build tool
-# Added for F33, remove for F35:
-Obsoletes: boost-jam < 1.73.0
-Provides: boost-jam = %{version}
-Provides: boost-jam%{?_isa} = %{version}
 
 %description b2
 B2 (formerly Boost.Jam) is the low-level build engine tool for Boost.Build.
@@ -1293,6 +1279,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Jun 21 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-4
+- Remove old Obsoletes tags
+
 * Tue Jun 14 2022 Python Maint <python-maint@redhat.com> - 1.78.0-3
 - Rebuilt for Python 3.11
 
