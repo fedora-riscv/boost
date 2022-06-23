@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -824,9 +824,14 @@ mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
    ${RPM_BUILD_ROOT}%{python3_sitearch}/openmpi/boost/
 %endif
 
+# Using 'b2 stage' does not fix the paths in these files, so do it manually
+sed -i -e 's|get_filename_component(_BOOST_INCLUDEDIR "${_BOOST_CMAKEDIR}/.*"|get_filename_component(_BOOST_INCLUDEDIR "${_BOOST_CMAKEDIR}/../../../../include"|' ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/*/*-config.cmake
+
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
+rm -rf ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/boost_{python,{w,}serialization}*
+rm -rf ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/boost_numpy*
 
 %{_openmpi_unload}
 export PATH=/bin${PATH:+:}$PATH
@@ -850,9 +855,14 @@ mv ${RPM_BUILD_ROOT}${MPI_HOME}/lib/boost-python%{python3_version}/mpi.so \
    ${RPM_BUILD_ROOT}%{python3_sitearch}/mpich/boost/
 %endif
 
+# Using 'b2 stage' does not fix the paths in these files, so do it manually
+sed -i -e 's|get_filename_component(_BOOST_INCLUDEDIR "${_BOOST_CMAKEDIR}/.*"|get_filename_component(_BOOST_INCLUDEDIR "${_BOOST_CMAKEDIR}/../../../../include"|' ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/*/*-config.cmake
+
 # Remove generic parts of boost that were built for dependencies.
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_{python,{w,}serialization}*
 rm -f ${RPM_BUILD_ROOT}${MPI_HOME}/lib/libboost_numpy*
+rm -rf ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/boost_{python,{w,}serialization}*
+rm -rf ${RPM_BUILD_ROOT}${MPI_HOME}/lib/cmake/boost_numpy*
 
 %{_mpich_unload}
 export PATH=/bin${PATH:+:}$PATH
@@ -1279,6 +1289,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Jun 22 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.78.0-5
+- Fix the CMake config file for openmpi and mpich
+
 * Tue Jun 21 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-4
 - Remove old Obsoletes tags
 
