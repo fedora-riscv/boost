@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -474,6 +474,9 @@ Requires: libquadmath-devel%{?_isa}
 %if %{with python3}
 # Require boost-numpy3 here, because main boost metapackage only Recommends: it
 Requires: %{name}-numpy3%{?_isa} = %{version}-%{release}
+# Old Provides: for compatibility with packages that still require it.
+Provides: %{name}-python3-devel = %{version}-%{release}
+Provides: %{name}-python3-devel%{?_isa} = %{version}-%{release}
 %endif
 
 %description devel
@@ -1289,6 +1292,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Jun 24 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-6
+- Restore Provides for boost-python3-devel (#2100748)
+
 * Wed Jun 22 2022 Laurent Rineau <laurent.rineau@cgal.org> - 1.78.0-5
 - Fix the CMake config file for openmpi and mpich
 
