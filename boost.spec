@@ -177,6 +177,10 @@ Patch105: boost-1.76.0-ptr_cont-xml.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2106441
 Patch106: boost-1.76.0-asio-header.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=2106878
+# https://github.com/boostorg/filesystem/issues/184
+Patch107: boost-1.76.0-filesystem-copy_file-exdev.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -705,6 +709,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch104 -p2
 %patch105 -p1
 %patch106 -p2
+%patch107 -p1
 
 %build
 %set_build_flags
@@ -1308,6 +1313,7 @@ fi
 %changelog
 * Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-12
 - Add patch to fix Asio includes (#2106441)
+- Add patch to fix filesystem::copy_file EXDEV handling (#2106878)
 
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-11
 - Add BuildRequires: libzstd-devel to fix (#2042336)
