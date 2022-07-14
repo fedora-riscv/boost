@@ -85,6 +85,7 @@ Requires: %{name}-fiber%{?_isa} = %{version}-%{release}
 Requires: %{name}-filesystem%{?_isa} = %{version}-%{release}
 Requires: %{name}-graph%{?_isa} = %{version}-%{release}
 Requires: %{name}-iostreams%{?_isa} = %{version}-%{release}
+Requires: %{name}-json%{?_isa} = %{version}-%{release}
 Requires: %{name}-locale%{?_isa} = %{version}-%{release}
 Requires: %{name}-log%{?_isa} = %{version}-%{release}
 Requires: %{name}-math%{?_isa} = %{version}-%{release}
@@ -1317,6 +1318,7 @@ fi
 - Add BuildRequires: libzstd-devel (#2042336)
 - Add patch to fix Asio includes (#2106441)
 - Add patch to fix filesystem::copy_file EXDEV handling (#2106878)
+- Add boost-json to umbrella package
 
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
