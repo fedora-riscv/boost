@@ -85,6 +85,7 @@ Requires: %{name}-fiber%{?_isa} = %{version}-%{release}
 Requires: %{name}-filesystem%{?_isa} = %{version}-%{release}
 Requires: %{name}-graph%{?_isa} = %{version}-%{release}
 Requires: %{name}-iostreams%{?_isa} = %{version}-%{release}
+Requires: %{name}-json%{?_isa} = %{version}-%{release}
 Requires: %{name}-locale%{?_isa} = %{version}-%{release}
 Requires: %{name}-log%{?_isa} = %{version}-%{release}
 Requires: %{name}-math%{?_isa} = %{version}-%{release}
@@ -1314,6 +1315,7 @@ fi
 * Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-12
 - Add patch to fix Asio includes (#2106441)
 - Add patch to fix filesystem::copy_file EXDEV handling (#2106878)
+- Add boost-json to umbrella package
 
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-11
 - Add BuildRequires: libzstd-devel to fix (#2042336)
