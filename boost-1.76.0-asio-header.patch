@@ -1,0 +1,34 @@
+From 71964b22c7fade69cc4caa1c869a868e3a32cc97 Mon Sep 17 00:00:00 2001
+From: Christopher Kohlhoff <chris@kohlhoff.com>
+Date: Wed, 2 Mar 2022 21:41:04 +1100
+Subject: [PATCH] Header <utility> is needed for std::exchange.
+
+---
+ include/boost/asio/awaitable.hpp      | 1 +
+ include/boost/asio/impl/awaitable.hpp | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/boost/asio/awaitable.hpp b/include/boost/asio/awaitable.hpp
+index a9cc90d43..750198995 100644
+--- a/include/boost/asio/awaitable.hpp
++++ b/include/boost/asio/awaitable.hpp
+@@ -25,6 +25,7 @@
+ # include <experimental/coroutine>
+ #endif // defined(BOOST_ASIO_HAS_STD_COROUTINE)
+ 
++#include <utility>
+ #include <boost/asio/any_io_executor.hpp>
+ 
+ #include <boost/asio/detail/push_options.hpp>
+diff --git a/include/boost/asio/impl/awaitable.hpp b/include/boost/asio/impl/awaitable.hpp
+index 49a47e29a..c66fa74c6 100644
+--- a/include/boost/asio/impl/awaitable.hpp
++++ b/include/boost/asio/impl/awaitable.hpp
+@@ -19,7 +19,6 @@
+ #include <exception>
+ #include <new>
+ #include <tuple>
+-#include <utility>
+ #include <boost/asio/detail/thread_context.hpp>
+ #include <boost/asio/detail/thread_info_base.hpp>
+ #include <boost/asio/detail/type_traits.hpp>
