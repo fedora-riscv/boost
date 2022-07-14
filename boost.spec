@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.76.0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -173,6 +173,9 @@ Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch
 
 # https://github.com/boostorg/ptr_container/pull/27
 Patch105: boost-1.76.0-ptr_cont-xml.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=2106441
+Patch106: boost-1.76.0-asio-header.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -701,6 +704,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch103 -p2
 %patch104 -p2
 %patch105 -p1
+%patch106 -p2
 
 %build
 %set_build_flags
@@ -1302,6 +1306,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.76.0-12
+- Add patch to fix Asio includes (#2106441)
+
 * Tue Apr 26 2022 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-11
 - Add BuildRequires: libzstd-devel to fix (#2042336)
 
