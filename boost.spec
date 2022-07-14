@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -86,6 +86,7 @@ Requires: %{name}-fiber%{?_isa} = %{version}-%{release}
 Requires: %{name}-filesystem%{?_isa} = %{version}-%{release}
 Requires: %{name}-graph%{?_isa} = %{version}-%{release}
 Requires: %{name}-iostreams%{?_isa} = %{version}-%{release}
+Requires: %{name}-json%{?_isa} = %{version}-%{release}
 Requires: %{name}-locale%{?_isa} = %{version}-%{release}
 Requires: %{name}-log%{?_isa} = %{version}-%{release}
 Requires: %{name}-math%{?_isa} = %{version}-%{release}
@@ -1292,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-7
+- Add boost-json to umbrella package
+
 * Fri Jun 24 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-6
 - Restore Provides for boost-python3-devel (#2100748)
 
