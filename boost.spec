@@ -168,6 +168,10 @@ Patch105: boost-1.76.0-ptr_cont-xml.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=2106441
 Patch106: boost-1.76.0-asio-header.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=2106878
+# https://github.com/boostorg/filesystem/issues/184
+Patch107: boost-1.76.0-filesystem-copy_file-exdev.patch
+
 %bcond_with tests
 %bcond_with docs_generated
 
@@ -694,6 +698,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs chmod a-x
 %patch102 -p1
 %patch105 -p1
 %patch106 -p2
+%patch107 -p1
 
 %build
 %set_build_flags
@@ -1311,6 +1316,7 @@ fi
 - Add patch to fix XML validation errors in ptr_container docs
 - Add BuildRequires: libzstd-devel (#2042336)
 - Add patch to fix Asio includes (#2106441)
+- Add patch to fix filesystem::copy_file EXDEV handling (#2106878)
 
 * Thu Aug 05 2021 Thomas Rodgers <trodgers@redhat.com> - 1.76.0-4
 - Third attempt at making the long double c99 and tr1 math libs conditional
