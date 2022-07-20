@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 7%{?dist}
+Release: 8%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1293,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.78.0-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Thu Jul 14 2022 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-7
 - Add boost-json to umbrella package
 
