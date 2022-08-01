@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1293,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 1.78.0-9
+- Rebuilt for ICU 71.1
+
 * Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.78.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
