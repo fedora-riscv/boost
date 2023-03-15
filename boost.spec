@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1296,6 +1296,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Sep 01 2023 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-13
+- Fix outdated CI configuration
+
 * Tue Aug 22 2023 Kefu Chai <tchaikov@fedoraproject.org> - 1.78.0-12
 - Add patch for Boost.Accumulators bug
   See https://github.com/boostorg/accumulators/pull/54
