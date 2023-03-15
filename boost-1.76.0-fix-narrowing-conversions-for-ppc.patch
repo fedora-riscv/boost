@@ -13,8 +13,8 @@ Fixes #29
 
 diff --git a/include/boost/numeric/interval/detail/ppc_rounding_control.hpp b/include/boost/numeric/interval/detail/ppc_rounding_control.hpp
 index 87fe8ee..99f9986 100644
---- a/include/boost/numeric/interval/detail/ppc_rounding_control.hpp
-+++ b/include/boost/numeric/interval/detail/ppc_rounding_control.hpp
+--- boost_1_76_0/boost/numeric/interval/detail/ppc_rounding_control.hpp
++++ boost_1_76_0/boost/numeric/interval/detail/ppc_rounding_control.hpp
 @@ -28,10 +28,10 @@ typedef union {
    double dmode;
  } rounding_mode_struct;
