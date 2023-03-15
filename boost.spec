@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.81.0
-Release: 0%{?dist}
+Release: 1%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -146,6 +146,11 @@ Patch102: boost-1.76.0-random-test.patch
 # Fixes narrowing conversions for ppc -
 #   https://github.com/boostorg/interval/issues/29
 Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=2178210
+# https://github.com/boostorg/phoenix/issues/111
+# https://github.com/boostorg/phoenix/issues/115
+Patch112: boost-1.81-phoenix-multiple-defn.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -663,6 +668,7 @@ find ./boost -name '*.hpp' -perm /111 | xargs --no-run-if-empty chmod a-x
 %patch88 -p1
 %patch102 -p1
 %patch104 -p2
+%patch112 -p1
 
 %build
 %set_build_flags
@@ -1277,6 +1283,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Wed Mar 15 2023 Jonathan Wakely <jwakely@fedoraproject.org> - 1.81.0-1
+- Add patch for Boost.Phoenix bugs (#2178210)
+
 * Mon Feb 20 2023 Thomas Rodgers <trodgers@redhat.com> - 1.81.0-0
 - Rebase to 1.81.0
   See https://fedoraproject.org/wiki/Changes/F38Boost181
