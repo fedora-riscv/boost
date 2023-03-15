@@ -1290,7 +1290,7 @@ fi
   deleted: boost-1.78.0-fix-b2-staging.patch
   deleted: boost-1.76.0-enum_type_object-type-python-3.11.patch
 - New Boost.URL runtime component
-- boost_build directory is now b2 in upstream, renamte to boost_build on install
+- boost_build directory is now b2 in upstream, rename to boost_build on install
 
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.78.0-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
