@@ -24,7 +24,7 @@
 %endif
 %endif
 
-%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64 s390x
+%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64 s390x riscv64
   %bcond_with context
 %else
   %bcond_without context
@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 9%{?dist}
+Release: 9.rv64%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1293,6 +1293,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Mon Apr 24 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 1.78.0-9.rv64
+- Add context support for riscv64. Because it is missing while ceph building.
+
 * Mon Aug 01 2022 Frantisek Zatloukal <fzatlouk@redhat.com> - 1.78.0-9
 - Rebuilt for ICU 71.1
 
