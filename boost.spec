@@ -24,7 +24,7 @@
 %endif
 %endif
 
-%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64 s390x
+%ifnarch %{ix86} x86_64 %{arm} ppc64 ppc64le aarch64 s390x riscv64
   %bcond_with context
 %else
   %bcond_without context
@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 14%{?dist}
+Release: 14.rv64%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -1282,6 +1282,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Fri Sep 15 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 1.78.0-14.rv64
+- Add context support for riscv64. Because it is missing while ceph building.
+
 * Tue Sep 12 2023 Jonathan Wakely <jwakely@fedoraproject.org> - 1.78.0-14
 - Change spec file to use autosetup for applying patches
 
