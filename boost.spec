@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -172,6 +172,9 @@ Patch109: boost-1.78.0-fix-b2-staging.patch
 
 # https://github.com/boostorg/python/pull/385
 Patch110: boost-1.76.0-enum_type_object-type-python-3.11.patch
+
+# PR https://github.com/boostorg/accumulators/pull/54
+Patch7: boost-1.81.0-always-initialize-member-variable.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -1293,6 +1296,10 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Aug 22 2023 Kefu Chai <tchaikov@fedoraproject.org> - 1.78.0-12
+- Add patch for Boost.Accumulators bug
+  See https://github.com/boostorg/accumulators/pull/54
+
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.78.0-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
 
