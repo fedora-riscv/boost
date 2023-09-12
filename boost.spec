@@ -42,7 +42,7 @@ Name: boost
 %global real_name boost
 Summary: The free peer-reviewed portable C++ source libraries
 Version: 1.78.0
-Release: 13%{?dist}
+Release: 14%{?dist}
 License: Boost and MIT and Python
 
 # Replace each . with _ in %%{version}
@@ -130,51 +130,51 @@ BuildRequires: libzstd-devel
 # https://bugzilla.redhat.com/show_bug.cgi?id=828856
 # https://bugzilla.redhat.com/show_bug.cgi?id=828857
 # https://svn.boost.org/trac/boost/ticket/6701
-Patch15: boost-1.58.0-pool.patch
+Patch0: boost-1.58.0-pool.patch
 
 # https://svn.boost.org/trac/boost/ticket/9038
-Patch51: boost-1.58.0-pool-test_linking.patch
+Patch1: boost-1.58.0-pool-test_linking.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch105: boost-1.78.0-build-optflags.patch
+Patch2: boost-1.78.0-build-optflags.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1318383
-Patch106: boost-1.78.0-no-rpath.patch
+Patch3: boost-1.78.0-no-rpath.patch
 
 # https://lists.boost.org/Archives/boost/2020/04/248812.php
-Patch88: boost-1.73.0-cmakedir.patch
+Patch4: boost-1.73.0-cmakedir.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1899888
 # https://github.com/boostorg/locale/issues/52
-Patch94: boost-1.73-locale-empty-vector.patch
+Patch5: boost-1.73-locale-empty-vector.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1541035
-Patch107: boost-1.78.0-b2-build-flags.patch
+Patch6: boost-1.78.0-b2-build-flags.patch
 
 # https://github.com/boostorg/random/issues/82
-Patch102: boost-1.76.0-random-test.patch
+Patch7: boost-1.76.0-random-test.patch
 
 # PR https://github.com/boostorg/multiprecision/pull/421
 # fixes ppc64le issue https://github.com/boostorg/multiprecision/issues/419
-Patch103: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
+Patch8: boost-1.76.0-fix_multiprecision_issue_419-ppc64le.patch
 
 # PR https://github.com/boostorg/interval/pull/30
 # Fixes narrowing conversions for ppc -
 #   https://github.com/boostorg/interval/issues/29
-Patch104: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch 
+Patch9: boost-1.76.0-fix-narrowing-conversions-for-ppc.patch
 
 # https://github.com/boostorg/ptr_container/pull/27
-Patch108: boost-1.76.0-ptr_cont-xml.patch
+Patch10: boost-1.76.0-ptr_cont-xml.patch
 
 # Fixes missing libboost_fiber.so
 #  https://github.com/boostorg/boost/issues/632
-Patch109: boost-1.78.0-fix-b2-staging.patch
+Patch11: boost-1.78.0-fix-b2-staging.patch
 
 # https://github.com/boostorg/python/pull/385
-Patch110: boost-1.76.0-enum_type_object-type-python-3.11.patch
+Patch12: boost-1.76.0-enum_type_object-type-python-3.11.patch
 
 # PR https://github.com/boostorg/accumulators/pull/54
-Patch7: boost-1.81.0-always-initialize-member-variable.patch
+Patch13: boost-1.81.0-always-initialize-member-variable.patch
 
 %bcond_with tests
 %bcond_with docs_generated
@@ -675,22 +675,8 @@ Historically, B2 was based on on FTJam and on Perforce Jam but has grown
 a number of significant features and is now developed independently.
 
 %prep
-%setup -q -n %{toplev_dirname}
+%autosetup -n %{toplev_dirname} -p1
 find ./boost -name '*.hpp' -perm /111 | xargs --no-run-if-empty chmod a-x
-
-%patch15 -p0
-%patch51 -p1
-%patch105 -p1
-%patch106 -p1
-%patch107 -p1
-%patch88 -p1
-%patch94 -p1
-%patch102 -p1
-%patch103 -p2
-%patch104 -p2
-%patch108 -p1
-%patch109 -p1
-%patch110 -p1
 
 %build
 %set_build_flags
@@ -1296,6 +1282,9 @@ fi
 %{_mandir}/man1/b2.1*
 
 %changelog
+* Tue Sep 12 2023 Jonathan Wakely <jwakely@fedoraproject.org> - 1.78.0-14
+- Change spec file to use autosetup for applying patches
+
 * Fri Sep 01 2023 Jonathan Wakely <jwakely@redhat.com> - 1.78.0-13
 - Fix outdated CI configuration
 
